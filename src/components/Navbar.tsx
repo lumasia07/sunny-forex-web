@@ -17,6 +17,10 @@ export function Navbar() {
   const useDark = !isHome || isScrolled;
   const navLinks = [
   {
+    name: 'Home',
+    href: '/'
+  },
+  {
     name: 'Forex',
     href: '/forex'
   },
@@ -54,7 +58,7 @@ export function Navbar() {
           <img
             src="/logo-sunny.png"
             alt="Sunny Forex"
-            className={`h-12 md:h-16 w-auto transition-all duration-300 ${useDark ? '' : 'brightness-0 invert'}`} />
+            className={`h-14 md:h-20 w-auto transition-all duration-300 ${useDark ? '' : 'brightness-0 invert'}`} />
           
         </Link>
 

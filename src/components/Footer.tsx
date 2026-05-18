@@ -11,7 +11,7 @@ export function Footer() {
               <img
                 src="/logo-sunny.png"
                 alt="Sunny Forex"
-                className="h-12 w-auto" />
+                className="h-20 w-auto" />
               
             </Link>
             <p className="text-sm text-gray-500 font-light leading-relaxed mb-6">
