@@ -3,69 +3,70 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Phone, MapPin, Clock, MessageCircle } from 'lucide-react';
 // Branch data — confirmed from sunny-forex.vercel.app/branches
 const branches = [
-{
-  name: 'Valley Arcade',
-  area: 'Lavington',
-  address: 'Valley Arcade Shopping Centre, Gitanga Road, Lavington',
-  phone: '0722 360 800',
-  whatsapp: '254722360800',
-  hours: 'Mon–Fri: 9:00 AM – 7:00 PM',
-  status: 'Open'
-},
-{
-  name: 'Valley Arcade (Branch 2)',
-  area: 'Lavington',
-  address: 'Valley Arcade Shopping Centre, Gitanga Road, Lavington',
-  phone: '0722 360 800',
-  whatsapp: '254722360800',
-  hours: 'Mon–Fri: 9:00 AM – 7:00 PM',
-  status: 'Open'
-},
-{
-  name: 'Village Market',
-  area: 'Gigiri',
-  address: 'Village Market Shopping Centre, Limuru Road, Gigiri',
-  phone: '0718 040 847',
-  whatsapp: '254718040847',
-  hours: 'Mon–Fri: 9:00 AM – 7:00 PM',
-  status: 'Open'
-},
-{
-  name: 'Village Market (Old Wing)',
-  area: 'Gigiri',
-  address: 'Village Market Shopping Centre, Limuru Road, Gigiri',
-  phone: '0718 040 847',
-  whatsapp: '254718040847',
-  hours: 'Mon–Fri: 9:00 AM – 7:00 PM',
-  status: 'Open'
-},
-{
-  name: 'Sarit Centre',
-  area: 'Westlands',
-  address: 'Sarit Centre, Westlands Road, Westlands',
-  phone: '0722 350 400',
-  whatsapp: '254722350400',
-  hours: 'Mon–Sat: 9:00 AM – 7:00 PM',
-  status: 'Open'
-},
-{
-  name: 'Two Rivers Mall',
-  area: 'Ruaka',
-  address: 'Two Rivers Mall, Limuru Road, Ruaka',
-  phone: '0722 350 401',
-  whatsapp: '254722350401',
-  hours: 'Mon–Sun: 10:00 AM – 8:00 PM',
-  status: 'Open'
-},
-{
-  name: 'Junction Mall',
-  area: 'Ngong Road',
-  address: 'Junction Mall, Ngong Road, Dagoretti',
-  phone: '0722 350 402',
-  whatsapp: '254722350402',
-  hours: 'Mon–Sun: 10:00 AM – 8:00 PM',
-  status: 'Open'
-}];
+  {
+    name: 'Kilimani Branch',
+    area: 'Kilimani',
+    address: 'Woodridge Centre, Wood Avenue, Kilimani Nairobi, Kenya',
+    phone: '+254 722 350 400',
+    whatsapp: '254722350400',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  },
+  {
+    name: 'Valley Arcade Branch',
+    area: 'Lavington',
+    address: 'Valley Arcade Shopping Mall, Gitanga Road, Lavington Nairobi, Kenya',
+    phone: '+254 722 360 800',
+    whatsapp: '254722360800',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  },
+  {
+    name: 'GTC Mall Branch',
+    area: 'Westlands',
+    address: 'GTC Mall, Chiromo Lane, Westlands, Nairobi, Kenya',
+    phone: '+254 722 305 188',
+    whatsapp: '254722305188',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  },
+  {
+    name: 'Village Market New Wing Branch',
+    area: 'Gigiri / Limuru Road',
+    address: 'Village Market Mall – New Wing G/F, Limuru Road, Nairobi, Kenya',
+    phone: '+254 718 040 847',
+    whatsapp: '254718040847',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  },
+  {
+    name: 'Village Market Old Wing Branch',
+    area: 'Gigiri / Limuru Road',
+    address: 'Village Market Mall – Old Wing G/F, Limuru Road Nairobi, Kenya',
+    phone: '+254 722 454 757',
+    whatsapp: '254722454757',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  },
+  {
+    name: 'Runda Branch',
+    area: 'Runda / Kiambu Road',
+    address: 'Runda Mall G/F, Kiambu Road Nairobi, Kenya',
+    phone: '+254 722 109 594',
+    whatsapp: '254722109594',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  },
+  {
+    name: 'Lavington Branch',
+    area: 'Lavington',
+    address: 'Lavington Avenue Complex G/F, James Gichuru Road Nairobi, Kenya',
+    phone: '+254 722 155 599',
+    whatsapp: '254722155599',
+    hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
+    status: 'Open'
+  }
+];
 
 function WhatsAppIcon({
   className = '',
@@ -340,7 +341,7 @@ export function WhatsAppButton() {
                     Replies within minutes during business hours
                   </p>
                   <a
-                  href="mailto:enterprise@sunnyforex.co.ke"
+                  href="mailto:info@sunnyremit.com"
                   className="text-xs font-medium text-[#7A1220] hover:text-[#5C0D18] transition-colors">
                   
                     Email instead →

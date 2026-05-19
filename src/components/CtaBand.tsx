@@ -10,15 +10,15 @@ const contactMethods = [
 },
 {
   icon: Mail,
-  label: 'Corporate enquiries',
-  value: 'enterprise@sunnyforex.co.ke',
-  href: 'mailto:enterprise@sunnyforex.co.ke'
+  label: 'Email us',
+  value: 'info@sunnyremit.com',
+  href: 'mailto:info@sunnyremit.com'
 },
 {
   icon: MapPin,
   label: 'Visit our headquarters',
-  value: 'Kaunda Street, Nairobi CBD',
-  href: '#'
+  value: 'Woodridge Centre, Wood Avenue, Kilimani Nairobi, Kenya',
+  href: 'https://www.google.com/maps/search/?api=1&query=Woodridge+Centre+Wood+Avenue+Kilimani+Nairobi'
 }];
 
 export function CtaBand() {
@@ -75,7 +75,7 @@ export function CtaBand() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="mailto:enterprise@sunnyforex.co.ke"
+                href="mailto:info@sunnyremit.com"
                 className="inline-flex justify-center items-center gap-2 px-8 py-3.5 rounded-full bg-[#7A1220] text-white font-medium hover:bg-[#5C0D18] transition-colors group">
                 
                 Contact Us

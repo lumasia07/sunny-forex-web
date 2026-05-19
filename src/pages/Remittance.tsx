@@ -4,6 +4,7 @@ import { PageHero } from '../components/PageHero';
 import { CtaBand } from '../components/CtaBand';
 import { Link } from 'react-router-dom';
 import { Send, Clock, ShieldCheck, ArrowRight, Wallet, HelpCircle, Lock } from 'lucide-react';
+import { PartnersBanner } from '../components/PartnersBanner';
 
 const corridors = [
   {
@@ -50,14 +51,6 @@ const corridors = [
   }
 ];
 
-const partners = [
-  { name: 'Western Union', desc: 'Instant cash pickup and transfer at any of our branches.' },
-  { name: 'MoneyGram', desc: 'Secure worldwide remittance networks with fast payouts.' },
-  { name: 'Ria Money Transfer', desc: 'Competitive retail payouts directly at the counter.' },
-  { name: 'WorldRemit', desc: 'Direct digital remittance linked to Kenyan mobile wallets.' },
-  { name: 'Wise', desc: 'Direct low-cost bank deposits with absolute transparency.' },
-  { name: 'SWIFT Network', desc: 'Traditional wire services for secure high-volume corporate trades.' }
-];
 
 const steps = [
   {
@@ -203,39 +196,7 @@ export function Remittance() {
         </div>
       </section>
 
-      {/* Partners Cards */}
-      <section className="py-24 md:py-32 bg-[#FAFAF7] border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="mb-16 text-center max-w-xl mx-auto">
-            <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-            <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
-              Licensed Payout Partners
-            </h2>
-            <p className="text-gray-500 font-light text-sm">
-              We partner with the world's premier money transfer networks to offer absolute security and immediate payouts at any local counter.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {partners.map((p, i) => (
-              <motion.div
-                key={p.name}
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col items-start"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#7A1220]/5 flex items-center justify-center mb-4">
-                  <Wallet className="w-5 h-5 text-[#7A1220]" />
-                </div>
-                <h4 className="text-lg font-medium text-[#0E0E0E] mb-2">{p.name}</h4>
-                <p className="text-gray-400 font-light text-sm leading-relaxed">{p.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <PartnersBanner />
 
       <CtaBand />
     </>

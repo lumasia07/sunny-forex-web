@@ -3,34 +3,35 @@ import { motion } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 const branches = [
-{
-  name: 'Valley Arcade',
-  area: 'Lavington'
-},
-{
-  name: 'Valley Arcade (Branch 2)',
-  area: 'Lavington'
-},
-{
-  name: 'Village Market',
-  area: 'Gigiri'
-},
-{
-  name: 'Village Market (Old Wing)',
-  area: 'Gigiri'
-},
-{
-  name: 'Sarit Centre',
-  area: 'Westlands'
-},
-{
-  name: 'Two Rivers Mall',
-  area: 'Ruaka'
-},
-{
-  name: 'Junction Mall',
-  area: 'Ngong Road'
-}];
+  {
+    name: 'Kilimani Branch',
+    area: 'Kilimani'
+  },
+  {
+    name: 'Valley Arcade Branch',
+    area: 'Lavington'
+  },
+  {
+    name: 'GTC Mall Branch',
+    area: 'Westlands'
+  },
+  {
+    name: 'Village Market New Wing Branch',
+    area: 'Gigiri'
+  },
+  {
+    name: 'Village Market Old Wing Branch',
+    area: 'Gigiri'
+  },
+  {
+    name: 'Runda Branch',
+    area: 'Runda'
+  },
+  {
+    name: 'Lavington Branch',
+    area: 'Lavington'
+  }
+];
 
 const containerVariants = {
   hidden: {},
