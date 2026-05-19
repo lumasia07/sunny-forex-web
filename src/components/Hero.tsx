@@ -3,60 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 const heroSlides = [
   {
-    src: '/pexels-kelvin-kibe-3073372-26898331.jpg',
-    fallback:
-      'https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Nairobi skyline',
-    caption: 'Nairobi Skyline',
-    tag: 'The Green City in the Sun'
-  },
-  {
-    src: '/pexels-sergey-pesterev-69811391-8427984.jpg',
-    fallback:
-      'https://images.unsplash.com/photo-1535082623926-b39352a03fb7?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Mount Kenya',
-    caption: 'Mount Kenya',
-    tag: 'The Highlands'
-  },
-  {
-    src: '/pexels-ben-iwara-1033992193-27742235.jpg',
-    fallback:
-      'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Coastal beauty in Mombasa',
-    caption: 'Coastal Beauty',
-    tag: 'Mombasa'
-  },
-  {
-    src: '/pexels-kursat-kuzu-42706530-12705278.jpg',
-    fallback:
-      'https://images.unsplash.com/photo-1568454537842-d933259bb1ce?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Aviation and global reach',
-    caption: 'Logistics',
-    tag: 'Connectivity'
-  },
-  {
-    src: '/pexels-mnmshakir-35034068.jpg',
-    fallback:
-      'https://images.unsplash.com/photo-1591608971362-f08b2a75731a?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Maasai cultural heritage',
-    caption: 'Cultural Heritage',
-    tag: 'Culture'
-  },
-  {
-    src: '/pexels-maria-stewart-2268904-5643136 (1).jpg',
-    fallback:
-      'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Globe representing worldwide presence',
-    caption: 'Global Reach',
-    tag: 'Worldwide'
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=2940&auto=format&fit=crop',
-    fallback:
-      'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=2940&auto=format&fit=crop',
-    alt: 'Acacia tree on the savannah at sunset',
-    caption: 'Savannah Sunset',
-    tag: 'Heritage'
+    src: '/pexels-jakubzerdzicki-30572289.jpg',
+    fallback: '/pexels-jakubzerdzicki-30572289.jpg',
+    alt: 'Nairobi Physical Bureau',
+    caption: 'Nairobi Physical Bureau',
+    tag: 'Our Main Office'
   }
 ];
 
@@ -74,19 +25,15 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="sync">
           <motion.img
-            key={currentSlide}
-            src={heroSlides[currentSlide].src}
-            alt={heroSlides[currentSlide].alt}
+            src={heroSlides[0].src}
+            alt={heroSlides[0].alt}
             initial={{
               opacity: 0,
               scale: 1.08
             }}
             animate={{
               opacity: 1,
-              scale: 1
-            }}
-            exit={{
-              opacity: 0
+              scale: [1.08, 1, 1.08]
             }}
             transition={{
               opacity: {
@@ -94,7 +41,8 @@ export function Hero() {
                 ease: 'easeInOut'
               },
               scale: {
-                duration: 8,
+                duration: 24,
+                repeat: Infinity,
                 ease: 'linear'
               }
             }}
@@ -103,7 +51,7 @@ export function Hero() {
               const target = e.currentTarget as HTMLImageElement;
               if (!target.dataset.fellBack) {
                 target.dataset.fellBack = '1';
-                target.src = heroSlides[currentSlide].fallback;
+                target.src = heroSlides[0].fallback;
               }
             }} />
           
