@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
 import { LiveBlock, LiveWords } from './LiveText';
+import { SplitColumnsReveal } from './SplitColumnsReveal';
 const contactMethods = [
 {
   icon: Phone,
@@ -31,8 +32,6 @@ export function CtaBand() {
   });
 
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const contentY = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
 
   return (
     <section
@@ -77,26 +76,12 @@ export function CtaBand() {
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      <motion.div
-        className="relative max-w-7xl mx-auto px-6 md:px-12"
-        style={{ y: contentY, opacity: contentOpacity }}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Left: Headline + Copy */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            transition={{
-              duration: 0.8
-            }}>
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12">
+        <SplitColumnsReveal
+          gap="gap-16 lg:gap-24"
+          className="items-start"
+          left={
+          <div>
             
             <span className="inline-block w-10 h-px bg-[#B91C1C] mb-6" />
             <LiveBlock className="type-label uppercase tracking-[0.2em] text-white/60 mb-6" variant="neutral">
@@ -131,26 +116,10 @@ export function CtaBand() {
                 </span>
               </Link>
             </div>
-          </motion.div>
-
-          {/* Right: Contact Methods */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            transition={{
-              duration: 0.8,
-              delay: 0.15
-            }}
-            className="flex flex-col">
+          </div>
+          }
+          right={
+          <div className="flex flex-col">
             
             {contactMethods.map((method, index) =>
             <motion.a
@@ -194,9 +163,10 @@ export function CtaBand() {
                 Mon – Fri, 8:00 AM – 6:00 PM EAT · Sat, 9:00 AM – 2:00 PM
               </LiveBlock>
             </div>
-          </motion.div>
-        </div>
-      </motion.div>
+          </div>
+          }
+        />
+      </div>
     </section>);
 
 }
