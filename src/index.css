@@ -13,9 +13,40 @@
   html {
     font-family: 'DM Sans', sans-serif;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     @apply bg-[#FAFAF7] text-[#0E0E0E] antialiased selection:bg-[#B91C1C] selection:text-white;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-bold tracking-tight text-[#0E0E0E];
+  }
+}
+
+@layer components {
+  .type-display {
+    @apply font-bold tracking-tight leading-[1.02] text-[#0E0E0E];
+  }
+
+  .type-headline {
+    @apply font-bold tracking-tight leading-[1.08] text-[#0E0E0E];
+  }
+
+  .type-lead {
+    @apply text-base md:text-lg font-normal leading-relaxed text-[#0E0E0E]/75;
+  }
+
+  .type-lead-light {
+    @apply text-base md:text-lg font-normal leading-relaxed text-white/85;
+  }
+
+  .type-label {
+    @apply text-xs font-medium tracking-wide text-[#0E0E0E]/60;
   }
 }
 
