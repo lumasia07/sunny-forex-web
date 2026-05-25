@@ -119,10 +119,10 @@ export function Remittance() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="mb-16 max-w-2xl">
             <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-            <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+            <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
               How it works.
             </h2>
-            <p className="text-gray-500 font-light">
+            <p className="type-lead">
               Four simple steps. Most transfers complete in under 15 minutes.
             </p>
           </div>
@@ -158,10 +158,10 @@ export function Remittance() {
           <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
                 Popular corridors.
               </h2>
-              <p className="text-gray-500 font-light max-w-md">
+              <p className="type-lead max-w-md">
                 Select your transfer route below to lock in the rates directly.
               </p>
             </div>
