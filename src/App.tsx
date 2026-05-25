@@ -11,13 +11,26 @@ import { Blog } from './pages/Blog';
 import { LockRate } from './pages/LockRate';
 import { WhatsAppButton } from './components/WhatsAppButton';
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+
   useEffect(() => {
+    if (hash) {
+      const id = hash.replace('#', '');
+      requestAnimationFrame(() => {
+        const target = document.getElementById(id);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+      return;
+    }
+
     window.scrollTo({
       top: 0,
-      behavior: 'instant' as ScrollBehavior
+      behavior: 'instant' as ScrollBehavior,
     });
-  }, [pathname]);
+  }, [pathname, hash]);
+
   return null;
 }
 export function App() {
