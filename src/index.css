@@ -222,22 +222,38 @@ html {
   min-height: auto;
 }
 
-/* Hero background — mobile: centered cover fill, no parallax edge gaps */
-.hero-bg-image--mobile {
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%) scale(1.15);
-  object-position: center center;
+/* Hero background — always covers full viewport width (incl. ultrawide) */
+.hero-bg-stage {
+  width: max(140vw, 140vh);
+  height: max(140vw, 140vh);
+  transform-origin: center center;
+  will-change: transform;
 }
 
-.hero-bg-image--desktop {
-  inset: -12%;
-  width: 124%;
-  height: 124%;
+.hero-bg-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+@media (min-width: 1024px) {
+  .hero-bg-stage {
+    width: max(130vw, 130vh);
+    height: max(130vw, 130vh);
+  }
+
+  .hero-bg-image {
+    object-position: center 38%;
+  }
+}
+
+@media (min-width: 1536px) {
+  .hero-bg-stage {
+    width: max(125vw, 125vh);
+    height: max(125vw, 125vh);
+  }
 }
 
 @media (min-width: 1024px) {
