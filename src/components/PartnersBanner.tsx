@@ -1,4 +1,5 @@
 import React from 'react';
+import { LiveBlock, LiveWords } from './LiveText';
 
 const partnersList = [
   { name: 'KCB Bank', src: '/kcb-logo.png?v=2', alt: 'KCB Bank Logo' },
@@ -23,11 +24,11 @@ export function PartnersBanner() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 text-center mb-10">
         <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
         <h3 className="font-sans font-bold text-[#0E0E0E] text-2xl md:text-3xl tracking-tight uppercase">
-          Our Licensed Payout Partners
+          <LiveWords text="Our Licensed Payout Partners" />
         </h3>
-        <p className="text-gray-500 font-light text-sm mt-2 max-w-xl mx-auto">
+        <LiveBlock className="text-gray-500 font-light text-sm mt-2 max-w-xl mx-auto" variant="dark" inline={false}>
           Delivering secure, instant cash pickups and mobile wallet payouts across Nairobi in direct partnership with leading financial networks.
-        </p>
+        </LiveBlock>
       </div>
 
       {/* Infinite Scrolling Logo Marquee Belt */}
