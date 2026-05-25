@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { HeroCalculator } from './HeroCalculator';
-import { LiveBlock, LiveLine } from './LiveText';
+import { LiveBlock } from './LiveText';
 
 export function Hero() {
   return (
@@ -42,8 +42,8 @@ export function Hero() {
                 <span className="flex-1 bg-[#B91C1C]" />
                 <span className="flex-1 bg-[#006B3F]" />
               </div>
-              <LiveBlock className="text-[10px] sm:text-xs font-medium tracking-[0.2em] sm:tracking-[0.25em] uppercase text-white/60" variant="light">
-                Nairobi, Kenya · Since 2008
+              <LiveBlock className="type-label uppercase tracking-[0.2em] text-white/60" variant="neutral">
+                Nairobi, Kenya • Since 2008
               </LiveBlock>
             </motion.div>
 
@@ -51,28 +51,19 @@ export function Hero() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.08] tracking-tight mb-4 sm:mb-6">
-              <LiveLine className="text-[#B91C1C]" variant="light">
-                Global reach.
-              </LiveLine>
+              className="font-bold text-white text-[2rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-7xl tracking-tighter leading-[1.02] mb-4 sm:mb-6 max-w-xl">
+              Global reach.
               <br />
-              <LiveLine className="text-white" variant="light">
-                Local trust.
-              </LiveLine>
-              <br />
-              <LiveLine className="text-white/95" variant="light">
-                Instant exchange.
-              </LiveLine>
+              Local trust.
             </motion.h1>
 
-            <motion.div
+            <motion.p
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: 'easeOut', delay: 0.25 }}>
-              <LiveBlock className="text-base sm:text-lg md:text-xl text-white/65 font-light leading-relaxed mb-6 sm:mb-10 max-w-lg" variant="light" inline={false}>
-                Kenya's trusted CBK-licensed forex bureau and remittance partner since 2008. Competitive rates, instant M-Pesa transfers, and 7 branches across Nairobi.
-              </LiveBlock>
-            </motion.div>
+              transition={{ duration: 0.7, ease: 'easeOut', delay: 0.25 }}
+              className="type-lead-light mb-6 sm:mb-10 max-w-lg">
+              Moving the Kenyan shilling across continents — and bringing the world's currencies home — with care, since 2008.
+            </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 24 }}
