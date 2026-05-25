@@ -1,19 +1,34 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Zap } from 'lucide-react';
 import { HeroLockRateCard } from './HeroLockRateCard';
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return isDesktop;
+}
+
 export function Hero() {
+  const isDesktop = useIsDesktop();
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
   });
 
-  // Scroll parallax transforms
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.08, 1.25]);
+  // Scroll parallax — desktop only (mobile uses static fill to avoid edge gaps)
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.12]);
 
   // Interactive mouse 3D parallax
   const mouseX = useMotionValue(0);
@@ -36,8 +51,11 @@ export function Hero() {
   const contentTranslateX = useTransform(springX, [-0.5, 0.5], [-8, 8]);
   const contentTranslateY = useTransform(springY, [-0.5, 0.5], [-8, 8]);
 
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+  const secondaryOverlayOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!sectionRef.current) return;
+    if (!isDesktop || !sectionRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -53,56 +71,66 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={isDesktop ? handleMouseMove : undefined}
+      onMouseLeave={isDesktop ? handleMouseLeave : undefined}
       className="hero-viewport relative w-full overflow-hidden flex flex-col justify-center"
-      style={{ perspective: 1200 }}
+      style={isDesktop ? { perspective: 1200 } : undefined}
     >
-      {/* 3D parallax background */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <motion.div
-          className="absolute inset-0 w-full h-full"
-          style={{ y: bgY, scale: bgScale }}
-        >
-          <motion.img
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {isDesktop ? (
+          <motion.div
+            className="absolute inset-0 w-full h-full"
+            style={{ y: bgY, scale: bgScale }}
+          >
+            <motion.img
+              src="/12419.jpg"
+              alt=""
+              className="hero-bg-image hero-bg-image--desktop absolute object-cover object-center"
+              style={{ x: bgTranslateX, y: bgTranslateY }}
+            />
+          </motion.div>
+        ) : (
+          <img
             src="/12419.jpg"
             alt=""
-            className="absolute -inset-[10%] w-[120%] h-[120%] object-cover object-center"
-            style={{ x: bgTranslateX, y: bgTranslateY }}
+            className="hero-bg-image hero-bg-image--mobile absolute object-cover"
           />
-        </motion.div>
+        )}
 
-        {/* Dynamic overlay that darkens on scroll — more transparent for stunning 3D background visibility */}
+        {/* Overlays — stronger on mobile for legibility across full width */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-white/[0.80] via-white/[0.55] to-white/[0.15] lg:to-white/10"
-          style={{ opacity: useTransform(scrollYProgress, [0, 1], [1, 0.6]) }}
+          className="absolute inset-0 bg-gradient-to-b from-white/92 via-white/78 to-white/90 lg:bg-gradient-to-r lg:from-white/[0.80] lg:via-white/[0.55] lg:to-white/10"
+          style={isDesktop ? { opacity: overlayOpacity } : undefined}
         />
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/50"
-          style={{ opacity: useTransform(scrollYProgress, [0, 1], [1, 0.5]) }}
-        />
+        {isDesktop && (
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/50"
+            style={{ opacity: secondaryOverlayOpacity }}
+          />
+        )}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 hidden lg:block"
           style={{
             background: `radial-gradient(ellipse 70% 60% at 50% 40%, rgba(122, 18, 32, 0.08) 0%, transparent 65%)`,
           }}
         />
 
-        {/* Floating parallax particles */}
+        {/* Floating parallax particles — desktop only */}
         <motion.div
-          className="absolute w-3.5 h-3.5 rounded-full bg-[#7A1220]/25 blur-[1px]"
+          className="hidden lg:block absolute w-3.5 h-3.5 rounded-full bg-[#7A1220]/25 blur-[1px]"
           style={{ top: '25%', right: '18%', y: useTransform(springY, [-0.5, 0.5], [-30, 30]) }}
           animate={{ x: [0, 20, -15, 0], opacity: [0.4, 0.8, 0.5, 0.4] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute w-2.5 h-2.5 rounded-full bg-[#D4A24C]/45 blur-[1px]"
+          className="hidden lg:block absolute w-2.5 h-2.5 rounded-full bg-[#D4A24C]/45 blur-[1px]"
           style={{ top: '45%', right: '32%', y: useTransform(springY, [-0.5, 0.5], [-20, 20]) }}
           animate={{ x: [0, -25, 15, 0], opacity: [0.5, 0.9, 0.4, 0.5] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute w-5 h-5 rounded-full bg-[#006B3F]/20 blur-[2px]"
+          className="hidden lg:block absolute w-5 h-5 rounded-full bg-[#006B3F]/20 blur-[2px]"
           style={{ top: '65%', right: '12%', y: useTransform(springY, [-0.5, 0.5], [-40, 40]) }}
           animate={{ x: [0, 15, -20, 0], opacity: [0.3, 0.6, 0.4, 0.3] }}
           transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
@@ -110,7 +138,7 @@ export function Hero() {
 
         {/* Subtle shimmer line */}
         <motion.div
-          className="absolute top-0 left-0 right-0 h-px"
+          className="hidden lg:block absolute top-0 left-0 right-0 h-px"
           style={{
             background: 'linear-gradient(90deg, transparent, rgba(122,18,32,0.4), transparent)',
           }}
@@ -120,10 +148,10 @@ export function Hero() {
       </div>
 
       <div className="hero-viewport-inner relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 w-full flex flex-col justify-center">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-28">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-20 items-center py-10 sm:py-14 lg:py-28">
           <motion.div
-            className="text-left order-2 lg:order-1 relative z-10"
-            style={{ x: contentTranslateX, y: contentTranslateY }}
+            className="text-left order-2 lg:order-1 relative z-10 w-full min-w-0"
+            style={isDesktop ? { x: contentTranslateX, y: contentTranslateY } : undefined}
           >
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
@@ -199,16 +227,23 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            style={{
-              rotateX: cardRotateX,
-              rotateY: cardRotateY,
-              x: cardTranslateX,
-              y: cardTranslateY,
-              transformStyle: 'preserve-3d',
-            }}
-            className="order-1 lg:order-2 w-full flex items-center justify-center lg:justify-end shrink-0"
+            style={
+              isDesktop
+                ? {
+                    rotateX: cardRotateX,
+                    rotateY: cardRotateY,
+                    x: cardTranslateX,
+                    y: cardTranslateY,
+                    transformStyle: 'preserve-3d',
+                  }
+                : undefined
+            }
+            className="order-1 lg:order-2 w-full min-w-0 flex items-center justify-center lg:justify-end shrink-0 px-1 sm:px-0"
           >
-            <div style={{ transform: 'translateZ(50px)' }} className="w-full">
+            <div
+              style={isDesktop ? { transform: 'translateZ(50px)' } : undefined}
+              className="w-full max-w-[min(100%,360px)] sm:max-w-[360px] mx-auto lg:mx-0 lg:ml-auto"
+            >
               <HeroLockRateCard />
             </div>
           </motion.div>
