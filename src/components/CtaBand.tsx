@@ -63,13 +63,13 @@ export function CtaBand() {
             }}>
             
             <span className="inline-block w-10 h-px bg-[#B91C1C] mb-6" />
-            <LiveBlock className="text-xs font-medium tracking-[0.2em] uppercase text-white/60 mb-6" variant="light">
+            <LiveBlock className="type-label uppercase tracking-[0.2em] text-white/60 mb-6" variant="neutral">
               Enterprise & Corporate
             </LiveBlock>
-            <h2 className="text-4xl md:text-5xl font-light leading-[1.1] mb-6">
-              <LiveWords text="Move money with confidence." variant="light" />
+            <h2 className="font-bold text-4xl md:text-5xl text-white tracking-tighter leading-[1.02] mb-6">
+              <LiveWords text="Move money with confidence." variant="neutral" />
             </h2>
-            <LiveBlock className="text-lg text-white/70 font-light leading-relaxed mb-10 max-w-md" variant="light" inline={false}>
+            <LiveBlock className="type-lead-light mb-10 max-w-md" variant="neutral" inline={false}>
               Whether you're managing corporate treasury, processing payroll
               across borders, or sending money home — our team is ready to build
               a solution around you.
