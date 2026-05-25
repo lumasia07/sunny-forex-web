@@ -152,7 +152,7 @@ export function PageHero({
             ease: [0.16, 1, 0.3, 1],
             delay: 0.15
           }}
-          className="text-4xl md:text-6xl font-light text-white leading-[1.05] tracking-tight mb-6 max-w-3xl drop-shadow">
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.02] tracking-tighter mb-6 max-w-3xl">
           
           {title}
         </motion.h1>
@@ -171,7 +171,7 @@ export function PageHero({
             ease: 'easeOut',
             delay: 0.3
           }}
-          className="text-lg text-gray-200 font-light max-w-xl leading-relaxed">
+          className="type-lead-light max-w-xl">
           
           {description}
         </motion.p>
