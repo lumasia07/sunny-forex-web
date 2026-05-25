@@ -1,128 +1,204 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { ContactLink } from './ContactLink';
+
+const pillLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'Forex', href: '/forex' },
+  { name: 'Remittance', href: '/remittance' },
+  { name: 'Branches', href: '/branches' },
+  { name: 'Corporate', href: '/corporate' },
+  { name: 'Blog', href: '/blog' },
+];
+
+const menuLinks = pillLinks;
+
+function MenuIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      aria-hidden="true">
+      <line x1="3" y1="4" x2="15" y2="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <line x1="5.5" y1="9" x2="12.5" y2="9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <line x1="3" y1="14" x2="15" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      aria-hidden="true">
+      <line x1="4.5" y1="4.5" x2="13" y2="13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <line x1="14.5" y1="3.5" x2="3.5" y2="14.5" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const lastScrollY = useRef(0);
   const location = useLocation();
   const isHome = location.pathname === '/';
+
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 40);
+
+      if (currentScrollY < 80) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY.current + 8) {
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY.current - 8) {
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  // On non-home pages we don't have a transparent dark hero behind nav, so default to scrolled style
-  const useDark = !isHome || isScrolled;
-  const navLinks = [
-  {
-    name: 'Home',
-    href: '/'
-  },
-  {
-    name: 'Forex',
-    href: '/forex'
-  },
-  {
-    name: 'Remittance',
-    href: '/remittance'
-  },
-  {
-    name: 'Branches',
-    href: '/branches'
-  },
-  {
-    name: 'Corporate',
-    href: '/corporate'
-  },
-  {
-    name: 'Blog',
-    href: '/blog'
-  }];
+
+  useEffect(() => {
+    setMenuOpen(false);
+    setIsVisible(true);
+    lastScrollY.current = 0;
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
+  const overLight = !isHome || isScrolled;
+
+  const linkClass = (isActive: boolean) =>
+    overLight
+      ? isActive
+        ? 'text-[#7A1220] bg-white/80'
+        : 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-white/50'
+      : isActive
+        ? 'text-white bg-[#7A1220]/40'
+        : 'text-white/75 hover:text-white hover:bg-[#7A1220]/20';
+
+  const ctaClass =
+    'px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 whitespace-nowrap bg-[#7A1220] text-white hover:bg-[#5C0D18]';
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${useDark ? 'bg-white/90 backdrop-blur-md border-b border-gray-200/60 py-3 text-[#0E0E0E] shadow-sm' : 'bg-gradient-to-b from-black/50 to-transparent py-5 text-white'}`}>
-      
-      {/* Kenyan flag accent stripe */}
-      <div className="absolute top-0 left-0 right-0 flex h-[3px]">
-        <span className="flex-1 bg-[#0E0E0E]" />
-        <span className="flex-1 bg-[#B91C1C]" />
-        <span className="flex-1 bg-[#006B3F]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img
-            src="/logo-sunny.png"
-            alt="Sunny Forex"
-            className={`h-14 md:h-20 w-auto transition-all duration-300 ${useDark ? '' : 'brightness-0 invert'}`} />
-          
-        </Link>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => {
-            const isActive = location.pathname === link.href;
-            return (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`relative text-sm font-medium transition-colors hover:text-[#7A1220] group ${isActive ? 'text-[#7A1220]' : ''}`}>
-                
-                {link.name}
-                <span
-                  className={`absolute -bottom-1.5 left-0 right-0 h-px bg-[#7A1220] origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
-                
-              </Link>);
-
-          })}
-        </div>
-
-        {/* CTA */}
-        <div className="hidden md:block">
-          <a
-            href="#contact"
-            className={`text-sm font-medium px-6 py-2.5 rounded-full transition-all border ${useDark ? 'bg-[#7A1220] text-white border-[#7A1220] hover:bg-[#5C0D18] hover:border-[#5C0D18]' : 'bg-white text-[#0E0E0E] border-white hover:bg-white/90'}`}>
-            
-            Contact Us
-          </a>
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu">
-          
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen &&
-      <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 p-6 shadow-lg flex flex-col gap-4 text-[#0E0E0E]">
-          {navLinks.map((link) =>
-        <Link
-          key={link.name}
-          to={link.href}
-          className="text-lg font-medium hover:text-[#7A1220] transition-colors"
-          onClick={() => setMobileMenuOpen(false)}>
-          
-              {link.name}
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-10 pt-4 md:pt-5 pointer-events-none transition-transform duration-300 ease-in-out ${
+          isVisible || menuOpen ? 'translate-y-0' : '-translate-y-full'
+        }`}>
+        <div className="max-w-7xl mx-auto pointer-events-auto">
+          <div
+            className={`flex items-center justify-between gap-2 pl-2.5 pr-1.5 py-1.5 rounded-full border transition-all duration-500 glass-pill ${
+              overLight ? 'glass-pill-light' : 'glass-pill-dark'
+            }`}>
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 flex-1 lg:flex-none group" aria-label="Sunny Forex home">
+              <img
+                src="/logo-mark.png"
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain shrink-0 transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+              <span
+                className={`font-montserrat text-[11px] min-[380px]:text-xs sm:text-sm md:text-base font-bold tracking-wide truncate transition-colors duration-300 ${
+                  overLight ? 'text-[#7A1220]' : 'text-white'
+                }`}>
+                Sunny Forex
+              </span>
             </Link>
-        )}
-          <a
-          href="#contact"
-          className="mt-4 text-center text-sm font-medium px-6 py-3 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors"
-          onClick={() => setMobileMenuOpen(false)}>
-          
-            Contact Us
-          </a>
-        </div>
-      }
-    </nav>);
 
+            {/* Nav links — desktop */}
+            <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+              {pillLinks.map((link) => {
+                const isActive = location.pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${linkClass(isActive)}`}>
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* CTAs + mobile menu */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <ContactLink
+                className={`${ctaClass} px-2.5 sm:px-3.5 ${!overLight ? 'shadow-[0_0_24px_rgba(122,18,32,0.45)]' : ''}`}
+                onNavigate={() => setMenuOpen(false)}>
+                <span className="sm:hidden">Contact</span>
+                <span className="hidden sm:inline">Contact Us</span>
+              </ContactLink>
+
+              <button
+                type="button"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={menuOpen}
+                className={`lg:hidden flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ${
+                  overLight
+                    ? 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-white/50'
+                    : 'text-white/75 hover:text-white hover:bg-[#7A1220]/20'
+                }`}>
+                {menuOpen ? <CloseIcon /> : <MenuIcon />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile menu overlay */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div
+            className="absolute inset-0 bg-[#0E0E0E]/60 backdrop-blur-sm"
+            onClick={() => setMenuOpen(false)}
+          />
+          <div className="absolute top-20 left-4 right-4 rounded-3xl border border-white/15 bg-[#0E0E0E]/90 backdrop-blur-xl p-6 shadow-2xl animate-fade-in">
+            <div className="flex flex-col gap-1">
+              {menuLinks.map((link) => {
+                const isActive = location.pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className={`px-4 py-3.5 text-lg font-medium rounded-xl transition-colors ${
+                      isActive ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+                    }`}>
+                    {link.name}
+                  </Link>
+                );
+              })}
+              <ContactLink
+                className="px-4 py-3.5 text-lg font-medium rounded-xl text-white bg-[#7A1220] hover:bg-[#5C0D18] transition-colors text-center"
+                onNavigate={() => setMenuOpen(false)}>
+                Contact Us
+              </ContactLink>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
