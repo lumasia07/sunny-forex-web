@@ -156,10 +156,10 @@ export function RatesStrip() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div className="flex flex-col">
           <span className="inline-block w-10 h-px bg-[#7A1220] mb-4" />
-          <h2 className="text-2xl md:text-3xl font-light text-[#0E0E0E] leading-tight">
+          <h2 className="type-headline text-2xl md:text-3xl lg:text-4xl">
             <LiveWords text="Today's rates against KES" />
           </h2>
-          <LiveBlock className="text-sm text-gray-500 font-light mt-1" variant="dark" inline={false}>
+          <LiveBlock className="type-lead text-sm md:text-base mt-1" variant="neutral" inline={false}>
             Live rates updated throughout the trading day · Indicative only
           </LiveBlock>
         </div>
