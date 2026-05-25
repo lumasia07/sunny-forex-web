@@ -59,23 +59,17 @@ function AppContent() {
 
 export function App() {
   const [showSplash, setShowSplash] = useState(shouldShowSplash);
-  const [appReady, setAppReady] = useState(!shouldShowSplash());
 
   const handleSplashComplete = useCallback(() => {
     markSplashSeen();
     setShowSplash(false);
-    setAppReady(true);
   }, []);
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
+      <AppContent />
       {showSplash && <AppSplash onComplete={handleSplashComplete} />}
-      {appReady && (
-        <>
-          <ScrollToTop />
-          <AppContent />
-        </>
-      )}
     </BrowserRouter>
   );
 }
