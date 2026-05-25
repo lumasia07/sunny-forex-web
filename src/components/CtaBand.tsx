@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
+import { LiveBlock, LiveWords } from './LiveText';
 const contactMethods = [
 {
   icon: Phone,
@@ -61,17 +63,17 @@ export function CtaBand() {
             }}>
             
             <span className="inline-block w-10 h-px bg-[#B91C1C] mb-6" />
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/60 mb-6">
+            <LiveBlock className="text-xs font-medium tracking-[0.2em] uppercase text-white/60 mb-6" variant="light">
               Enterprise & Corporate
-            </p>
+            </LiveBlock>
             <h2 className="text-4xl md:text-5xl font-light leading-[1.1] mb-6">
-              Move money with confidence.
+              <LiveWords text="Move money with confidence." variant="light" />
             </h2>
-            <p className="text-lg text-white/70 font-light leading-relaxed mb-10 max-w-md">
+            <LiveBlock className="text-lg text-white/70 font-light leading-relaxed mb-10 max-w-md" variant="light" inline={false}>
               Whether you're managing corporate treasury, processing payroll
               across borders, or sending money home — our team is ready to build
               a solution around you.
-            </p>
+            </LiveBlock>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a
@@ -81,12 +83,11 @@ export function CtaBand() {
                 Contact Us
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
-              <a
-                href="#"
+              <Link
+                to="/corporate"
                 className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-transparent border border-white/30 text-white font-medium hover:bg-white/5 hover:border-white/60 transition-colors">
-                
                 Schedule a meeting
-              </a>
+              </Link>
             </div>
           </motion.div>
 
@@ -122,12 +123,12 @@ export function CtaBand() {
                 
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <span className="text-xs font-medium tracking-wider uppercase text-white/50 mb-1.5">
+                  <LiveBlock className="text-xs font-medium tracking-wider uppercase text-white/50 mb-1.5" variant="light">
                     {method.label}
-                  </span>
-                  <span className="text-lg font-light text-white group-hover:text-white transition-colors">
+                  </LiveBlock>
+                  <LiveBlock className="text-lg font-light text-white" variant="light">
                     {method.value}
-                  </span>
+                  </LiveBlock>
                 </div>
                 <ArrowRight className="w-4 h-4 text-white/40 mt-3 group-hover:text-[#B91C1C] group-hover:translate-x-1 transition-all flex-shrink-0" />
               </a>
@@ -135,9 +136,9 @@ export function CtaBand() {
 
             <div className="mt-8 pt-6 flex items-center gap-3 text-xs text-white/50">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>
+              <LiveBlock variant="light">
                 Mon – Fri, 8:00 AM – 6:00 PM EAT · Sat, 9:00 AM – 2:00 PM
-              </span>
+              </LiveBlock>
             </div>
           </motion.div>
         </div>
