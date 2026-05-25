@@ -26,9 +26,9 @@ export function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  // Scroll parallax — desktop only (mobile uses static fill to avoid edge gaps)
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.12]);
+  // Scroll parallax — subtle; overscan in CSS prevents edge gaps
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.08, 1.14]);
 
   // Interactive mouse 3D parallax
   const mouseX = useMotionValue(0);
@@ -37,9 +37,9 @@ export function Hero() {
   const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
   const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
 
-  // Map to background drift (larger bounds to prevent showing borders)
-  const bgTranslateX = useTransform(springX, [-0.5, 0.5], ['-3.5%', '3.5%']);
-  const bgTranslateY = useTransform(springY, [-0.5, 0.5], ['-3.5%', '3.5%']);
+  // Map to background drift — keep tight so edges never show on ultrawide
+  const bgTranslateX = useTransform(springX, [-0.5, 0.5], ['-1.5%', '1.5%']);
+  const bgTranslateY = useTransform(springY, [-0.5, 0.5], ['-1.5%', '1.5%']);
 
   // Map to rate card 3D tilt & translation
   const cardRotateX = useTransform(springY, [-0.5, 0.5], [10, -10]);
@@ -51,7 +51,6 @@ export function Hero() {
   const contentTranslateX = useTransform(springX, [-0.5, 0.5], [-8, 8]);
   const contentTranslateY = useTransform(springY, [-0.5, 0.5], [-8, 8]);
 
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
   const secondaryOverlayOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -76,43 +75,42 @@ export function Hero() {
       className="hero-viewport relative w-full overflow-hidden flex flex-col justify-center"
       style={isDesktop ? { perspective: 1200 } : undefined}
     >
-      {/* Background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        {isDesktop ? (
+      {/* Background — white base + overscanned image (mobile & desktop) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden bg-white" aria-hidden="true">
+        <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            className="absolute inset-0 w-full h-full"
-            style={{ y: bgY, scale: bgScale }}
+            className="hero-bg-stage shrink-0"
+            style={
+              isDesktop
+                ? {
+                    y: bgY,
+                    scale: bgScale,
+                    x: bgTranslateX,
+                  }
+                : undefined
+            }
           >
             <motion.img
               src="/12419.jpg"
               alt=""
-              className="hero-bg-image hero-bg-image--desktop absolute object-cover object-center"
-              style={{ x: bgTranslateX, y: bgTranslateY }}
+              className="hero-bg-image"
+              style={isDesktop ? { y: bgTranslateY } : undefined}
             />
           </motion.div>
-        ) : (
-          <img
-            src="/12419.jpg"
-            alt=""
-            className="hero-bg-image hero-bg-image--mobile absolute object-cover"
-          />
-        )}
+        </div>
 
-        {/* Overlays — stronger on mobile for legibility across full width */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-white/92 via-white/78 to-white/90 lg:bg-gradient-to-r lg:from-white/[0.80] lg:via-white/[0.55] lg:to-white/10"
-          style={isDesktop ? { opacity: overlayOpacity } : undefined}
-        />
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/88 via-white/72 to-white/85 lg:from-white/82 lg:via-white/58 lg:to-white/75" />
         {isDesktop && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/50"
+            className="absolute inset-0 bg-gradient-to-r from-white/50 via-transparent to-white/35"
             style={{ opacity: secondaryOverlayOpacity }}
           />
         )}
         <div
-          className="absolute inset-0 hidden lg:block"
+          className="absolute inset-0 opacity-70 lg:opacity-100"
           style={{
-            background: `radial-gradient(ellipse 70% 60% at 50% 40%, rgba(122, 18, 32, 0.08) 0%, transparent 65%)`,
+            background: `radial-gradient(ellipse 80% 70% at 50% 45%, rgba(122, 18, 32, 0.06) 0%, transparent 70%)`,
           }}
         />
 
