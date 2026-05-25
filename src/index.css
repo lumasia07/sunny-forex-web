@@ -56,6 +56,12 @@
   .type-label {
     @apply text-xs font-medium tracking-wide text-[#0E0E0E]/60;
   }
+
+  .page-hero h1,
+  .page-hero h2,
+  .page-hero h3 {
+    @apply text-white;
+  }
 }
 
 /* Gold standard responsive design: Scale baseline typography and layout metrics proportionally on high-resolution, ultra-wide and 4K displays */
