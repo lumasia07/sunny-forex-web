@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
+import { CtaBand } from '../components/CtaBand';
 import { ArrowRight, Clock, Calendar, Tag, X, ChevronRight, Lock, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -228,7 +229,7 @@ export function Blog() {
                 <span>·</span>
                 <span>{posts[0].readTime}</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] leading-tight mb-6 group-hover:text-[#7A1220] transition-colors">
+              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl leading-tight mb-6 group-hover:text-[#7A1220] transition-colors">
                 {posts[0].title}
               </h2>
               <p className="text-gray-500 font-light leading-relaxed mb-8 max-w-lg">
@@ -338,7 +339,7 @@ export function Blog() {
 
               {/* Scrollable Content */}
               <div className="flex-grow overflow-y-auto p-8 md:p-12 space-y-6">
-                <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] leading-tight">
+                <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl leading-tight">
                   {selectedPost.title}
                 </h2>
 
@@ -388,6 +389,8 @@ export function Blog() {
           </div>
         )}
       </AnimatePresence>
+
+      <CtaBand />
     </>
   );
 }
