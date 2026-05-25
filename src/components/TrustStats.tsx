@@ -174,10 +174,10 @@ export function TrustStats() {
               }}
               className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left" />
             
-            <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] leading-tight mb-6">
+            <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl leading-tight mb-6">
               <LiveWords text="A legacy of trust in every transaction." />
             </h2>
-            <LiveBlock className="text-lg text-gray-500 font-light leading-relaxed max-w-md mb-12" variant="dark" inline={false}>
+            <LiveBlock className="type-lead mb-12 max-w-md" variant="neutral" inline={false}>
               Since 2008, we've built our reputation on transparency,
               competitive rates, and unwavering reliability. Licensed by the
               Central Bank of Kenya, we ensure your money moves safely across
@@ -207,7 +207,7 @@ export function TrustStats() {
                 
                   <span className="block w-px bg-[#7A1220] self-stretch" />
                   <div className="flex flex-col">
-                    <LiveBlock className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-2 leading-none tabular-nums" variant="dark">
+                    <LiveBlock className="text-3xl md:text-4xl font-bold text-[#0E0E0E] mb-2 leading-none tabular-nums" variant="neutral">
                       {stat.numeric ? (
                         <AnimatedNumber value={stat.value as number} suffix={stat.suffix} />
                       ) : (
