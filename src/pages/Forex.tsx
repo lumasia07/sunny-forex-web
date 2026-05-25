@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { RatesStrip } from '../components/RatesStrip';
 import { CtaBand } from '../components/CtaBand';
+import { ContactLink } from '../components/ContactLink';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -84,10 +85,10 @@ export function Forex() {
           <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
                 Today's Live Board Rates
               </h2>
-              <p className="text-gray-500 font-light max-w-md">
+              <p className="type-lead max-w-md">
                 Licensed and regulated by the Central Bank of Kenya. Rates are guaranteed when locked in.
               </p>
             </div>
@@ -149,10 +150,10 @@ export function Forex() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="mb-16 max-w-2xl">
             <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-            <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+            <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
               Why exchange with Sunny Forex.
             </h2>
-            <p className="text-gray-500 font-light">
+            <p className="type-lead">
               The fundamentals that have kept us Kenya's trusted bureau for over 17 years.
             </p>
           </div>
@@ -187,10 +188,10 @@ export function Forex() {
         <div className="max-w-4xl mx-auto px-6 md:px-12">
           <div className="mb-16">
             <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-            <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+            <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
               Frequently asked.
             </h2>
-            <p className="text-gray-500 font-light">
+            <p className="type-lead">
               Quick answers to common questions about currency exchange.
             </p>
           </div>
@@ -219,13 +220,10 @@ export function Forex() {
           </div>
 
           <div className="mt-12 flex items-center justify-center">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#7A1220] hover:text-[#5C0D18] transition-colors group"
-            >
+            <ContactLink className="inline-flex items-center gap-2 text-sm font-medium text-[#7A1220] hover:text-[#5C0D18] transition-colors group">
               Have another question? Talk to us
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </ContactLink>
           </div>
         </div>
       </section>
