@@ -1,5 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useTransform,
+  animate,
+} from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { CtaBand } from '../components/CtaBand';
 import { Link } from 'react-router-dom';
@@ -75,6 +81,136 @@ const steps = [
   }
 ];
 
+const stats = [
+  { value: 50, suffix: '+', label: 'Active corridors' },
+  { value: 15, suffix: ' min', label: 'Average transfer time' },
+  { value: 1, prefix: 'KSh ', suffix: 'k', label: 'Minimum transfer' },
+  { value: 6, suffix: '', label: 'Global partners' },
+];
+
+function AnimatedStatValue({
+  value,
+  prefix = '',
+  suffix = '',
+}: {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, {
+    once: false,
+    margin: '-40px',
+    amount: 0.6,
+  });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.floor(v).toString());
+
+  useEffect(() => {
+    if (isInView) {
+      count.set(0);
+      const controls = animate(count, value, {
+        duration: 1.8,
+        ease: [0.16, 1, 0.3, 1],
+      });
+      return () => controls.stop();
+    }
+
+    count.set(0);
+  }, [isInView, value, count]);
+
+  return (
+    <span ref={ref} className="inline-flex items-baseline">
+      {prefix && <span>{prefix}</span>}
+      <motion.span>{rounded}</motion.span>
+      {suffix && <span>{suffix}</span>}
+    </span>
+  );
+}
+
+function RemittanceStepCard({
+  step,
+  index,
+}: {
+  step: (typeof steps)[number];
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.12 }}
+      whileHover={{ y: -4 }}
+      className="group relative h-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-200 bg-white shadow-sm hover:shadow-xl hover:border-[#7A1220]/40 transition-all duration-500"
+    >
+      <div className="absolute inset-0 bg-white" />
+      <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
+
+      <div className="relative z-10 flex flex-col p-6 sm:p-8 group-hover:[&_*]:text-white">
+        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#7A1220] group-hover:text-white/40 transition-colors duration-500 mb-4">
+          {step.n}
+        </span>
+        <h3 className="text-lg sm:text-xl font-semibold text-[#0E0E0E] group-hover:text-white mb-3 transition-colors duration-500">
+          {step.title}
+        </h3>
+        <p className="text-sm sm:text-base text-gray-500 group-hover:text-white/90 font-normal leading-relaxed transition-colors duration-500">
+          {step.body}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+function CorridorCard({
+  corridor,
+  index,
+}: {
+  corridor: (typeof corridors)[number];
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.06 }}
+      whileHover={{ y: -4 }}
+      className="h-full"
+    >
+      <Link
+        to={`/lock-rate?cur=${corridor.currency}`}
+        className="group relative flex h-full items-center gap-4 overflow-hidden rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-500 hover:border-[#7A1220]/40 hover:shadow-xl"
+      >
+        <div className="absolute inset-0 bg-white" />
+        <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
+
+        <span
+          className="relative z-10 text-2xl transition-transform duration-500 group-hover:scale-110"
+          role="img"
+          aria-label={corridor.country}
+        >
+          {corridor.flag}
+        </span>
+
+        <div className="relative z-10 flex flex-1 flex-col min-w-0">
+          <span className="text-sm font-medium text-[#0E0E0E] group-hover:text-white transition-colors duration-500 truncate">
+            {corridor.country}
+          </span>
+          <span className="text-xs text-gray-400 group-hover:text-white/70 transition-colors duration-500">
+            {corridor.currency}
+          </span>
+        </div>
+
+        <div className="relative z-10 flex items-center gap-1.5 text-xs font-medium text-emerald-600 group-hover:text-white/90 transition-colors duration-500 shrink-0">
+          <Clock className="w-3 h-3" />
+          {corridor.time}
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
 export function Remittance() {
   return (
     <>
@@ -93,20 +229,19 @@ export function Remittance() {
       {/* Stats band */}
       <section className="bg-white border-b border-gray-100 py-10">
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { v: '50+', l: 'Active corridors' },
-            { v: '15 min', l: 'Average transfer time' },
-            { v: 'KSh 1k', l: 'Minimum transfer' },
-            { v: '6', l: 'Global partners' }
-          ].map((s) => (
-            <div key={s.l} className="flex gap-4">
+          {stats.map((s) => (
+            <div key={s.label} className="flex gap-4">
               <span className="block w-px bg-[#7A1220] self-stretch" />
               <div className="flex flex-col">
                 <span className="text-3xl font-light text-[#0E0E0E] leading-none mb-2">
-                  {s.v}
+                  <AnimatedStatValue
+                    value={s.value}
+                    prefix={s.prefix}
+                    suffix={s.suffix}
+                  />
                 </span>
                 <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wider">
-                  {s.l}
+                  {s.label}
                 </span>
               </div>
             </div>
@@ -127,26 +262,9 @@ export function Remittance() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {steps.map((step, i) => (
-              <motion.div
-                key={step.n}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
-                className="flex flex-col bg-white p-6 rounded-2xl border border-gray-100/50 shadow-sm"
-              >
-                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7A1220] mb-4">
-                  {step.n}
-                </span>
-                <h3 className="text-lg font-medium text-[#0E0E0E] mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-gray-400 font-light leading-relaxed text-sm">
-                  {step.body}
-                </p>
-              </motion.div>
+              <RemittanceStepCard key={step.n} step={step} index={i} />
             ))}
           </div>
         </div>
@@ -176,21 +294,7 @@ export function Remittance() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {corridors.map((c, i) => (
-              <Link
-                to={`/lock-rate?cur=${c.currency}`}
-                key={c.country}
-                className="flex items-center gap-4 px-6 py-5 rounded-2xl border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-md transition-all bg-white cursor-pointer"
-              >
-                <span className="text-2xl" role="img" aria-label={c.country}>{c.flag}</span>
-                <div className="flex-1 flex flex-col">
-                  <span className="text-sm font-medium text-[#0E0E0E]">{c.country}</span>
-                  <span className="text-xs text-gray-400">{c.currency}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
-                  <Clock className="w-3 h-3" />
-                  {c.time}
-                </div>
-              </Link>
+              <CorridorCard key={c.country} corridor={c} index={i} />
             ))}
           </div>
         </div>
