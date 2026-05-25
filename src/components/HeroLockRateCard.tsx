@@ -100,10 +100,14 @@ export function HeroLockRateCard() {
 
           <Link
             to={`/lock-rate?cur=${sendCurrency}`}
-            className="w-full flex justify-center items-center gap-1.5 py-2.5 rounded-xl bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-bold text-xs shadow-md shadow-[#7A1220]/25">
-            <Lock className="w-3.5 h-3.5" />
-            Lock-In This Rate
-            <ArrowRight className="w-3.5 h-3.5" />
+            className="w-full flex justify-between items-center gap-3 pl-6 pr-1.5 py-1.5 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-all font-bold text-xs uppercase tracking-wide shadow-md shadow-[#7A1220]/25 group">
+            <span className="flex items-center gap-2">
+              <Lock className="w-3.5 h-3.5 text-white/70" />
+              Lock-In This Rate
+            </span>
+            <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors shrink-0">
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </span>
           </Link>
         </div>
       </div>

@@ -115,7 +115,7 @@ function ServiceCard({
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
           <LiveBlock variant="neutral">Learn more</LiveBlock>
           <span className="w-8 h-8 rounded-full bg-[#7A1220]/10 group-hover:bg-white/20 flex items-center justify-center transition-colors duration-500">
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </span>
         </motion.span>
       </div>
