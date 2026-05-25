@@ -95,10 +95,10 @@ export function Corporate() {
           <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
                 Solutions built for scale.
               </h2>
-              <p className="text-gray-500 font-light max-w-md">
+              <p className="type-lead max-w-md">
                 Whether you're a 10-person firm or a multinational with offices across East Africa, our enterprise team builds around you.
               </p>
             </div>
@@ -154,7 +154,7 @@ export function Corporate() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="inline-block w-10 h-px bg-[#B91C1C] mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light leading-tight mb-6">
+              <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-white tracking-tight leading-[1.08] mb-6">
                 Trusted by businesses across East Africa.
               </h2>
               <p className="text-lg text-white/70 font-light leading-relaxed mb-8">
