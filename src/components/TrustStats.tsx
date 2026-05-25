@@ -4,6 +4,7 @@ import {
   useInView,
   useMotionValue,
   useTransform,
+  useScroll,
   animate } from
 'framer-motion';
 import { LiveBlock, LiveWords } from './LiveText';
@@ -64,31 +65,24 @@ const stats = [
 }];
 
 export function TrustStats() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], [80, -40]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 1.02]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [50, -20]);
+
   return (
-    <section className="py-24 md:py-32 bg-white">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left: Image */}
+          {/* Left: Image with parallax */}
           <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.95,
-              x: -30
-            }}
-            whileInView={{
-              opacity: 1,
-              scale: 1,
-              x: 0
-            }}
-            viewport={{
-              once: true,
-              margin: '-80px'
-            }}
-            transition={{
-              duration: 1,
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-sm order-2 lg:order-1">
+            style={{ y: imageY, scale: imageScale }}
+            className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl order-2 lg:order-1">
             
             <motion.img
               initial={{
@@ -104,11 +98,16 @@ export function TrustStats() {
                 duration: 2.5,
                 ease: 'easeOut'
               }}
-              src="/pexels-jakubzerdzicki-30572289.jpg"
+              src="/pexels-kelvin-kibe-3073372-26898331.jpg"
               alt="Forex chart analyzing currency movements"
               className="w-full h-full object-cover" />
             
             <div className="absolute inset-0 bg-gradient-to-t from-[#7A1220]/20 via-transparent to-transparent" />
+            
+            {/* Decorative corner accent */}
+            <div className="absolute top-4 left-4 w-16 h-16 border-l-2 border-t-2 border-white/30 rounded-tl-xl" />
+            <div className="absolute bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-[#D4A24C]/40 rounded-br-xl" />
+            
             <motion.div
               initial={{
                 opacity: 0,
@@ -140,22 +139,7 @@ export function TrustStats() {
 
           {/* Right: Copy + Stats */}
           <motion.div
-            initial={{
-              opacity: 0,
-              x: 30
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0
-            }}
-            viewport={{
-              once: true,
-              margin: '-80px'
-            }}
-            transition={{
-              duration: 0.8,
-              ease: [0.16, 1, 0.3, 1]
-            }}
+            style={{ y: contentY }}
             className="order-1 lg:order-2">
             
             <motion.span
@@ -203,7 +187,8 @@ export function TrustStats() {
                   duration: 0.6,
                   delay: 0.4 + index * 0.15
                 }}
-                className="flex gap-4">
+                whileHover={{ scale: 1.05 }}
+                className="flex gap-4 cursor-default">
                 
                   <span className="block w-px bg-[#7A1220] self-stretch" />
                   <div className="flex flex-col">

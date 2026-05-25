@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, RefreshCcw, Send, Smartphone } from 'lucide-react';
 import { LiveBlock, LiveWords } from './LiveText';
@@ -11,6 +11,7 @@ const services = [
     description:
       'Competitive rates for major global currencies. Instant exchange with no hidden fees at any of our branches.',
     href: '/forex',
+    accent: '#7A1220',
   },
   {
     icon: Send,
@@ -18,6 +19,7 @@ const services = [
     description:
       'Send and receive money globally through our trusted international partners. Fast, secure, and reliable.',
     href: '/remittance',
+    accent: '#006B3F',
   },
   {
     icon: Smartphone,
@@ -25,6 +27,7 @@ const services = [
     description:
       'Seamless integration with mobile money. Convert your currency directly to or from your M-Pesa wallet instantly.',
     href: '/remittance',
+    accent: '#D4A24C',
   },
 ];
 
@@ -39,12 +42,13 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 60, scale: 0.95 },
   show: {
     opacity: 1,
     y: 0,
+    scale: 1,
     transition: {
-      duration: 0.8,
+      duration: 0.9,
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
@@ -60,8 +64,10 @@ function AnimatedTitle({ title }: { title: string }) {
 
 function ServiceCard({
   service,
+  index,
 }: {
   service: (typeof services)[number];
+  index: number;
 }) {
   const Icon = service.icon;
 
@@ -69,6 +75,14 @@ function ServiceCard({
     <>
       <div className="absolute inset-0 bg-white" />
       <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
+      
+      {/* Decorative accent corner */}
+      <motion.div
+        className="absolute top-0 right-0 w-24 h-24 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(circle at 100% 0%, ${service.accent}, transparent 70%)`,
+        }}
+      />
 
       <div className="relative z-10 flex flex-col min-h-[280px] sm:min-h-[300px] h-full p-5 sm:p-6 group-hover:[&_*]:text-white">
         <motion.div
@@ -81,6 +95,11 @@ function ServiceCard({
           <Icon className="w-4 h-4 text-[#7A1220] group-hover:text-white transition-colors duration-500" strokeWidth={1.75} />
         </motion.div>
 
+        {/* Service number */}
+        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-300 group-hover:text-white/30 transition-colors duration-500 mb-2">
+          0{index + 1}
+        </span>
+
         <AnimatedTitle title={service.title} />
 
         <LiveBlock
@@ -91,13 +110,13 @@ function ServiceCard({
         </LiveBlock>
 
         <motion.span
-          className="inline-flex items-center text-sm font-semibold text-[#7A1220] group-hover:text-[#FAFAF7] w-fit mt-auto cursor-default transition-colors duration-500"
+          className="inline-flex items-center gap-2 text-sm font-bold text-[#7A1220] group-hover:text-[#FAFAF7] w-fit mt-auto cursor-default transition-colors duration-500"
           whileHover={{ x: 8, scale: 1.05 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
           <LiveBlock variant="neutral">Learn more</LiveBlock>
-          <motion.span whileHover={{ x: 6 }} transition={{ type: 'spring', stiffness: 500, damping: 15 }}>
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </motion.span>
+          <span className="w-8 h-8 rounded-full bg-[#7A1220]/10 group-hover:bg-white/20 flex items-center justify-center transition-colors duration-500">
+            <ArrowRight className="w-4 h-4" />
+          </span>
         </motion.span>
       </div>
     </>
@@ -109,7 +128,7 @@ function ServiceCard({
   return (
     <motion.div
       variants={cardVariants}
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -8 }}
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       className="h-full">
       {service.href ? (
@@ -124,14 +143,20 @@ function ServiceCard({
 }
 
 export function Services() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const headingY = useTransform(scrollYProgress, [0, 0.3], [40, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+
   return (
-    <section className="py-24 md:py-32 bg-[#FAFAF7]">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.8 }}
+          style={{ y: headingY, opacity: headingOpacity }}
           className="mb-16 max-w-2xl">
           <motion.span
             initial={{ scaleX: 0 }}
@@ -155,8 +180,8 @@ export function Services() {
           whileInView="show"
           viewport={{ once: true, margin: '-80px' }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {services.map((service) => (
-            <ServiceCard key={service.title} service={service} />
+          {services.map((service, index) => (
+            <ServiceCard key={service.title} service={service} index={index} />
           ))}
         </motion.div>
       </div>

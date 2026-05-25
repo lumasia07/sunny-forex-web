@@ -17,8 +17,8 @@ function MenuIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="18"
-      height="18"
+      width="20"
+      height="20"
       viewBox="0 0 18 18"
       fill="none"
       aria-hidden="true">
@@ -33,8 +33,8 @@ function CloseIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="18"
-      height="18"
+      width="20"
+      height="20"
       viewBox="0 0 18 18"
       fill="none"
       aria-hidden="true">
@@ -45,23 +45,21 @@ function CloseIcon({ className }: { className?: string }) {
 }
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
   const location = useLocation();
-  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 40);
 
-      if (currentScrollY < 80) {
+      // Always show nav near top of page so hero is never covered on scroll-up
+      if (currentScrollY < 120) {
         setIsVisible(true);
-      } else if (currentScrollY > lastScrollY.current + 8) {
+      } else if (currentScrollY > lastScrollY.current + 10) {
         setIsVisible(false);
-      } else if (currentScrollY < lastScrollY.current - 8) {
+      } else if (currentScrollY < lastScrollY.current - 10) {
         setIsVisible(true);
       }
 
@@ -86,48 +84,32 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
-  const overLight = !isHome || isScrolled;
-
-  const linkClass = (isActive: boolean) =>
-    overLight
-      ? isActive
-        ? 'text-[#7A1220] bg-white/80'
-        : 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-white/50'
-      : isActive
-        ? 'text-white bg-[#7A1220]/40'
-        : 'text-white/75 hover:text-white hover:bg-[#7A1220]/20';
-
   const ctaClass =
-    'px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 whitespace-nowrap bg-[#7A1220] text-white hover:bg-[#5C0D18]';
+    'px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-[15px] font-semibold rounded-full transition-all duration-300 whitespace-nowrap bg-[#7A1220] text-white hover:bg-[#5C0D18] shadow-md shadow-[#7A1220]/20';
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-10 pt-4 md:pt-5 pointer-events-none transition-transform duration-300 ease-in-out ${
-          isVisible || menuOpen ? 'translate-y-0' : '-translate-y-full'
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 pt-4 sm:pt-5 md:pt-6 pointer-events-none transition-transform duration-300 ease-in-out ${
+          isVisible || menuOpen ? 'translate-y-0' : '-translate-y-[120%]'
         }`}>
-        <div className="max-w-7xl mx-auto pointer-events-auto">
-          <div
-            className={`flex items-center justify-between gap-2 pl-2.5 pr-1.5 py-1.5 rounded-full border transition-all duration-500 glass-pill ${
-              overLight ? 'glass-pill-light' : 'glass-pill-dark'
-            }`}>
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 flex-1 lg:flex-none group" aria-label="Sunny Forex home">
+        <div className="max-w-[90rem] mx-auto pointer-events-auto">
+          <div className="nav-bar-pill flex items-center justify-between gap-3 sm:gap-4 pl-3 sm:pl-4 pr-2 sm:pr-3 py-2.5 sm:py-3 md:py-3.5 rounded-full border border-gray-200/80 bg-white/90 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.06),0_12px_48px_rgba(0,0,0,0.04)]">
+            <Link
+              to="/"
+              className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 lg:flex-none group"
+              aria-label="Sunny Forex home">
               <img
                 src="/logo-mark.png"
                 alt=""
                 aria-hidden="true"
-                className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 object-contain shrink-0 transition-transform duration-300 group-hover:scale-[1.02]"
+                className="h-10 w-10 sm:h-11 sm:w-11 md:h-12 md:w-12 object-contain shrink-0 transition-transform duration-300 group-hover:scale-[1.03]"
               />
-              <span
-                className={`font-montserrat text-[11px] min-[380px]:text-xs sm:text-sm md:text-base font-bold tracking-wide truncate transition-colors duration-300 ${
-                  overLight ? 'text-[#7A1220]' : 'text-white'
-                }`}>
-                Sunny Forex
+              <span className="font-brand text-base sm:text-lg md:text-xl text-[#0E0E0E] truncate leading-none">
+                Sunny <span className="text-[#7A1220]">Forex</span>
               </span>
             </Link>
 
-            {/* Nav links — desktop */}
             <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
               {pillLinks.map((link) => {
                 const isActive = location.pathname === link.href;
@@ -135,17 +117,16 @@ export function Navbar() {
                   <Link
                     key={link.name}
                     to={link.href}
-                    className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${linkClass(isActive)}`}>
+                    className={`nav-link ${isActive ? 'nav-link-active' : ''}`}>
                     {link.name}
                   </Link>
                 );
               })}
             </div>
 
-            {/* CTAs + mobile menu */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               <ContactLink
-                className={`${ctaClass} px-2.5 sm:px-3.5 ${!overLight ? 'shadow-[0_0_24px_rgba(122,18,32,0.45)]' : ''}`}
+                className={ctaClass}
                 onNavigate={() => setMenuOpen(false)}>
                 <span className="sm:hidden">Contact</span>
                 <span className="hidden sm:inline">Contact Us</span>
@@ -156,11 +137,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={menuOpen}
-                className={`lg:hidden flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ${
-                  overLight
-                    ? 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-white/50'
-                    : 'text-white/75 hover:text-white hover:bg-[#7A1220]/20'
-                }`}>
+                className="lg:hidden flex items-center justify-center w-11 h-11 rounded-full text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-gray-50 transition-all duration-300">
                 {menuOpen ? <CloseIcon /> : <MenuIcon />}
               </button>
             </div>
@@ -168,14 +145,13 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu overlay */}
       {menuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div
-            className="absolute inset-0 bg-[#0E0E0E]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0E0E0E]/30 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
           />
-          <div className="absolute top-20 left-4 right-4 rounded-3xl border border-white/15 bg-[#0E0E0E]/90 backdrop-blur-xl p-6 shadow-2xl animate-fade-in">
+          <div className="absolute top-[5.5rem] sm:top-24 left-4 right-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-2xl animate-fade-in">
             <div className="flex flex-col gap-1">
               {menuLinks.map((link) => {
                 const isActive = location.pathname === link.href;
@@ -183,15 +159,15 @@ export function Navbar() {
                   <Link
                     key={link.name}
                     to={link.href}
-                    className={`px-4 py-3.5 text-lg font-medium rounded-xl transition-colors ${
-                      isActive ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+                    className={`font-display font-semibold px-4 py-3.5 text-lg rounded-xl transition-colors ${
+                      isActive ? 'text-[#7A1220]' : 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-gray-50'
                     }`}>
                     {link.name}
                   </Link>
                 );
               })}
               <ContactLink
-                className="px-4 py-3.5 text-lg font-medium rounded-xl text-white bg-[#7A1220] hover:bg-[#5C0D18] transition-colors text-center"
+                className="px-4 py-3.5 text-lg font-semibold rounded-xl text-white bg-[#7A1220] hover:bg-[#5C0D18] transition-colors text-center"
                 onNavigate={() => setMenuOpen(false)}>
                 Contact Us
               </ContactLink>

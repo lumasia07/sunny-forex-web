@@ -1,6 +1,7 @@
 /* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
 
 /* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
 @import 'tailwindcss/base';
@@ -11,13 +12,13 @@
 
 @layer base {
   html {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply bg-[#FAFAF7] text-[#0E0E0E] antialiased selection:bg-[#B91C1C] selection:text-white;
+    @apply bg-white text-[#0E0E0E] antialiased selection:bg-[#B91C1C] selection:text-white;
     font-weight: 400;
     line-height: 1.6;
   }
@@ -29,12 +30,19 @@
 }
 
 @layer components {
+  .font-display {
+    font-family: 'Space Grotesk', 'Outfit', sans-serif;
+    letter-spacing: -0.03em;
+  }
+
   .type-display {
     @apply font-bold tracking-tight leading-[1.02] text-[#0E0E0E];
+    font-family: 'Space Grotesk', 'Outfit', sans-serif;
   }
 
   .type-headline {
     @apply font-bold tracking-tight leading-[1.08] text-[#0E0E0E];
+    font-family: 'Space Grotesk', 'Outfit', sans-serif;
   }
 
   .type-lead {
@@ -42,7 +50,7 @@
   }
 
   .type-lead-light {
-    @apply text-base md:text-lg font-normal leading-relaxed text-white/85;
+    @apply text-base md:text-lg font-normal leading-relaxed text-[#0E0E0E]/70;
   }
 
   .type-label {
@@ -188,6 +196,164 @@
   animation: fade-in 0.25s ease-out;
 }
 
-.font-montserrat {
-  font-family: 'Montserrat', sans-serif;
+.font-brand {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Hero — clears fixed nav, fits viewport, no clip on scroll up */
+:root {
+  --nav-offset: 6.75rem;
+}
+
+html {
+  scroll-padding-top: var(--nav-offset);
+}
+
+.hero-viewport {
+  min-height: auto;
+  /* Space for floating navbar so content is never hidden underneath */
+  padding-top: var(--nav-offset);
+  padding-bottom: 1.5rem;
+}
+
+.hero-viewport-inner {
+  min-height: auto;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --nav-offset: 7.25rem;
+  }
+
+  .hero-viewport {
+    min-height: calc(100dvh - var(--nav-offset));
+    padding-bottom: 2rem;
+    /* Do not max-height — prevents headline/card clipping when nav reappears */
+  }
+
+  .hero-viewport-inner {
+    min-height: calc(100dvh - var(--nav-offset) - 2rem);
+  }
+}
+
+/* Splash loader — globe (square, crisp) */
+.loader-globe {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  aspect-ratio: 1 / 1;
+}
+
+.loader-globe > div,
+.loader-globe canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Nav links — hero display font + maroon underline on hover */
+.nav-link {
+  font-family: 'Space Grotesk', 'Outfit', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 15px;
+  color: rgba(14, 14, 14, 0.65);
+  position: relative;
+  padding: 0.5rem 0.85rem;
+  transition: color 0.25s ease;
+  background: transparent !important;
+  border-radius: 0;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0.85rem;
+  right: 0.85rem;
+  bottom: 0.2rem;
+  height: 2px;
+  background: #7a1220;
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover,
+.nav-link.nav-link-active {
+  color: #7a1220;
+}
+
+.nav-link:hover::after,
+.nav-link.nav-link-active::after {
+  transform: scaleX(1);
+}
+
+.nav-bar-pill {
+  min-height: 3.75rem;
+}
+
+@media (min-width: 768px) {
+  .nav-bar-pill {
+    min-height: 4.25rem;
+  }
+}
+
+/* Smooth section transitions — subtle background cross-fade between sections */
+section {
+  will-change: transform;
+}
+
+/* Image reveal animation — used by parallax images */
+@keyframes image-reveal {
+  from {
+    clip-path: inset(100% 0 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.reveal-image {
+  animation: image-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Gradient shimmer line effect */
+@keyframes shimmer-slide {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+.shimmer-line {
+  overflow: hidden;
+  position: relative;
+}
+
+.shimmer-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer-slide 3s ease-in-out infinite;
+}
+
+/* Smooth text reveal */
+@keyframes text-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Performance: GPU-accelerate parallax layers */
+.parallax-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }

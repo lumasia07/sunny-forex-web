@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { LiveBlock, LiveWords } from './LiveText';
 const rates = [
@@ -103,7 +103,10 @@ const rates = [
 function RateCard({ rate }: { rate: (typeof rates)[number] }) {
   const isUp = rate.change >= 0;
   return (
-    <div className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-md transition-all min-w-[280px]">
+    <motion.div
+      className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-lg transition-all min-w-[280px]"
+      whileHover={{ y: -3, scale: 1.02 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
       <div className="flex flex-col items-center gap-1">
         <motion.span
           className="text-2xl leading-none cursor-default"
@@ -145,17 +148,34 @@ function RateCard({ rate }: { rate: (typeof rates)[number] }) {
           {rate.change.toFixed(2)}%
         </LiveBlock>
       </div>
-    </div>
+    </motion.div>
   );
 }
 export function RatesStrip() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const headingY = useTransform(scrollYProgress, [0, 0.3], [30, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
+
   // Duplicate rates for seamless infinite scroll
   const loopRates = [...rates, ...rates];
   return (
-    <section className="w-full bg-[#FAFAF7] border-y border-gray-100 py-10 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+    <section ref={sectionRef} className="w-full bg-white border-y border-gray-100 py-10 overflow-hidden">
+      <motion.div
+        className="max-w-7xl mx-auto px-6 md:px-12 mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+        style={{ y: headingY, opacity: headingOpacity }}>
         <div className="flex flex-col">
-          <span className="inline-block w-10 h-px bg-[#7A1220] mb-4" />
+          <motion.span
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="inline-block w-10 h-px bg-[#7A1220] mb-4 origin-left"
+          />
           <h2 className="type-headline text-2xl md:text-3xl lg:text-4xl">
             <LiveWords text="Today's rates against KES" />
           </h2>
@@ -175,20 +195,25 @@ export function RatesStrip() {
           <span className="text-gray-400">·</span>
           <span className="text-gray-500">Updated just now</span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Auto-scrolling marquee */}
-      <div className="relative overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative overflow-hidden">
         {/* Edge fades */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#FAFAF7] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#FAFAF7] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
         <div className="flex marquee">
           {loopRates.map((rate, index) =>
           <RateCard key={`${rate.code}-${index}`} rate={rate} />
           )}
         </div>
-      </div>
+      </motion.div>
 
       <style>{`
         .marquee {

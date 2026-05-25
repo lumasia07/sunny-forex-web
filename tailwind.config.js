@@ -3,8 +3,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'sans-serif'],
+        brand: ['Outfit', 'Plus Jakarta Sans', 'sans-serif'],
+        display: ['Space Grotesk', 'Outfit', 'sans-serif'],
       },
       letterSpacing: {
         tighter: '-0.03em',

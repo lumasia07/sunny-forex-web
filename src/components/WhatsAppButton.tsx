@@ -1,4 +1,5 @@
 import React, { useEffect, useState, Component } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Phone, MapPin, Clock, MessageCircle } from 'lucide-react';
 // Branch data — confirmed from sunny-forex.vercel.app/branches
@@ -89,6 +90,8 @@ function WhatsAppIcon({
 
 }
 export function WhatsAppButton() {
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
   const [isOpen, setIsOpen] = useState(false);
   const [showLabel, setShowLabel] = useState(false);
   // Show pulsing tooltip-style label after a few seconds
@@ -120,7 +123,7 @@ export function WhatsAppButton() {
       {/* Floating Button */}
       <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 flex items-center gap-3">
         <AnimatePresence>
-          {showLabel && !isOpen &&
+          {showLabel && !isOpen && !isHome &&
           <motion.div
             initial={{
               opacity: 0,

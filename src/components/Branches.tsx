@@ -1,5 +1,5 @@
-import React, { Children } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LiveBlock, LiveWords } from './LiveText';
@@ -45,10 +45,12 @@ const containerVariants = {
 const itemVariants = {
   hidden: {
     opacity: 0,
-    y: 24
+    x: -20,
+    y: 12
   },
   show: {
     opacity: 1,
+    x: 0,
     y: 0,
     transition: {
       duration: 0.6,
@@ -57,25 +59,20 @@ const itemVariants = {
   }
 };
 export function Branches() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const headingY = useTransform(scrollYProgress, [0, 0.3], [40, 0]);
+  const gridY = useTransform(scrollYProgress, [0.1, 0.5], [30, 0]);
+
   return (
-    <section className="py-24 md:py-32 bg-[#FAFAF7]">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0
-          }}
-          viewport={{
-            once: true,
-            margin: '-100px'
-          }}
-          transition={{
-            duration: 0.8
-          }}
+          style={{ y: headingY }}
           className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           
           <div>
@@ -103,14 +100,20 @@ export function Branches() {
               including weekends and public holidays.
             </LiveBlock>
           </div>
-          <Link
-            to="/branches"
-            className="inline-flex items-center gap-2 text-sm font-medium text-[#7A1220] hover:text-[#5C0D18] transition-colors group">
-            <LiveBlock className="inline-flex items-center gap-2 text-sm font-medium text-[#7A1220]" variant="dark">
-              View all branches
-            </LiveBlock>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          <motion.div
+            whileHover={{ x: 4 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
+            <Link
+              to="/branches"
+              className="inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full border border-[#7A1220]/20 text-sm font-bold text-[#7A1220] hover:border-[#7A1220]/40 hover:text-[#5C0D18] transition-colors group">
+              <LiveBlock className="text-sm font-bold text-[#7A1220]" variant="dark">
+                View all branches
+              </LiveBlock>
+              <span className="w-8 h-8 rounded-full bg-[#7A1220]/10 flex items-center justify-center group-hover:bg-[#7A1220]/20 transition-colors">
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </span>
+            </Link>
+          </motion.div>
         </motion.div>
 
         <motion.div
@@ -121,17 +124,23 @@ export function Branches() {
             once: true,
             margin: '-50px'
           }}
+          style={{ y: gridY }}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-2">
           
           {branches.map((branch) =>
           <motion.div
             key={branch.name}
             variants={itemVariants}
-            className="flex items-start gap-4 py-5 border-b border-gray-200 group">
+            whileHover={{ x: 8, backgroundColor: 'rgba(122,18,32,0.02)' }}
+            className="flex items-start gap-4 py-5 border-b border-gray-200 group rounded-lg px-2 -mx-2 transition-colors cursor-default">
             
-              <MapPin
-              className="w-4 h-4 text-[#7A1220] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"
-              strokeWidth={1.5} />
+              <motion.div
+                whileHover={{ scale: 1.2, rotate: 15 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 15 }}>
+                <MapPin
+                className="w-4 h-4 text-[#7A1220] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"
+                strokeWidth={1.5} />
+              </motion.div>
             
               <div className="flex flex-col flex-1">
                 <LiveBlock className="text-lg font-medium text-[#0E0E0E] mb-1 group-hover:text-[#7A1220] transition-colors" variant="dark">
@@ -141,6 +150,8 @@ export function Branches() {
                   {branch.area}
                 </LiveBlock>
               </div>
+              
+              <ArrowRight className="w-4 h-4 text-transparent group-hover:text-[#7A1220] mt-1.5 transition-all group-hover:translate-x-1" />
             </motion.div>
           )}
         </motion.div>

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
 import { LiveBlock, LiveWords } from './LiveText';
 const contactMethods = [
@@ -24,26 +24,62 @@ const contactMethods = [
 }];
 
 export function CtaBand() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const contentY = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+
   return (
     <section
+      ref={sectionRef}
       id="contact"
       className="relative py-24 md:py-32 bg-[#0E0E0E] text-white overflow-hidden">
       
-      {/* Background — Nairobi at night, subtle */}
-      <div className="absolute inset-0 z-0 opacity-25">
+      {/* Background — Nairobi at night with parallax */}
+      <motion.div className="absolute inset-0 z-0 opacity-30" style={{ y: bgY }}>
         <img
-          src="https://images.unsplash.com/photo-1535082623926-b39352a03fb7?q=80&w=2940&auto=format&fit=crop"
+          src="/pexels-kursat-kuzu-42706530-12705278.jpg"
           alt=""
           aria-hidden="true"
           className="w-full h-full object-cover" />
         
         <div className="absolute inset-0 bg-gradient-to-r from-[#0E0E0E] via-[#0E0E0E]/85 to-[#0E0E0E]/60" />
-      </div>
+      </motion.div>
 
-      {/* Maroon accent line top */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#7A1220] to-transparent" />
+      {/* Animated maroon accent line top */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{
+          background: 'linear-gradient(90deg, transparent, #7A1220, transparent)',
+        }}
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
+      />
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12">
+      {/* Floating ambient particles */}
+      <motion.div
+        className="absolute w-64 h-64 rounded-full bg-[#7A1220]/10 blur-[80px]"
+        style={{ top: '10%', right: '5%' }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute w-48 h-48 rounded-full bg-[#D4A24C]/8 blur-[60px]"
+        style={{ bottom: '15%', left: '10%' }}
+        animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      <motion.div
+        className="relative max-w-7xl mx-auto px-6 md:px-12"
+        style={{ y: contentY, opacity: contentOpacity }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Left: Headline + Copy */}
           <motion.div
@@ -76,17 +112,23 @@ export function CtaBand() {
             </LiveBlock>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <a
+              <motion.a
                 href="mailto:info@sunnyremit.com"
-                className="inline-flex justify-center items-center gap-2 px-8 py-3.5 rounded-full bg-[#7A1220] text-white font-medium hover:bg-[#5C0D18] transition-colors group">
-                
+                className="inline-flex justify-center items-center gap-3 pl-8 pr-2.5 py-2.5 rounded-full bg-[#7A1220] text-white font-bold text-base hover:bg-[#5C0D18] transition-colors group"
+                whileHover={{ scale: 1.03, boxShadow: '0 0 30px rgba(122,18,32,0.4)' }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
                 Contact Us
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+                <span className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <ArrowRight className="w-[18px] h-[18px] group-hover:translate-x-0.5 transition-transform" />
+                </span>
+              </motion.a>
               <Link
                 to="/corporate"
-                className="inline-flex justify-center items-center px-8 py-3.5 rounded-full bg-transparent border border-white/30 text-white font-medium hover:bg-white/5 hover:border-white/60 transition-colors">
+                className="inline-flex justify-center items-center gap-3 pl-8 pr-2.5 py-2.5 rounded-full bg-transparent border border-white/30 text-white font-bold text-base hover:bg-white/5 hover:border-white/60 transition-colors group">
                 Schedule a meeting
+                <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/15 transition-colors">
+                  <ArrowRight className="w-[18px] h-[18px] group-hover:translate-x-0.5 transition-transform" />
+                </span>
               </Link>
             </div>
           </motion.div>
@@ -111,17 +153,25 @@ export function CtaBand() {
             className="flex flex-col">
             
             {contactMethods.map((method, index) =>
-            <a
+            <motion.a
               key={method.label}
               href={method.href}
-              className={`group flex items-start gap-5 py-6 ${index !== contactMethods.length - 1 ? 'border-b border-white/10' : ''} ${index === 0 ? 'border-t border-white/10' : ''} hover:bg-white/[0.02] transition-colors px-2 -mx-2`}>
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 + index * 0.12 }}
+              whileHover={{ x: 6, backgroundColor: 'rgba(255,255,255,0.03)' }}
+              className={`group flex items-start gap-5 py-6 ${index !== contactMethods.length - 1 ? 'border-b border-white/10' : ''} ${index === 0 ? 'border-t border-white/10' : ''} transition-colors px-2 -mx-2 rounded-lg`}>
               
-                <div className="w-11 h-11 rounded-full border-2 border-[#7A1220]/50 flex items-center justify-center flex-shrink-0 group-hover:border-[#B91C1C] transition-colors">
+                <motion.div
+                  className="w-11 h-11 rounded-full border-2 border-[#7A1220]/50 flex items-center justify-center flex-shrink-0 group-hover:border-[#B91C1C] transition-colors"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 15 }}>
                   <method.icon
                   className="w-4 h-4 text-[#B91C1C]"
                   strokeWidth={1.75} />
                 
-                </div>
+                </motion.div>
                 <div className="flex-1 flex flex-col">
                   <LiveBlock className="text-xs font-medium tracking-wider uppercase text-white/50 mb-1.5" variant="light">
                     {method.label}
@@ -131,18 +181,22 @@ export function CtaBand() {
                   </LiveBlock>
                 </div>
                 <ArrowRight className="w-4 h-4 text-white/40 mt-3 group-hover:text-[#B91C1C] group-hover:translate-x-1 transition-all flex-shrink-0" />
-              </a>
+              </motion.a>
             )}
 
             <div className="mt-8 pt-6 flex items-center gap-3 text-xs text-white/50">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <motion.span
+                className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
               <LiveBlock variant="light">
                 Mon – Fri, 8:00 AM – 6:00 PM EAT · Sat, 9:00 AM – 2:00 PM
               </LiveBlock>
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>);
 
 }

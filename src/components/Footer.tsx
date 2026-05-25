@@ -4,7 +4,7 @@ import { ContactLink } from './ContactLink';
 const linkClass = 'text-sm text-gray-500 hover:text-[#7A1220] transition-colors';
 export function Footer() {
   return (
-    <footer className="bg-[#FAFAF7] pt-20 pb-10">
+    <footer className="bg-white border-t border-gray-100 pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
@@ -15,8 +15,8 @@ export function Footer() {
                 aria-hidden="true"
                 className="h-14 w-14 object-contain"
               />
-              <span className="font-montserrat text-xl font-bold tracking-wide text-[#7A1220]">
-                Sunny Forex
+              <span className="font-brand text-xl text-[#0E0E0E]">
+                Sunny <span className="text-[#7A1220]">Forex</span>
               </span>
             </Link>
             <p className="text-sm text-[#0E0E0E]/75 font-normal leading-relaxed mb-6">

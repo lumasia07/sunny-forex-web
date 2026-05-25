@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { LiveBlock, LiveWords } from './LiveText';
 
 const partnersList = [
@@ -10,6 +11,15 @@ const partnersList = [
 ];
 
 export function PartnersBanner() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const headingY = useTransform(scrollYProgress, [0, 0.3], [30, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+
   // Multiply items to form a dense and seamless scrolling stream
   const marqueeItems = [
     ...partnersList, 
@@ -20,39 +30,54 @@ export function PartnersBanner() {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white border-y border-gray-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 text-center mb-10">
-        <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white border-y border-gray-100 overflow-hidden">
+      <motion.div
+        className="max-w-7xl mx-auto px-6 md:px-12 text-center mb-10"
+        style={{ y: headingY, opacity: headingOpacity }}>
+        <motion.span
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-center"
+        />
         <h3 className="font-sans font-bold text-[#0E0E0E] text-2xl md:text-3xl tracking-tight uppercase">
           <LiveWords text="Our Licensed Payout Partners" />
         </h3>
         <LiveBlock className="text-gray-500 font-light text-sm mt-2 max-w-xl mx-auto" variant="dark" inline={false}>
           Delivering secure, instant cash pickups and mobile wallet payouts across Nairobi in direct partnership with leading financial networks.
         </LiveBlock>
-      </div>
+      </motion.div>
 
       {/* Infinite Scrolling Logo Marquee Belt */}
-      <div className="relative w-full bg-[#FAFAF7] py-8 md:py-10 border-y border-gray-200/50 overflow-hidden flex items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative w-full bg-white py-8 md:py-10 border-y border-gray-200/50 overflow-hidden flex items-center">
         {/* Soft elegant shadow-blur overlays at the sides to give high-fidelity depth */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-[#FAFAF7] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-[#FAFAF7] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
         {/* Continuous Loop Marquee Strip */}
         <div className="animate-marquee flex items-center gap-16 md:gap-24">
           {marqueeItems.map((p, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="flex-shrink-0 flex items-center justify-center h-12 md:h-16 w-36 md:w-44 transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="flex-shrink-0 flex items-center justify-center h-12 md:h-16 w-36 md:w-44 transition-all duration-300 cursor-pointer"
+              whileHover={{ scale: 1.1, y: -4 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
             >
               <img
                 src={p.src}
                 alt={p.alt}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-500"
               />
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
