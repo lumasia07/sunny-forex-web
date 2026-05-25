@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { CtaBand } from '../components/CtaBand';
+import { SplitColumnsReveal, splitGridMotion } from '../components/SplitColumnsReveal';
 import {
   Building2,
   TrendingUp,
   Users,
   FileText,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
   X,
   Briefcase,
-  ChevronRight,
   Sparkles
 } from 'lucide-react';
 
@@ -49,6 +48,44 @@ const industries = [
   'Diplomatic Missions',
   'Mining & Energy'
 ];
+
+function CorporateServiceCard({
+  service,
+  index,
+}: {
+  service: (typeof services)[number];
+  index: number;
+}) {
+  const Icon = service.icon;
+
+  return (
+    <motion.div
+      {...splitGridMotion(index, 64)}
+      whileHover={{ y: -4 }}
+      className="group relative h-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-200 bg-white shadow-sm hover:shadow-xl hover:border-[#7A1220]/40 transition-all duration-500"
+    >
+      <div className="absolute inset-0 bg-white" />
+      <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
+
+      <div className="relative z-10 flex flex-col sm:flex-row gap-4 sm:gap-6 p-5 sm:p-6 md:p-8 group-hover:[&_*]:text-white">
+        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#7A1220]/8 border border-[#7A1220]/15 flex items-center justify-center shrink-0 group-hover:bg-white/10 group-hover:border-white/30 transition-colors duration-500">
+          <Icon className="w-5 h-5 text-[#7A1220] group-hover:text-white transition-colors duration-500" strokeWidth={1.75} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-300 group-hover:text-white/40 transition-colors duration-500 mb-2 block">
+            0{index + 1}
+          </span>
+          <h3 className="text-lg sm:text-xl font-semibold text-[#0E0E0E] group-hover:text-white mb-2 sm:mb-3 transition-colors duration-500">
+            {service.title}
+          </h3>
+          <p className="text-sm sm:text-base text-gray-500 group-hover:text-white/90 font-normal leading-relaxed transition-colors duration-500">
+            {service.body}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export function Corporate() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,56 +127,43 @@ export function Corporate() {
       />
 
       {/* Services grid */}
-      <section className="py-24 md:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
-              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
+      <section className="py-16 sm:py-24 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <SplitColumnsReveal
+            className="mb-10 sm:mb-16 items-end"
+            gap="gap-6"
+            left={
+            <div className="max-w-xl">
+              <span className="inline-block w-10 h-px bg-[#7A1220] mb-4 sm:mb-6" />
+              <h2 className="type-headline text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4">
                 Solutions built for scale.
               </h2>
-              <p className="type-lead max-w-md">
+              <p className="type-lead text-base sm:text-lg">
                 Whether you're a 10-person firm or a multinational with offices across East Africa, our enterprise team builds around you.
               </p>
             </div>
+            }
+            right={
             <button
               onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center gap-2 py-3.5 px-7 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium text-sm shadow-md"
+              className="inline-flex w-full sm:w-auto justify-center items-center gap-2 py-3 sm:py-3.5 px-6 sm:px-7 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium text-sm shadow-md shrink-0"
             >
               <Briefcase className="w-4 h-4" />
               <span>Contact Corporate Desk</span>
             </button>
-          </div>
+            }
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             {services.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
-                className="flex gap-6 p-8 rounded-3xl border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-md transition-all bg-white"
-              >
-                <div className="w-12 h-12 rounded-full bg-white border-2 border-[#7A1220]/30 flex items-center justify-center flex-shrink-0">
-                  <s.icon className="w-5 h-5 text-[#7A1220]" strokeWidth={1.75} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-medium text-[#0E0E0E] mb-3">
-                    {s.title}
-                  </h3>
-                  <p className="text-gray-500 font-light leading-relaxed">
-                    {s.body}
-                  </p>
-                </div>
-              </motion.div>
+              <CorporateServiceCard key={s.title} service={s} index={i} />
             ))}
           </div>
         </div>
       </section>
 
       {/* Industries we serve */}
-      <section className="py-24 md:py-32 bg-[#0E0E0E] text-white relative overflow-hidden">
+      <section className="py-16 sm:py-24 md:py-32 bg-[#0E0E0E] text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-15">
           <img
             src="/pexels-kelvin-kibe-3073372-26898331.jpg"
@@ -150,34 +174,43 @@ export function Corporate() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0E0E0E] via-[#0E0E0E]/80 to-transparent" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <SplitColumnsReveal
+            gap="gap-10 lg:gap-16"
+            left={
             <div>
-              <span className="inline-block w-10 h-px bg-[#B91C1C] mb-6" />
-              <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-white tracking-tight leading-[1.08] mb-6">
+              <span className="inline-block w-10 h-px bg-[#B91C1C] mb-4 sm:mb-6" />
+              <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white tracking-tight leading-[1.08] mb-4 sm:mb-6">
                 Trusted by businesses across East Africa.
               </h2>
-              <p className="text-lg text-white/70 font-light leading-relaxed mb-8">
+              <p className="text-base sm:text-lg text-white/70 font-normal leading-relaxed mb-6 sm:mb-8">
                 From logistics firms handling cross-border freight payments to NGOs running multi-currency grant programs — businesses choose Sunny Forex when stakes are high.
               </p>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center gap-2 py-3 px-6 rounded-full bg-white text-[#0E0E0E] hover:bg-gray-100 transition-colors font-medium text-sm shadow-md"
+                className="inline-flex w-full sm:w-auto justify-center items-center gap-2 py-3 px-6 rounded-full bg-white text-[#0E0E0E] hover:bg-gray-100 transition-colors font-medium text-sm shadow-md"
               >
                 <span>Partner With Us</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-
-            <div className="grid grid-cols-2 gap-x-12 gap-y-8 bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10">
+            }
+            right={
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4 bg-white/5 backdrop-blur-md p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/10">
               {industries.map((industry) => (
-                <div key={industry} className="flex items-center gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#B91C1C]" />
-                  <span className="text-base font-light text-gray-200">{industry}</span>
+                <div
+                  key={industry}
+                  className="group flex items-center gap-3 p-3 sm:p-3.5 rounded-xl border border-transparent hover:border-[#7A1220]/40 hover:bg-[#7A1220]/25 transition-all duration-300"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#B91C1C] group-hover:bg-white shrink-0 transition-colors duration-300" />
+                  <span className="text-sm sm:text-base font-medium text-gray-200 group-hover:text-white transition-colors duration-300">
+                    {industry}
+                  </span>
                 </div>
               ))}
             </div>
-          </div>
+            }
+          />
         </div>
       </section>
 
@@ -186,7 +219,7 @@ export function Corporate() {
       {/* Corporate Consulting Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -198,10 +231,10 @@ export function Corporate() {
 
             {/* Modal Box */}
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              initial={{ scale: 0.98, opacity: 0, y: 24 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl z-10 border border-gray-100"
+              exit={{ scale: 0.98, opacity: 0, y: 24 }}
+              className="relative bg-white w-full sm:max-w-lg max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl shadow-2xl z-10 border border-gray-100"
             >
               {/* Kenyan flag accent stripe */}
               <div className="flex h-[3px] w-full">
@@ -211,14 +244,14 @@ export function Corporate() {
               </div>
 
               {!isSuccess ? (
-                <form onSubmit={handleSubmit} className="p-8">
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <h3 className="text-2xl font-light text-[#0E0E0E] flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-[#7A1220]" />
+                <form onSubmit={handleSubmit} className="p-5 sm:p-8">
+                  <div className="flex justify-between items-start gap-4 mb-5 sm:mb-6">
+                    <div className="min-w-0">
+                      <h3 className="text-xl sm:text-2xl font-semibold text-[#0E0E0E] flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-[#7A1220] shrink-0" />
                         <span>Corporate Account</span>
                       </h3>
-                      <p className="text-xs font-light text-gray-400 mt-1 uppercase tracking-wider">Establish high-volume wholesale rates</p>
+                      <p className="text-xs font-medium text-gray-400 mt-1 uppercase tracking-wider">Establish high-volume wholesale rates</p>
                     </div>
                     <button
                       type="button"
@@ -266,7 +299,7 @@ export function Corporate() {
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Monthly FX Volume</label>
                         <select
@@ -306,7 +339,7 @@ export function Corporate() {
                   </button>
                 </form>
               ) : (
-                <div className="p-8 text-center flex flex-col items-center">
+                <div className="p-5 sm:p-8 text-center flex flex-col items-center">
                   <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
