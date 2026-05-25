@@ -8,6 +8,7 @@ import {
   animate } from
 'framer-motion';
 import { LiveBlock, LiveWords } from './LiveText';
+import { SplitColumnsReveal } from './SplitColumnsReveal';
 function AnimatedNumber({
   value,
   suffix = '',
@@ -78,11 +79,14 @@ export function TrustStats() {
   return (
     <section ref={sectionRef} className="py-24 md:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left: Image with parallax */}
+        <SplitColumnsReveal
+          gap="gap-12 lg:gap-20"
+          leftClassName="order-2 lg:order-1"
+          rightClassName="order-1 lg:order-2"
+          left={
           <motion.div
             style={{ y: imageY, scale: imageScale }}
-            className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl order-2 lg:order-1">
+            className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl">
             
             <motion.img
               initial={{
@@ -136,11 +140,9 @@ export function TrustStats() {
               </LiveBlock>
             </motion.div>
           </motion.div>
-
-          {/* Right: Copy + Stats */}
-          <motion.div
-            style={{ y: contentY }}
-            className="order-1 lg:order-2">
+          }
+          right={
+          <motion.div style={{ y: contentY }}>
             
             <motion.span
               initial={{
@@ -207,7 +209,8 @@ export function TrustStats() {
               )}
             </div>
           </motion.div>
-        </div>
+          }
+        />
       </div>
     </section>);
 
