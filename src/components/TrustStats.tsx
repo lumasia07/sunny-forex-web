@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   motion,
   useInView,
@@ -6,35 +6,42 @@ import {
   useTransform,
   animate } from
 'framer-motion';
+import { LiveBlock, LiveWords } from './LiveText';
 function AnimatedNumber({
   value,
-  suffix = ''
-
-
-
-}: {value: number;suffix?: string;}) {
+  suffix = '',
+}: {
+  value: number;
+  suffix?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, {
-    once: true,
-    margin: '-50px'
+    once: false,
+    margin: '-40px',
+    amount: 0.6,
   });
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => Math.floor(v).toString());
+
   useEffect(() => {
     if (isInView) {
+      count.set(0);
       const controls = animate(count, value, {
-        duration: 2,
-        ease: [0.16, 1, 0.3, 1]
+        duration: 1.8,
+        ease: [0.16, 1, 0.3, 1],
       });
       return () => controls.stop();
     }
-  }, [isInView, value, count]);
-  return (
-    <span className="inline-flex items-baseline">
-      <motion.span ref={ref}>{rounded}</motion.span>
-      <span>{suffix}</span>
-    </span>);
 
+    count.set(0);
+  }, [isInView, value, count]);
+
+  return (
+    <span ref={ref} className="inline-flex items-baseline">
+      <motion.span>{rounded}</motion.span>
+      <span>{suffix}</span>
+    </span>
+  );
 }
 const stats = [
 {
@@ -125,9 +132,9 @@ export function TrustStats() {
                 <span className="flex-1 bg-[#B91C1C]" />
                 <span className="flex-1 bg-[#006B3F]" />
               </div>
-              <span className="text-xs font-medium tracking-[0.2em] uppercase">
+              <LiveBlock className="text-xs font-medium tracking-[0.2em] uppercase" variant="light">
                 Proudly Kenyan
-              </span>
+              </LiveBlock>
             </motion.div>
           </motion.div>
 
@@ -168,14 +175,14 @@ export function TrustStats() {
               className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left" />
             
             <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] leading-tight mb-6">
-              A legacy of trust in every transaction.
+              <LiveWords text="A legacy of trust in every transaction." />
             </h2>
-            <p className="text-lg text-gray-500 font-light leading-relaxed max-w-md mb-12">
+            <LiveBlock className="text-lg text-gray-500 font-light leading-relaxed max-w-md mb-12" variant="dark" inline={false}>
               Since 2008, we've built our reputation on transparency,
               competitive rates, and unwavering reliability. Licensed by the
               Central Bank of Kenya, we ensure your money moves safely across
               borders.
-            </p>
+            </LiveBlock>
 
             <div className="grid grid-cols-3 gap-6 lg:gap-8">
               {stats.map((stat, index) =>
@@ -200,19 +207,16 @@ export function TrustStats() {
                 
                   <span className="block w-px bg-[#7A1220] self-stretch" />
                   <div className="flex flex-col">
-                    <span className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-2 leading-none tabular-nums">
-                      {stat.numeric ?
-                    <AnimatedNumber
-                      value={stat.value as number}
-                      suffix={stat.suffix} /> :
-
-
-                    stat.value
-                    }
-                    </span>
-                    <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wider">
+                    <LiveBlock className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-2 leading-none tabular-nums" variant="dark">
+                      {stat.numeric ? (
+                        <AnimatedNumber value={stat.value as number} suffix={stat.suffix} />
+                      ) : (
+                        stat.value
+                      )}
+                    </LiveBlock>
+                    <LiveBlock className="text-[11px] font-medium text-gray-400 uppercase tracking-wider" variant="dark">
                       {stat.label}
-                    </span>
+                    </LiveBlock>
                   </div>
                 </motion.div>
               )}
