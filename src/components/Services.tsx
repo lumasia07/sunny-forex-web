@@ -140,10 +140,10 @@ export function Services() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left"
           />
-          <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
             <LiveWords text="Services built for how Kenya moves money." />
           </h2>
-          <LiveBlock className="text-gray-500 font-light" variant="dark" inline={false}>
+          <LiveBlock className="type-lead" variant="neutral" inline={false}>
             From cash exchange at our branches to instant M-Pesa transfers — every service is
             engineered for speed, transparency, and trust.
           </LiveBlock>
