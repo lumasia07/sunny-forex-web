@@ -5,7 +5,9 @@ import { ArrowRight, Star, Zap } from 'lucide-react';
 import { HeroLockRateCard } from './HeroLockRateCard';
 
 function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches,
+  );
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -91,9 +93,17 @@ export function Hero() {
             }
           >
             <motion.img
-              src="/12419.jpg"
+              src="/12419-hero.webp"
               alt=""
               className="hero-bg-image"
+              decoding="async"
+              fetchPriority="high"
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (!img.src.endsWith('/12419-hero.jpg')) {
+                  img.src = '/12419-hero.jpg';
+                }
+              }}
               style={isDesktop ? { y: bgTranslateY } : undefined}
             />
           </motion.div>
@@ -152,18 +162,18 @@ export function Hero() {
             style={isDesktop ? { x: contentTranslateX, y: contentTranslateY } : undefined}
           >
             <motion.h1
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="font-display font-bold text-[#0E0E0E] text-[2.25rem] sm:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] tracking-tight leading-[1.05] mb-6 max-w-xl">
               Global reach.
               <br />
               <span className="text-[#7A1220]">Local trust.</span>
               <br />
               <motion.span
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-flex items-center gap-2.5 text-[#006B3F]">
                 <motion.span
                   animate={{ rotate: [0, -10, 10, 0] }}
@@ -175,17 +185,17 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.06 }}
+              transition={{ duration: 0.35, delay: 0.04 }}
               className="text-[16px] sm:text-lg leading-relaxed mb-10 max-w-lg text-[#0E0E0E]/75">
               Moving the Kenyan shilling across continents — and bringing the world's currencies home — with care, since 2008.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.12 }}
+              transition={{ duration: 0.35, delay: 0.08 }}
               className="flex flex-wrap items-center gap-4 mb-8">
               <Link
                 to="/lock-rate"
@@ -208,7 +218,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.18 }}
+              transition={{ delay: 0.1 }}
               className="flex items-center gap-2.5 text-sm text-gray-600">
               <div className="flex gap-0.5 text-[#D4A24C]">
                 {[...Array(5)].map((_, i) => (
@@ -222,9 +232,9 @@ export function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.45, delay: 0.05 }}
             style={
               isDesktop
                 ? {
