@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LiveBlock, LiveWords } from './LiveText';
+import { SplitColumnsReveal, splitGridMotion } from './SplitColumnsReveal';
 const branches = [
   {
     name: 'Kilimani Branch',
@@ -34,30 +35,6 @@ const branches = [
   }
 ];
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08
-    }
-  }
-};
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    x: -20,
-    y: 12
-  },
-  show: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
-    }
-  }
-};
 export function Branches() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -65,16 +42,15 @@ export function Branches() {
     offset: ['start end', 'end start'],
   });
 
-  const headingY = useTransform(scrollYProgress, [0, 0.3], [40, 0]);
   const gridY = useTransform(scrollYProgress, [0.1, 0.5], [30, 0]);
 
   return (
     <section ref={sectionRef} className="py-24 md:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <motion.div
-          style={{ y: headingY }}
-          className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          
+        <SplitColumnsReveal
+          className="mb-16 items-end"
+          gap="gap-6 md:gap-8"
+          left={
           <div>
             <motion.span
               initial={{
@@ -100,12 +76,14 @@ export function Branches() {
               including weekends and public holidays.
             </LiveBlock>
           </div>
+          }
+          right={
           <motion.div
             whileHover={{ x: 4 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
             <Link
               to="/branches"
-              className="inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full border border-[#7A1220]/20 text-sm font-bold text-[#7A1220] hover:border-[#7A1220]/40 hover:text-[#5C0D18] transition-colors group">
+              className="inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full border border-[#7A1220]/20 text-sm font-bold text-[#7A1220] hover:border-[#7A1220]/40 hover:text-[#5C0D18] transition-colors group w-full sm:w-auto justify-center sm:justify-start">
               <LiveBlock className="text-sm font-bold text-[#7A1220]" variant="dark">
                 View all branches
               </LiveBlock>
@@ -114,23 +92,17 @@ export function Branches() {
               </span>
             </Link>
           </motion.div>
-        </motion.div>
+          }
+        />
 
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{
-            once: true,
-            margin: '-50px'
-          }}
           style={{ y: gridY }}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-2">
           
-          {branches.map((branch) =>
+          {branches.map((branch, index) =>
           <motion.div
             key={branch.name}
-            variants={itemVariants}
+            {...splitGridMotion(index)}
             whileHover={{ x: 8, backgroundColor: 'rgba(122,18,32,0.02)' }}
             className="flex items-start gap-4 py-5 border-b border-gray-200 group rounded-lg px-2 -mx-2 transition-colors cursor-default">
             
