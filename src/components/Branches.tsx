@@ -95,10 +95,10 @@ export function Branches() {
               }}
               className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left" />
             
-            <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
+            <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
               <LiveWords text="7 branches. All across Nairobi." />
             </h2>
-            <LiveBlock className="text-gray-500 font-light max-w-md" variant="dark" inline={false}>
+            <LiveBlock className="type-lead max-w-md" variant="neutral" inline={false}>
               Strategically located in Nairobi's key areas. Open 365 days a year
               including weekends and public holidays.
             </LiveBlock>
