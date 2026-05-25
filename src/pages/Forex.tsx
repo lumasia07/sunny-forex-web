@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { RatesStrip } from '../components/RatesStrip';
 import { CtaBand } from '../components/CtaBand';
@@ -62,7 +62,132 @@ const faqs = [
   }
 ];
 
+function ForexFeatureCard({
+  feature,
+  index,
+}: {
+  feature: (typeof features)[number];
+  index: number;
+}) {
+  const Icon = feature.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.15 }}
+      whileHover={{ y: -4 }}
+      className="group relative h-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-200 bg-white shadow-sm hover:shadow-xl hover:border-[#7A1220]/40 transition-all duration-500"
+    >
+      <div className="absolute inset-0 bg-white" />
+      <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
+
+      <div className="relative z-10 flex flex-col p-6 sm:p-8 group-hover:[&_*]:text-white">
+        <motion.div
+          className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#7A1220]/8 border border-[#7A1220]/15 flex items-center justify-center mb-5 group-hover:bg-white/10 group-hover:border-white/30 transition-colors duration-500"
+          whileHover={{ scale: 1.12, rotate: 8 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 16 }}
+        >
+          <Icon className="w-5 h-5 text-[#7A1220] group-hover:text-white transition-colors duration-500" strokeWidth={1.75} />
+        </motion.div>
+
+        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-300 group-hover:text-white/40 transition-colors duration-500 mb-2">
+          0{index + 1}
+        </span>
+
+        <h3 className="text-lg sm:text-xl font-semibold text-[#0E0E0E] group-hover:text-white mb-3 transition-colors duration-500">
+          {feature.title}
+        </h3>
+
+        <p className="text-sm sm:text-base text-gray-500 group-hover:text-white/90 font-normal leading-relaxed transition-colors duration-500">
+          {feature.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+function FaqItem({
+  faq,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  faq: (typeof faqs)[number];
+  index: number;
+  isOpen: boolean;
+  onToggle: (index: number) => void;
+}) {
+  const isActive = isOpen;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 ${
+        isActive
+          ? 'border-[#7A1220]/40 shadow-lg'
+          : 'border-gray-100 bg-white hover:border-[#7A1220]/40 hover:shadow-md'
+      }`}
+    >
+      <div className="absolute inset-0 bg-white" />
+      <div
+        className={`absolute inset-0 bg-[#7A1220] transition-opacity duration-500 ${
+          isActive ? 'opacity-[0.88]' : 'opacity-0 group-hover:opacity-[0.88]'
+        }`}
+      />
+
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        onClick={() => onToggle(index)}
+        className="relative z-10 flex w-full items-center justify-between gap-6 px-7 py-5 text-left"
+      >
+        <span
+          className={`text-base md:text-lg font-medium transition-colors duration-500 ${
+            isActive ? 'text-white' : 'text-[#0E0E0E] group-hover:text-white'
+          }`}
+        >
+          {faq.q}
+        </span>
+        <ChevronDown
+          className={`w-5 h-5 flex-shrink-0 transition-all duration-500 ${
+            isActive
+              ? 'rotate-180 text-white'
+              : 'text-[#7A1220] group-hover:text-white'
+          }`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 overflow-hidden"
+          >
+            <div className="px-7 pb-6 text-white/90 font-normal leading-relaxed">
+              {faq.a}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 export function Forex() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaq((current) => (current === index ? null : index));
+  };
   return (
     <>
       <PageHero
@@ -158,26 +283,9 @@ export function Forex() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="flex flex-col"
-              >
-                <div className="w-14 h-14 rounded-full bg-white border-2 border-[#7A1220]/30 flex items-center justify-center mb-6 shadow-sm">
-                  <feature.icon className="w-5 h-5 text-[#7A1220]" strokeWidth={1.75} />
-                </div>
-                <h3 className="text-xl font-medium text-[#0E0E0E] mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-500 font-light leading-relaxed">
-                  {feature.description}
-                </p>
-              </motion.div>
+              <ForexFeatureCard key={feature.title} feature={feature} index={index} />
             ))}
           </div>
         </div>
@@ -198,24 +306,13 @@ export function Forex() {
 
           <div className="space-y-3">
             {faqs.map((faq, index) => (
-              <motion.details
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group bg-white border border-gray-100 rounded-2xl overflow-hidden"
-              >
-                <summary className="flex items-center justify-between gap-6 px-7 py-5 cursor-pointer list-none">
-                  <span className="text-base md:text-lg font-medium text-[#0E0E0E]">
-                    {faq.q}
-                  </span>
-                  <ChevronDown className="w-5 h-5 text-[#7A1220] group-open:rotate-180 transition-transform flex-shrink-0" />
-                </summary>
-                <div className="px-7 pb-6 text-gray-500 font-light leading-relaxed">
-                  {faq.a}
-                </div>
-              </motion.details>
+              <FaqItem
+                key={faq.q}
+                faq={faq}
+                index={index}
+                isOpen={openFaq === index}
+                onToggle={toggleFaq}
+              />
             ))}
           </div>
 
