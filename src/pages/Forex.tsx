@@ -182,6 +182,54 @@ function FaqItem({
   );
 }
 
+const rateRowGrid =
+  'grid grid-cols-[minmax(200px,2fr)_72px_minmax(100px,1fr)_minmax(100px,1fr)_minmax(120px,1fr)] items-center min-w-[640px]';
+
+function ForexRateRow({ rate }: { rate: (typeof forexRates)[number] }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02, y: -2 }}
+      transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+      className={`group relative ${rateRowGrid} px-6 md:px-8 py-4 md:py-5 transition-shadow duration-500 hover:shadow-xl hover:z-10`}
+    >
+      <div className="absolute inset-0 rounded-2xl bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.92]" />
+
+      <div className="relative z-10 flex items-center gap-3 font-medium text-[#0E0E0E] group-hover:text-white transition-all duration-500 group-hover:text-[15px] md:group-hover:text-base">
+        <span
+          className="text-2xl transition-transform duration-500 group-hover:scale-110"
+          role="img"
+          aria-label={rate.name}
+        >
+          {rate.flag}
+        </span>
+        <span className="transition-all duration-500 group-hover:font-semibold">{rate.name}</span>
+      </div>
+
+      <div className="relative z-10 font-mono text-xs text-gray-600 group-hover:text-white/80 group-hover:text-sm transition-all duration-500">
+        {rate.code}
+      </div>
+
+      <div className="relative z-10 text-right font-mono font-medium text-emerald-600 group-hover:text-white group-hover:text-base md:group-hover:text-lg transition-all duration-500">
+        {rate.buy.toFixed(2)}
+      </div>
+
+      <div className="relative z-10 text-right font-mono font-medium text-[#7A1220] group-hover:text-white group-hover:text-base md:group-hover:text-lg transition-all duration-500">
+        {rate.sell.toFixed(2)}
+      </div>
+
+      <div className="relative z-10 text-right">
+        <Link
+          to={`/lock-rate?cur=${rate.code}`}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7A1220] group-hover:text-white transition-colors duration-500 group-hover:px-3 group-hover:py-1.5 group-hover:rounded-full group-hover:bg-white/15"
+        >
+          <Lock className="w-3 h-3" />
+          <span>Lock Rate</span>
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
+
 export function Forex() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -226,45 +274,25 @@ export function Forex() {
             </Link>
           </div>
 
-          <div className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gray-50 text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                    <th className="px-8 py-5">Currency</th>
-                    <th className="px-6 py-5">Code</th>
-                    <th className="px-6 py-5 text-right">We Buy (KES)</th>
-                    <th className="px-6 py-5 text-right">We Sell (KES)</th>
-                    <th className="px-8 py-5 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100 text-sm font-light text-gray-600">
-                  {forexRates.map((rate, i) => (
-                    <tr key={rate.code} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-8 py-5 flex items-center gap-3 font-medium text-[#0E0E0E]">
-                        <span className="text-2xl" role="img" aria-label={rate.name}>{rate.flag}</span>
-                        <span>{rate.name}</span>
-                      </td>
-                      <td className="px-6 py-5 font-mono text-xs">{rate.code}</td>
-                      <td className="px-6 py-5 text-right font-mono font-medium text-emerald-600">
-                        {rate.buy.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-5 text-right font-mono font-medium text-[#7A1220]">
-                        {rate.sell.toFixed(2)}
-                      </td>
-                      <td className="px-8 py-5 text-right">
-                        <Link
-                          to={`/lock-rate?cur=${rate.code}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7A1220] hover:text-[#5C0D18] transition-colors"
-                        >
-                          <Lock className="w-3 h-3" />
-                          <span>Lock Rate</span>
-                        </Link>
-                      </td>
-                    </tr>
+          <div className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden">
+            <div className="overflow-x-auto py-2 px-1">
+              <div className="min-w-[640px]">
+                <div
+                  className={`${rateRowGrid} px-6 md:px-8 py-5 bg-gray-50 text-[10px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100`}
+                >
+                  <div>Currency</div>
+                  <div>Code</div>
+                  <div className="text-right">We Buy (KES)</div>
+                  <div className="text-right">We Sell (KES)</div>
+                  <div className="text-right">Action</div>
+                </div>
+
+                <div className="divide-y divide-gray-100 text-sm font-light text-gray-600">
+                  {forexRates.map((rate) => (
+                    <ForexRateRow key={rate.code} rate={rate} />
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
