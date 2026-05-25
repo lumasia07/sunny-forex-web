@@ -19,7 +19,7 @@ export function Footer() {
                 Sunny Forex
               </span>
             </Link>
-            <p className="text-sm text-gray-500 font-light leading-relaxed mb-6">
+            <p className="text-sm text-[#0E0E0E]/75 font-normal leading-relaxed mb-6">
               Kenya's trusted forex bureau and remittance partner. Licensed and
               regulated by the Central Bank of Kenya.
             </p>
