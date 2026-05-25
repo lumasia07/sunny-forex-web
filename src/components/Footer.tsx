@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ContactLink } from './ContactLink';
 const linkClass = 'text-sm text-gray-500 hover:text-[#7A1220] transition-colors';
 export function Footer() {
   return (
@@ -7,12 +8,16 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <Link to="/" className="inline-flex items-center mb-6">
+            <Link to="/" className="inline-flex items-center gap-3 mb-6 group">
               <img
-                src="/logo-sunny.png"
-                alt="Sunny Forex"
-                className="h-20 w-auto" />
-              
+                src="/logo-mark.png"
+                alt=""
+                aria-hidden="true"
+                className="h-14 w-14 object-contain"
+              />
+              <span className="font-montserrat text-xl font-bold tracking-wide text-[#7A1220]">
+                Sunny Forex
+              </span>
             </Link>
             <p className="text-sm text-gray-500 font-light leading-relaxed mb-6">
               Kenya's trusted forex bureau and remittance partner. Licensed and
@@ -59,6 +64,11 @@ export function Footer() {
             </h4>
             <ul className="space-y-4">
               <li>
+                <Link to="/" className={linkClass}>
+                  Home
+                </Link>
+              </li>
+              <li>
                 <Link to="/corporate" className={linkClass}>
                   About Us
                 </Link>
@@ -87,17 +97,23 @@ export function Footer() {
             </h4>
             <ul className="space-y-4">
               <li>
-                <a href="#" className={linkClass}>
+                <a
+                  href="mailto:info@sunnyremit.com?subject=Terms%20of%20Service%20Request"
+                  className={linkClass}>
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#" className={linkClass}>
+                <a
+                  href="mailto:info@sunnyremit.com?subject=Privacy%20Policy%20Request"
+                  className={linkClass}>
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className={linkClass}>
+                <a
+                  href="mailto:info@sunnyremit.com?subject=AML%20Policy%20Request"
+                  className={linkClass}>
                   AML Policy
                 </a>
               </li>
