@@ -32,7 +32,7 @@ export function PageHero({
   return (
     <section
       ref={ref}
-      className="relative w-full min-h-[70vh] flex items-end bg-[#0E0E0E] overflow-hidden">
+      className="page-hero relative w-full min-h-[70vh] flex items-end bg-[#0E0E0E] overflow-hidden text-white">
       
       <motion.div
         style={{
@@ -129,7 +129,7 @@ export function PageHero({
           className="flex items-center gap-4 mb-6">
           
           <div className="flex h-[3px] w-10">
-            <span className="flex-1 bg-[#0E0E0E]" />
+            <span className="flex-1 bg-white" />
             <span className="flex-1 bg-[#B91C1C]" />
             <span className="flex-1 bg-[#006B3F]" />
           </div>
@@ -152,7 +152,7 @@ export function PageHero({
             ease: [0.16, 1, 0.3, 1],
             delay: 0.15
           }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.02] tracking-tighter mb-6 max-w-3xl">
+          className="text-4xl md:text-5xl lg:text-6xl font-bold !text-white leading-[1.02] tracking-tighter mb-6 max-w-3xl">
           
           {title}
         </motion.h1>
@@ -171,7 +171,7 @@ export function PageHero({
             ease: 'easeOut',
             delay: 0.3
           }}
-          className="type-lead-light max-w-xl">
+          className="text-base md:text-lg font-normal leading-relaxed text-white/85 max-w-xl">
           
           {description}
         </motion.p>
