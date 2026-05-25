@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
+import { CtaBand } from '../components/CtaBand';
 import {
   Lock,
   ArrowRight,
@@ -491,6 +492,8 @@ export function LockRate() {
           </div>
         )}
       </AnimatePresence>
+
+      <CtaBand />
     </>
   );
 }
