@@ -1,5 +1,7 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { LiveBlock, LiveWords } from './LiveText';
 const rates = [
 {
   code: 'USD',
@@ -98,50 +100,53 @@ const rates = [
   change: 0.02
 }];
 
-function RateCard({ rate }: {rate: (typeof rates)[number];}) {
+function RateCard({ rate }: { rate: (typeof rates)[number] }) {
   const isUp = rate.change >= 0;
   return (
     <div className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-md transition-all min-w-[280px]">
       <div className="flex flex-col items-center gap-1">
-        <span className="text-2xl leading-none">{rate.flag}</span>
-        <span className="text-[10px] font-semibold tracking-wider text-gray-400">
+        <motion.span
+          className="text-2xl leading-none cursor-default"
+          whileHover={{ scale: 1.2, rotate: 5 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 15 }}>
+          {rate.flag}
+        </motion.span>
+        <LiveBlock className="text-[10px] font-semibold tracking-wider text-gray-400" variant="dark">
           {rate.code}
-        </span>
+        </LiveBlock>
       </div>
       <div className="w-px h-12 bg-gray-100" />
       <div className="flex-1 flex flex-col">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+          <LiveBlock className="text-xs font-medium text-gray-400 uppercase tracking-wider" variant="dark">
             Buy
-          </span>
-          <span className="text-base font-medium text-[#0E0E0E] tabular-nums">
+          </LiveBlock>
+          <LiveBlock className="text-base font-medium text-[#0E0E0E] tabular-nums" variant="dark">
             {rate.buy.toFixed(2)}
-          </span>
+          </LiveBlock>
         </div>
         <div className="flex items-baseline justify-between gap-2 mt-0.5">
-          <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+          <LiveBlock className="text-xs font-medium text-gray-400 uppercase tracking-wider" variant="dark">
             Sell
-          </span>
-          <span className="text-base font-medium text-[#0E0E0E] tabular-nums">
+          </LiveBlock>
+          <LiveBlock className="text-base font-medium text-[#0E0E0E] tabular-nums" variant="dark">
             {rate.sell.toFixed(2)}
-          </span>
+          </LiveBlock>
         </div>
       </div>
-      <div
-        className={`flex flex-col items-end gap-1 ${isUp ? 'text-emerald-600' : 'text-[#B91C1C]'}`}>
-        
-        {isUp ?
-        <TrendingUp className="w-3.5 h-3.5" strokeWidth={2} /> :
-
-        <TrendingDown className="w-3.5 h-3.5" strokeWidth={2} />
-        }
-        <span className="text-xs font-medium tabular-nums">
+      <div className={`flex flex-col items-end gap-1 ${isUp ? 'text-emerald-600' : 'text-[#B91C1C]'}`}>
+        {isUp ? (
+          <TrendingUp className="w-3.5 h-3.5" strokeWidth={2} />
+        ) : (
+          <TrendingDown className="w-3.5 h-3.5" strokeWidth={2} />
+        )}
+        <LiveBlock className="text-xs font-medium tabular-nums" variant="dark">
           {isUp ? '+' : ''}
           {rate.change.toFixed(2)}%
-        </span>
+        </LiveBlock>
       </div>
-    </div>);
-
+    </div>
+  );
 }
 export function RatesStrip() {
   // Duplicate rates for seamless infinite scroll
@@ -152,11 +157,11 @@ export function RatesStrip() {
         <div className="flex flex-col">
           <span className="inline-block w-10 h-px bg-[#7A1220] mb-4" />
           <h2 className="text-2xl md:text-3xl font-light text-[#0E0E0E] leading-tight">
-            Today's rates against KES
+            <LiveWords text="Today's rates against KES" />
           </h2>
-          <p className="text-sm text-gray-500 font-light mt-1">
+          <LiveBlock className="text-sm text-gray-500 font-light mt-1" variant="dark" inline={false}>
             Live rates updated throughout the trading day · Indicative only
-          </p>
+          </LiveBlock>
         </div>
 
         <div className="flex items-center gap-3 text-xs">
