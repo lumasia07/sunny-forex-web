@@ -2,6 +2,7 @@ import React, { Children } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { LiveBlock, LiveWords } from './LiveText';
 const branches = [
   {
     name: 'Kilimani Branch',
@@ -95,18 +96,19 @@ export function Branches() {
               className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left" />
             
             <h2 className="text-3xl md:text-4xl font-light text-[#0E0E0E] mb-4">
-              7 branches. All across Nairobi.
+              <LiveWords text="7 branches. All across Nairobi." />
             </h2>
-            <p className="text-gray-500 font-light max-w-md">
+            <LiveBlock className="text-gray-500 font-light max-w-md" variant="dark" inline={false}>
               Strategically located in Nairobi's key areas. Open 365 days a year
               including weekends and public holidays.
-            </p>
+            </LiveBlock>
           </div>
           <Link
             to="/branches"
             className="inline-flex items-center gap-2 text-sm font-medium text-[#7A1220] hover:text-[#5C0D18] transition-colors group">
-            
-            View all branches
+            <LiveBlock className="inline-flex items-center gap-2 text-sm font-medium text-[#7A1220]" variant="dark">
+              View all branches
+            </LiveBlock>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
@@ -132,12 +134,12 @@ export function Branches() {
               strokeWidth={1.5} />
             
               <div className="flex flex-col flex-1">
-                <h4 className="text-lg font-medium text-[#0E0E0E] mb-1 group-hover:text-[#7A1220] transition-colors">
+                <LiveBlock className="text-lg font-medium text-[#0E0E0E] mb-1 group-hover:text-[#7A1220] transition-colors" variant="dark">
                   {branch.name}
-                </h4>
-                <p className="text-gray-500 font-light text-sm">
+                </LiveBlock>
+                <LiveBlock className="text-gray-500 font-light text-sm" variant="dark">
                   {branch.area}
-                </p>
+                </LiveBlock>
               </div>
             </motion.div>
           )}
