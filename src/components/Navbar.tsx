@@ -9,6 +9,7 @@ const pillLinks = [
   { name: 'Remittance', href: '/remittance' },
   { name: 'Branches', href: '/branches' },
   { name: 'Corporate', href: '/corporate' },
+  { name: 'FAQ', href: '/#faq' },
   { name: 'Blog', href: '/blog' },
 ];
 
@@ -55,7 +56,6 @@ export function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Always show nav near top of page so hero is never covered on scroll-up
       if (currentScrollY < 120) {
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY.current + 10) {
@@ -85,9 +85,6 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
-  const ctaClass =
-    'px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-[15px] font-semibold rounded-full transition-all duration-300 whitespace-nowrap bg-[#7A1220] text-white hover:bg-[#5C0D18] shadow-md shadow-[#7A1220]/20';
-
   return (
     <>
       <nav
@@ -114,10 +111,24 @@ export function Navbar() {
             <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
               {pillLinks.map((link) => {
                 const isActive = location.pathname === link.href;
+                const isFaq = link.name === 'FAQ';
+
+                const handleLinkClick = (e: React.MouseEvent) => {
+                  if (isFaq && location.pathname === '/') {
+                    e.preventDefault();
+                    const element = document.getElementById('faq');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                      window.history.pushState(null, '', '/#faq');
+                    }
+                  }
+                };
+
                 return (
                   <Link
                     key={link.name}
                     to={link.href}
+                    onClick={handleLinkClick}
                     className={`nav-link ${isActive ? 'nav-link-active' : ''}`}>
                     {link.name}
                   </Link>
@@ -126,8 +137,9 @@ export function Navbar() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Desktop Only Contact Button (hidden below lg) */}
               <ContactLink
-                className="pl-5 pr-2 py-2 rounded-full font-semibold transition-all duration-300 bg-[#7A1220] hover:bg-[#911a2a] text-white text-sm whitespace-nowrap shadow-lg flex items-center justify-between gap-3 group shrink-0 select-none"
+                className="hidden lg:flex pl-5 pr-2 py-2 rounded-full font-semibold transition-all duration-300 bg-[#7A1220] hover:bg-[#911a2a] text-white text-sm whitespace-nowrap shadow-lg items-center justify-between gap-3 group shrink-0 select-none"
                 onNavigate={() => setMenuOpen(false)}>
                 <span>Contact Us Now</span>
                 <span className="w-8 h-8 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 shadow-md">
@@ -158,10 +170,25 @@ export function Navbar() {
             <div className="flex flex-col gap-1">
               {menuLinks.map((link) => {
                 const isActive = location.pathname === link.href;
+                const isFaq = link.name === 'FAQ';
+
+                const handleMobileClick = (e: React.MouseEvent) => {
+                  setMenuOpen(false);
+                  if (isFaq && location.pathname === '/') {
+                    e.preventDefault();
+                    const element = document.getElementById('faq');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                      window.history.pushState(null, '', '/#faq');
+                    }
+                  }
+                };
+
                 return (
                   <Link
                     key={link.name}
                     to={link.href}
+                    onClick={handleMobileClick}
                     className={`font-display font-semibold px-4 py-3.5 text-lg rounded-xl transition-colors ${
                       isActive ? 'text-[#7A1220]' : 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-gray-50'
                     }`}>
@@ -169,6 +196,8 @@ export function Navbar() {
                   </Link>
                 );
               })}
+              
+              {/* Mobile Menu Drawer CTA Button */}
               <ContactLink
                 className="pl-6 pr-2 py-2 rounded-full text-base font-semibold text-white bg-[#7A1220] hover:bg-[#911a2a] transition-all flex items-center justify-between group shadow-md"
                 onNavigate={() => setMenuOpen(false)}>

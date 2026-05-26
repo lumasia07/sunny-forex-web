@@ -50,7 +50,7 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center py-8 lg:py-0">
           
           {/* Left Text Column */}
-          <div className="text-left order-2 lg:order-1 relative z-10">
+          <div className="text-left order-1 relative z-10">
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -126,7 +126,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
-            className="order-1 lg:order-2 w-full flex items-center justify-center lg:justify-end shrink-0"
+            className="order-2 w-full flex items-center justify-center lg:justify-end shrink-0"
           >
             <HeroLockRateCard />
           </motion.div>
