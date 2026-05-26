@@ -91,7 +91,7 @@ export function OurStory() {
   return (
     <section
       id="our-story"
-      className="relative py-24 md:py-32 bg-[#FAFAF7] overflow-hidden"
+      className="relative py-16 md:py-20 lg:py-24 bg-[#FAFAF7] overflow-hidden"
     >
       {/* Decorative Blur Backgrounds */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">

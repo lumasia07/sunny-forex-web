@@ -37,7 +37,7 @@ export function CtaBand() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative py-24 md:py-32 bg-[#0E0E0E] text-white overflow-hidden">
+      className="relative py-16 md:py-20 lg:py-24 bg-[#0E0E0E] text-white overflow-hidden">
       
       {/* Background — Nairobi at night with parallax */}
       <motion.div className="absolute inset-0 z-0 opacity-30" style={{ y: bgY }}>

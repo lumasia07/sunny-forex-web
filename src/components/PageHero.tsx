@@ -12,6 +12,7 @@ type PageHeroProps = {
     label: string;
     href?: string;
   }[];
+  maroonGradient?: boolean;
 };
 export function PageHero({
   eyebrow,
@@ -19,7 +20,8 @@ export function PageHero({
   description,
   imageSrc,
   imageAlt,
-  breadcrumb
+  breadcrumb,
+  maroonGradient = false
 }: PageHeroProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -61,6 +63,9 @@ export function PageHero({
         <div className="absolute inset-0 bg-[#0E0E0E]/25" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E]/85 via-[#0E0E0E]/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0E0E0E]/70 via-transparent to-transparent" />
+        {maroonGradient && (
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#7A1220]/25 via-[#7A1220]/5 to-transparent z-[2]" />
+        )}
       </motion.div>
 
       <div

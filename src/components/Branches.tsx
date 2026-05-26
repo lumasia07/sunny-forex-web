@@ -45,7 +45,7 @@ export function Branches() {
   const gridY = useTransform(scrollYProgress, [0.1, 0.5], [30, 0]);
 
   return (
-    <section ref={sectionRef} className="py-24 md:py-32 bg-white overflow-hidden">
+    <section ref={sectionRef} className="py-16 md:py-20 lg:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <SplitColumnsReveal
           className="mb-16 items-end"

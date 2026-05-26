@@ -11,7 +11,7 @@ export function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  // Gentle scroll parallax only — no mouse tracking
+  // Gentle scroll-only parallax on background image
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '8%']);
 
   return (
@@ -19,8 +19,8 @@ export function Hero() {
       ref={sectionRef}
       className="hero-viewport relative w-full overflow-hidden"
     >
-      {/* Background image — simple, no 3D, no mouse parallax */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+      {/* Background image — simple scroll parallax */}
+      <div className="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
         <motion.img
           src="/12419.jpg"
           alt=""
@@ -28,19 +28,28 @@ export function Hero() {
           style={{ y: bgY }}
         />
 
-        {/* Overlays for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.88] via-white/[0.70] to-white/[0.35] lg:to-white/25" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-transparent to-white/60" />
+        {/* Dynamic Overlays for readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.90] via-white/[0.75] to-white/[0.30] lg:to-white/20 z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/50 z-[1]" />
+        
+        {/* Premium ambient maroon & gold brand glows for rich 3D backlighting */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-[1] pointer-events-none"
           style={{
-            background: `radial-gradient(ellipse 70% 60% at 50% 40%, rgba(122, 18, 32, 0.06) 0%, transparent 65%)`,
+            background: `
+              radial-gradient(circle at 85% 85%, rgba(122, 18, 32, 0.14) 0%, transparent 55%),
+              radial-gradient(circle at 15% 90%, rgba(122, 18, 32, 0.09) 0%, transparent 50%),
+              radial-gradient(circle at 50% 30%, rgba(122, 18, 32, 0.04) 0%, transparent 60%),
+              radial-gradient(circle at 80% 25%, rgba(212, 162, 76, 0.06) 0%, transparent 40%)
+            `,
           }}
         />
       </div>
 
       <div className="hero-viewport-inner relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 w-full flex flex-col justify-center">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center py-8 lg:py-0">
+          
+          {/* Left Text Column */}
           <div className="text-left order-2 lg:order-1 relative z-10">
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
@@ -112,13 +121,16 @@ export function Hero() {
             </motion.div>
           </div>
 
+          {/* Right Rates Column */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
-            className="order-1 lg:order-2 w-full flex items-center justify-center lg:justify-end shrink-0">
+            className="order-1 lg:order-2 w-full flex items-center justify-center lg:justify-end shrink-0"
+          >
             <HeroLockRateCard />
           </motion.div>
+
         </div>
       </div>
     </section>
