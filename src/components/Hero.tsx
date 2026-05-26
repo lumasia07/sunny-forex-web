@@ -91,15 +91,15 @@ export function Hero() {
                 to="/lock-rate"
                 className="btn-glow inline-flex justify-center items-center gap-3 pl-7 pr-2 py-2 rounded-full font-bold text-white text-sm sm:text-base group">
                 Lock-In My Rate
-                <span className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                <span className="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center group-hover:bg-black/30 transition-colors">
                   <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
                 </span>
               </Link>
               <Link
                 to="/branches"
-                className="inline-flex justify-center items-center gap-3 pl-7 pr-2 py-2 rounded-full bg-white/90 text-[#0E0E0E] border border-[#0E0E0E]/15 font-bold hover:border-[#7A1220] hover:text-[#7A1220] transition-all text-sm sm:text-base backdrop-blur-sm group">
+                className="inline-flex justify-center items-center gap-3 pl-7 pr-2 py-2 rounded-full bg-white text-[#0E0E0E] border border-[#0E0E0E]/15 font-bold hover:border-[#7A1220] hover:text-[#7A1220] transition-all text-sm sm:text-base group">
                 Find a Branch
-                <span className="w-10 h-10 rounded-full bg-[#0E0E0E]/8 flex items-center justify-center group-hover:bg-[#7A1220]/10 transition-colors">
+                <span className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200/80 flex items-center justify-center group-hover:bg-[#7A1220]/10 group-hover:text-white transition-colors">
                   <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
                 </span>
               </Link>

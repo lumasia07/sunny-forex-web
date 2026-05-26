@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { ContactLink } from './ContactLink';
 
 const pillLinks = [
@@ -126,10 +127,12 @@ export function Navbar() {
 
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               <ContactLink
-                className={ctaClass}
+                className="pl-5 pr-2 py-2 rounded-full font-semibold transition-all duration-300 bg-[#7A1220] hover:bg-[#911a2a] text-white text-sm whitespace-nowrap shadow-lg flex items-center justify-between gap-3 group shrink-0 select-none"
                 onNavigate={() => setMenuOpen(false)}>
-                <span className="sm:hidden">Contact</span>
-                <span className="hidden sm:inline">Contact Us</span>
+                <span>Contact Us Now</span>
+                <span className="w-8 h-8 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 shadow-md">
+                  <ArrowRight className="w-4 h-4 text-[#7A1220]" strokeWidth={2.5} />
+                </span>
               </ContactLink>
 
               <button
@@ -167,9 +170,12 @@ export function Navbar() {
                 );
               })}
               <ContactLink
-                className="px-4 py-3.5 text-lg font-semibold rounded-xl text-white bg-[#7A1220] hover:bg-[#5C0D18] transition-colors text-center"
+                className="pl-6 pr-2 py-2 rounded-full text-base font-semibold text-white bg-[#7A1220] hover:bg-[#911a2a] transition-all flex items-center justify-between group shadow-md"
                 onNavigate={() => setMenuOpen(false)}>
-                Contact Us
+                <span>Contact Us Now</span>
+                <span className="w-9 h-9 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform">
+                  <ArrowRight className="w-4.5 h-4.5 text-[#7A1220]" strokeWidth={2.5} />
+                </span>
               </ContactLink>
             </div>
           </div>
