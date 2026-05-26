@@ -16,7 +16,7 @@ export function HeroFeatures() {
   const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.8]);
 
   return (
-    <section ref={sectionRef} className="bg-white pt-24 md:pt-36 pb-20 md:pb-28 overflow-hidden">
+    <section ref={sectionRef} className="bg-white pt-16 md:pt-24 pb-20 md:pb-28 overflow-hidden">
 
       <motion.div
         className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12"
@@ -30,8 +30,8 @@ export function HeroFeatures() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="col-span-1 lg:row-span-2 rounded-2xl md:rounded-[1.75rem] overflow-hidden group min-h-[200px] sm:min-h-[280px] lg:min-h-0">
             <img
-              src="/pexels-jakubzerdzicki-30572289.jpg"
-              alt="Forex trading and currency exchange"
+              src="/pexels-ben-iwara-1033992193-27742235.jpg"
+              alt="Kenya Diani beach and forex services"
               className="w-full h-full min-h-[200px] sm:min-h-[280px] lg:min-h-[420px] object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </motion.div>
@@ -150,8 +150,8 @@ export function HeroFeatures() {
             whileHover={{ y: -4 }}
             className="col-span-2 lg:col-span-1 lg:col-start-5 lg:row-span-2 lg:row-start-1 relative rounded-2xl md:rounded-[1.75rem] overflow-hidden group min-h-[200px] lg:min-h-0 transition-shadow hover:shadow-[0_24px_64px_rgba(0,0,0,0.2)]">
             <img
-              src="/pexels-kelvin-kibe-3073372-26898331.jpg"
-              alt="Professional forex services"
+              src="/pexels-sergey-pesterev-69811391-8427984.jpg"
+              alt="Kenya landscape and professional forex"
               className="absolute inset-0 w-full h-full object-cover opacity-45 group-hover:opacity-55 transition-all duration-700 group-hover:scale-105 min-h-[200px] lg:min-h-[420px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E] via-[#0E0E0E]/75 to-[#7A1220]/45" />

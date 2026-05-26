@@ -102,7 +102,7 @@ export function TrustStats() {
                 duration: 2.5,
                 ease: 'easeOut'
               }}
-              src="/pexels-kelvin-kibe-3073372-26898331.jpg"
+              src="/pexels-mnmshakir-35034068.jpg"
               alt="Forex chart analyzing currency movements"
               className="w-full h-full object-cover" />
             

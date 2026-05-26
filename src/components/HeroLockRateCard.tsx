@@ -18,7 +18,7 @@ export function HeroLockRateCard() {
   const receiveNum = sendNum * selected.rate;
 
   return (
-    <div className="hero-lock-card w-full mx-auto lg:mx-0 lg:ml-auto">
+    <div className="hero-lock-card w-full max-w-[300px] mx-auto lg:mx-0 lg:ml-auto">
       <div className="relative rounded-2xl overflow-hidden shadow-[0_12px_40px_rgba(122,18,32,0.1)] border border-[#7A1220]/10 bg-white">
         <div className="h-1 bg-gradient-to-r from-[#7A1220] via-[#B91C1C] to-[#006B3F]" />
 

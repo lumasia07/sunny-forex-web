@@ -111,7 +111,7 @@ export function LockRate() {
         eyebrow="Remittance & Forex"
         title="Lock-In Your Exchange Rate"
         description="Secure today's guaranteed exchange rates instantly. Avoid market volatility and finalize your trade at any branch within 4 hours."
-        imageSrc="/pexels-jakubzerdzicki-30572289.jpg"
+        imageSrc="/pexels-ben-iwara-1033992193-27742235.jpg"
         imageAlt="Forex Rate lock-in"
         breadcrumb={[
           { label: 'Home', href: '/' },

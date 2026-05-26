@@ -242,7 +242,7 @@ export function Forex() {
         eyebrow="Currency Exchange"
         title="Trade currencies with confidence."
         description="Competitive rates, instant service, and seven branches across Nairobi — Sunny Forex has been Kenya's trusted bureau since 2008."
-        imageSrc="/pexels-jakubzerdzicki-30572289.jpg"
+        imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
         imageAlt="Currency exchange board rates"
         breadcrumb={[
           { label: 'Home', href: '/' },

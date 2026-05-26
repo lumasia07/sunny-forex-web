@@ -1,490 +1,350 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  PanInfo,
-} from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { LiveBlock, LiveWords } from './LiveText';
 
-/* ─── Story Data ─────────────────────────────────────────────── */
 const stories = [
   {
     src: '/pexels-mnmshakir-35034068.jpg',
-    title: 'Rooted in Culture',
-    subtitle: 'The Maasai Spirit',
-    story:
-      'From the Maasai Mara to our branches in Nairobi, our roots run deep in Kenyan soil. We carry the resilience and pride of a nation into every transaction — because moving money should honour the people it serves.',
+    title: "Empowering Kenya's Trade",
+    subtitle: 'Local Trust, Global Impact',
+    description:
+      "From Nairobi's commercial hub to the furthest reaches of the savannah, we empower local enterprises and individuals with instant, competitive currency exchange. We run deep in Kenyan soil, carrying the resilience and pride of our nation into every trade.",
     accent: '#B91C1C',
-    year: '2008',
   },
   {
     src: '/pexels-sergey-pesterev-69811391-8427984.jpg',
-    title: 'Standing Tall',
-    subtitle: 'The View From The Peak',
-    story:
-      'Like the snow-capped peaks of Mt. Kilimanjaro watching over the savannah, Sunny Forex stands as a beacon of trust — visible from every corner, always there when you need us most.',
+    title: 'Reaching New Heights',
+    subtitle: 'Guaranteed Rates, Peak Reliability',
+    description:
+      'Just as Mt. Kilimanjaro stands tall and firm watching over East Africa, Sunny Forex stands as a beacon of stability. Avoid market volatility by locking in guaranteed rates and finalize your exchange at any of our branches.',
     accent: '#006B3F',
-    year: '2012',
   },
   {
     src: '/pexels-ben-iwara-1033992193-27742235.jpg',
-    title: 'Coast to Capital',
-    subtitle: 'Kenya\'s Shoreline',
-    story:
-      'From the palm-lined beaches of Diani to the bustling streets of Nairobi CBD, our network connects Kenya\'s most vibrant communities — making forex access as easy as a walk to the beach.',
+    title: 'Connecting Coast to Capital',
+    subtitle: 'Seamless Mobile & Cash Flow',
+    description:
+      "Whether sending funds to coastal tourism hotspots in Diani or managing corporate capital in Nairobi CBD, our real-time mobile money and M-Pesa integrations make local transfers absolutely effortless.",
     accent: '#0EA5E9',
-    year: '2015',
   },
   {
     src: '/pexels-maria-stewart-2268904-5643136 (1).jpg',
-    title: 'Global Connections',
-    subtitle: 'Every Continent, One Promise',
-    story:
-      'The world is smaller than it seems. Through our partnerships with Western Union, MoneyGram, and more — we bridge continents. Every shilling you send carries a piece of home.',
+    title: 'Bridging Global Borders',
+    subtitle: 'Worldwide Remittance Network',
+    description:
+      'Partnering with global networks like Western Union, MoneyGram, and Ria, we connect families across continents. Fast, secure, and licensed by the Central Bank of Kenya — bringing the world closer with every shilling.',
     accent: '#D4A24C',
-    year: '2018',
-  },
-  {
-    src: '/pexels-kursat-kuzu-42706530-12705278.jpg',
-    title: 'Taking Flight',
-    subtitle: 'Moving At The Speed of Trust',
-    story:
-      'In a world that never stops moving, your money shouldn\'t wait. Instant M-Pesa payouts, same-day transfers, real-time rates — because the future of forex is already here.',
-    accent: '#7A1220',
-    year: '2024',
-  },
-  {
-    src: '/pexels-jakubzerdzicki-30572289.jpg',
-    title: 'Precision & Insight',
-    subtitle: 'The Art of Exchange',
-    story:
-      'Behind every rate is a team of specialists watching global markets 24/7. We don\'t just exchange currency — we read the pulse of the global economy so you always get the best value.',
-    accent: '#22C55E',
-    year: 'Today',
   },
 ];
 
-/* ─── Fullscreen Story Viewer ────────────────────────────────── */
-function StoryViewer({
-  initialIndex,
-  onClose,
-}: {
-  initialIndex: number;
-  onClose: () => void;
-}) {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const [progress, setProgress] = useState(0);
-  const dragX = useMotionValue(0);
-  const springX = useSpring(dragX, { stiffness: 300, damping: 30 });
-  const timerRef = useRef<number | null>(null);
+export function OurStory() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const story = stories[currentIndex];
+  const totalSlides = stories.length + 1; // +1 for the CTA Slide
 
-  const goNext = useCallback(() => {
-    if (currentIndex < stories.length - 1) {
-      setCurrentIndex((i) => i + 1);
-      setProgress(0);
-    } else {
-      onClose();
+  const resetTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
     }
-  }, [currentIndex, onClose]);
-
-  const goPrev = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex((i) => i - 1);
-      setProgress(0);
+    if (isPlaying && !isHovered) {
+      timerRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % totalSlides);
+      }, 6000);
     }
-  }, [currentIndex]);
+  };
 
-  // Auto-progress timer (8 seconds per story)
   useEffect(() => {
-    const duration = 8000;
-    const interval = 50;
-    let elapsed = 0;
-
-    timerRef.current = window.setInterval(() => {
-      elapsed += interval;
-      setProgress(elapsed / duration);
-      if (elapsed >= duration) {
-        goNext();
-      }
-    }, interval);
-
+    resetTimer();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [currentIndex, goNext]);
+  }, [currentIndex, isPlaying, isHovered]);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [goNext, goPrev, onClose]);
-
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.x < -80) goNext();
-    else if (info.offset.x > 80) goPrev();
-    dragX.set(0);
+  const handleNext = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % totalSlides);
   };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
-      onClick={onClose}>
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-colors">
-        <X className="w-5 h-5 text-white" />
-      </button>
+  const handlePrev = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
 
-      {/* Progress bars */}
-      <div className="absolute top-4 left-4 right-16 z-50 flex gap-1.5">
-        {stories.map((_, i) => (
-          <div key={i} className="flex-1 h-[3px] rounded-full bg-white/20 overflow-hidden">
-            <motion.div
-              className="h-full rounded-full"
-              style={{ backgroundColor: story.accent }}
-              animate={{
-                width:
-                  i < currentIndex
-                    ? '100%'
-                    : i === currentIndex
-                    ? `${progress * 100}%`
-                    : '0%',
-              }}
-              transition={{ duration: 0.05, ease: 'linear' }}
-            />
-          </div>
-        ))}
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsPlaying(!isPlaying);
+  };
+
+  const isCtaSlide = currentIndex === stories.length;
+  const currentSlide = isCtaSlide ? null : stories[currentIndex];
+  const accentColor = isCtaSlide ? '#7A1220' : currentSlide?.accent || '#7A1220';
+
+  return (
+    <section
+      id="our-story"
+      className="relative py-24 md:py-32 bg-[#FAFAF7] overflow-hidden"
+    >
+      {/* Decorative Blur Backgrounds */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 left-1/4 w-80 h-80 bg-[#7A1220]/[0.02] rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-[#006B3F]/[0.02] rounded-full blur-[80px]" />
       </div>
 
-      {/* Story content — swipeable */}
-      <motion.div
-        className="relative w-full max-w-lg mx-4 aspect-[9/16] max-h-[85vh] rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing"
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        style={{ x: springX }}
-        onDragEnd={handleDragEnd}
-        onClick={(e) => e.stopPropagation()}>
-        {/* Background image */}
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={story.src}
-            src={story.src}
-            alt={story.title}
-            className="absolute inset-0 w-full h-full object-cover"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5 }}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Header - Stately and Focused on Services */}
+        <div className="mb-12 md:mb-16 max-w-2xl">
+          <motion.span
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="inline-block w-12 h-px bg-[#7A1220] mb-5 origin-left"
           />
-        </AnimatePresence>
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-
-        {/* Year badge */}
-        <motion.div
-          className="absolute top-6 left-6 px-4 py-1.5 rounded-full backdrop-blur-md text-white text-xs font-bold tracking-widest uppercase"
-          style={{ backgroundColor: `${story.accent}CC` }}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}>
-          {story.year}
-        </motion.div>
-
-        {/* Story text */}
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}>
-              <p
-                className="text-xs font-bold tracking-[0.25em] uppercase mb-2"
-                style={{ color: story.accent }}>
-                {story.subtitle}
-              </p>
-              <h3 className="text-3xl font-bold text-white leading-tight mb-3 tracking-tight">
-                {story.title}
-              </h3>
-              <p className="text-sm text-white/80 leading-relaxed">{story.story}</p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Tap zones for prev/next */}
-        <div className="absolute inset-0 flex">
-          <button className="w-1/3 h-full" onClick={goPrev} aria-label="Previous story" />
-          <div className="w-1/3" />
-          <button className="w-1/3 h-full" onClick={goNext} aria-label="Next story" />
-        </div>
-      </motion.div>
-
-      {/* Nav arrows (desktop) */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          goPrev();
-        }}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-colors hidden md:flex"
-        aria-label="Previous">
-        <ChevronLeft className="w-6 h-6 text-white" />
-      </button>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          goNext();
-        }}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-colors hidden md:flex"
-        aria-label="Next">
-        <ChevronRight className="w-6 h-6 text-white" />
-      </button>
-
-      {/* Story counter */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-xs font-medium tracking-widest">
-        {currentIndex + 1} / {stories.length}
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Grid Card ──────────────────────────────────────────────── */
-function StoryCard({
-  story,
-  index,
-  onOpen,
-}: {
-  story: (typeof stories)[number];
-  index: number;
-  onOpen: (i: number) => void;
-}) {
-  /* Each card reveals when scrolled into view */
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start end', 'center center'],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
-  const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
-
-  // Vary grid spans for creative layout
-  const spanClasses = [
-    'col-span-2 row-span-2',        // 0: Maasai — large featured
-    'col-span-1 row-span-1',        // 1: Mt Kilimanjaro
-    'col-span-1 row-span-2',        // 2: Beach — tall
-    'col-span-1 row-span-1',        // 3: Globe
-    'col-span-2 row-span-1',        // 4: Airplane — wide
-    'col-span-1 row-span-1',        // 5: Forex charts
-  ];
-
-  return (
-    <motion.div
-      ref={cardRef}
-      style={{ y, opacity, scale }}
-      className={`${spanClasses[index]} relative rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer group`}
-      onClick={() => onOpen(index)}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}>
-      {/* Image */}
-      <img
-        src={story.src}
-        alt={story.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        loading="lazy"
-      />
-
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
-
-      {/* Accent line */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-[3px]"
-        style={{ backgroundColor: story.accent }}
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
-      />
-
-      {/* Year badge */}
-      <div
-        className="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md"
-        style={{ backgroundColor: `${story.accent}99` }}>
-        {story.year}
-      </div>
-
-      {/* Content overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 flex flex-col justify-end">
-        <motion.p
-          className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 transition-colors duration-300"
-          style={{ color: story.accent }}>
-          {story.subtitle}
-        </motion.p>
-        <h3 className="text-lg md:text-xl font-bold text-white leading-tight tracking-tight mb-2">
-          {story.title}
-        </h3>
-
-        {/* Tap hint */}
-        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="text-[11px] font-medium text-white/70">Tap to explore</span>
-          <span
-            className="w-6 h-6 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: `${story.accent}66` }}>
-            <ArrowRight className="w-3 h-3 text-white" />
-          </span>
-        </div>
-      </div>
-
-      {/* Shimmer effect on hover */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        animate={{ x: ['-100%', '200%'] }}
-        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: 'linear' }}
-      />
-    </motion.div>
-  );
-}
-
-/* ─── OurStory Section ───────────────────────────────────────── */
-export function OurStory() {
-  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const headingY = useTransform(scrollYProgress, [0, 0.3], [50, 0]);
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
-
-  return (
-    <>
-      <section
-        ref={sectionRef}
-        id="our-story"
-        className="relative py-24 md:py-32 bg-[#FAFAF7] overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#7A1220]/[0.03] rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#006B3F]/[0.03] rounded-full blur-[80px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D4A24C]/[0.02] rounded-full blur-[120px]" />
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-6 md:px-12">
-          {/* Header */}
-          <motion.div
-            style={{ y: headingY, opacity: headingOpacity }}
-            className="mb-16 md:mb-20 max-w-2xl">
-            <motion.span
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-block w-12 h-px bg-[#7A1220] mb-6 origin-left"
-            />
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
-              className="text-xs font-bold tracking-[0.25em] uppercase text-[#7A1220] mb-4">
-              Our Story
-            </motion.p>
-
-            <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-[#0E0E0E] tracking-tight leading-[1.08] mb-6">
-              A legacy of trust in{' '}
-              <span className="text-[#7A1220]">every transaction.</span>
-            </h2>
-
-            <p className="text-base md:text-lg text-[#0E0E0E]/60 leading-relaxed max-w-lg">
-              Since 2008, we've built our reputation on transparency, competitive rates,
-              and unwavering reliability. Licensed by the Central Bank of Kenya, our
-              story is woven into the fabric of this nation.
-            </p>
-          </motion.div>
-
-          {/* Creative Masonry Grid — 3 columns */}
-          <div className="grid grid-cols-2 md:grid-cols-3 auto-rows-[180px] md:auto-rows-[220px] gap-3 md:gap-4">
-            {stories.map((story, index) => (
-              <StoryCard
-                key={story.src}
-                story={story}
-                index={index}
-                onOpen={setViewerIndex}
-              />
-            ))}
-          </div>
-
-          {/* Bottom tagline */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="mt-16 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-6">
-              <div className="flex h-[3px] w-16">
-                <span className="flex-1 bg-[#0E0E0E]" />
-                <span className="flex-1 bg-[#B91C1C]" />
-                <span className="flex-1 bg-[#006B3F]" />
-              </div>
-              <p className="text-sm text-[#0E0E0E]/50 font-medium">
-                Tap any image to explore our journey
-              </p>
-            </div>
+            transition={{ duration: 0.5 }}
+            className="text-[11px] font-bold tracking-[0.25em] uppercase text-[#7A1220] mb-3"
+          >
+            Our Service Journey
+          </motion.p>
+          <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-[#0E0E0E] tracking-tight leading-[1.1] mb-5">
+            A vision of trust, <span className="text-[#7A1220]">connecting lives.</span>
+          </h2>
+          <p className="text-sm md:text-base text-[#0E0E0E]/60 leading-relaxed max-w-xl">
+            We bridge communities across Kenya and beyond. Take a look at the pillars that define how we move money safely, efficiently, and with respect for our rich heritage.
+          </p>
+        </div>
 
-            <div className="flex items-center gap-4">
-              {[
-                { label: 'Years', value: '17+' },
-                { label: 'Branches', value: '7' },
-                { label: 'Growth', value: '+12%' },
-              ].map((stat) => (
-                <div key={stat.label} className="flex items-center gap-2">
-                  <span className="w-px h-8 bg-[#0E0E0E]/10" />
-                  <div>
-                    <p className="text-xl font-bold text-[#0E0E0E] leading-none tabular-nums">
-                      {stat.value}
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#0E0E0E]/40 mt-0.5">
-                      {stat.label}
+        {/* Elongated Slideshow Container */}
+        <div
+          className="relative w-full aspect-[16/10] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden shadow-2xl bg-black border border-white/5 select-none"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Background Images */}
+          <div className="absolute inset-0 w-full h-full">
+            <AnimatePresence mode="wait">
+              {isCtaSlide ? (
+                <motion.div
+                  key="cta-bg"
+                  className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center overflow-hidden"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  {/* Abstract glowing graphics for premium CTA look */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#7A1220]/10 blur-[120px]" />
+                  <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-[#006B3F]/5 blur-[100px]" />
+                  {/* Subtle grid background */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+                </motion.div>
+              ) : (
+                <motion.img
+                  key={currentSlide?.src}
+                  src={currentSlide?.src}
+                  alt={currentSlide?.title}
+                  className="absolute inset-0 w-full h-full object-cover origin-center"
+                  initial={{ scale: 1.06, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.7 }}
+                  exit={{ scale: 0.96, opacity: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                />
+              )}
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
+          </div>
+
+          {/* Frosted Glass Floating Card for Text Overlay */}
+          <div className="absolute inset-0 p-6 sm:p-8 md:p-10 flex items-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 30 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full max-w-lg md:max-w-xl backdrop-blur-xl bg-black/40 border border-white/10 rounded-[2rem] p-6 sm:p-8 md:p-10 shadow-2xl flex flex-col justify-between min-h-[75%] sm:min-h-[85%] md:min-h-0 relative z-20 overflow-hidden"
+              >
+                {/* Visual Glass Glow */}
+                <div
+                  className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[60px] opacity-20 transition-colors duration-700"
+                  style={{ backgroundColor: accentColor }}
+                />
+
+                {!isCtaSlide && currentSlide ? (
+                  <div className="flex flex-col flex-1 justify-center">
+                    <span
+                      className="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 block w-fit"
+                      style={{ color: accentColor }}
+                    >
+                      {currentSlide.subtitle}
+                    </span>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight mb-4">
+                      {currentSlide.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light mb-6">
+                      {currentSlide.description}
                     </p>
                   </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+                ) : (
+                  <div className="flex flex-col flex-1 justify-center items-start">
+                    <span
+                      className="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 block"
+                      style={{ color: '#7A1220' }}
+                    >
+                      Experience Premium Exchange
+                    </span>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight mb-4">
+                      Ready to experience seamless transactions?
+                    </h3>
+                    <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light mb-8">
+                      Visit any of our 7 modern branches in Nairobi, lock in your preferred currency rates online in advance, or contact our professional trading desk today.
+                    </p>
 
-      {/* Fullscreen Story Viewer */}
-      <AnimatePresence>
-        {viewerIndex !== null && (
-          <StoryViewer
-            initialIndex={viewerIndex}
-            onClose={() => setViewerIndex(null)}
-          />
-        )}
-      </AnimatePresence>
-    </>
+                    {/* Premium Styled Rounded-Full Button with Arrow-in-div design */}
+                    <Link
+                      to="/branches"
+                      className="inline-flex items-center gap-4 bg-[#7A1220] hover:bg-[#911a2a] text-white font-medium pl-6 pr-2 py-2 rounded-full shadow-lg transition-all duration-300 group text-sm select-none"
+                    >
+                      <span className="font-semibold px-2">Contact Us Now</span>
+                      <span className="w-10 h-10 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 shadow-md">
+                        <ArrowRight className="w-5 h-5" />
+                      </span>
+                    </Link>
+                  </div>
+                )}
+
+                {/* Progress Indicators & Navigation Bar inside Card */}
+                <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/10 gap-4">
+                  <div className="flex items-center gap-2">
+                    {/* Previous Button */}
+                    <button
+                      onClick={handlePrev}
+                      className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
+                      aria-label="Previous slide"
+                    >
+                      <ChevronLeft className="w-4 h-4 text-white" />
+                    </button>
+                    {/* Next Button */}
+                    <button
+                      onClick={handleNext}
+                      className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
+                      aria-label="Next slide"
+                    >
+                      <ChevronRight className="w-4 h-4 text-white" />
+                    </button>
+
+                    {/* Auto-play Pause Control */}
+                    <button
+                      onClick={togglePlay}
+                      className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors ml-1"
+                      aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
+                    >
+                      {isPlaying ? (
+                        <Pause className="w-3.5 h-3.5 text-white" />
+                      ) : (
+                        <Play className="w-3.5 h-3.5 text-white ml-0.5" />
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Horizontal Linear Indicators */}
+                  <div className="flex gap-2">
+                    {Array.from({ length: totalSlides }).map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleDotClick(i)}
+                        className="group relative py-2 px-1 focus:outline-none"
+                        aria-label={`Go to slide ${i + 1}`}
+                      >
+                        <div
+                          className="h-1 rounded-full transition-all duration-500 overflow-hidden relative"
+                          style={{
+                            width: i === currentIndex ? '2.5rem' : '0.5rem',
+                            backgroundColor: i === currentIndex ? accentColor : 'rgba(255,255,255,0.2)',
+                          }}
+                        >
+                          {i === currentIndex && isPlaying && !isHovered && (
+                            <motion.div
+                              className="absolute top-0 bottom-0 left-0 bg-white"
+                              initial={{ width: '0%' }}
+                              animate={{ width: '100%' }}
+                              transition={{ duration: 6, ease: 'linear' }}
+                              key={currentIndex}
+                            />
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Subtle Outer Nav Chevrons (desktop only for premium spacing) */}
+          <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-3 z-30">
+            <button
+              onClick={handlePrev}
+              className="w-11 h-11 rounded-full bg-black/45 hover:bg-black/75 border border-white/15 flex items-center justify-center text-white/70 hover:text-white backdrop-blur-md transition-all duration-300"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="w-11 h-11 rounded-full bg-black/45 hover:bg-black/75 border border-white/15 flex items-center justify-center text-white/70 hover:text-white backdrop-blur-md transition-all duration-300"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Brand Indicators */}
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="flex h-[2px] w-12">
+              <span className="flex-1 bg-[#7A1220]" />
+              <span className="flex-1 bg-[#006B3F]" />
+              <span className="flex-1 bg-[#D4A24C]" />
+            </div>
+            <p className="text-xs text-[#0E0E0E]/45 font-medium">
+              Hover to pause auto-swipe • Swipe or tap indicators to browse
+            </p>
+          </div>
+
+          <div className="flex items-center gap-5">
+            {[
+              { label: 'Licensed By', value: 'CBK' },
+              { label: 'Nairobi Branches', value: '7' },
+              { label: 'Client Satisfaction', value: '99%' },
+            ].map((stat, i) => (
+              <div key={stat.label} className="flex items-center gap-2">
+                {i > 0 && <span className="w-px h-6 bg-[#0E0E0E]/10" />}
+                <div>
+                  <p className="text-lg font-bold text-[#0E0E0E] leading-none tabular-nums">
+                    {stat.value}
+                  </p>
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-[#0E0E0E]/35 mt-0.5">
+                    {stat.label}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

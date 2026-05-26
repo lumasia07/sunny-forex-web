@@ -12,7 +12,7 @@ const posts = [
     excerpt: "After a volatile year, the KES has settled into a tighter trading range. Here's what it means for remitters and importers.",
     date: 'May 14, 2026',
     readTime: '5 min read',
-    image: '/pexels-jakubzerdzicki-30572289.jpg',
+    image: '/pexels-maria-stewart-2268904-5643136 (1).jpg',
     content: `
       <p class="text-lg leading-relaxed text-[#0E0E0E] font-light mb-6">
         After nearly two years of macroeconomic headwinds and sharp exchange rate fluctuations, the Kenyan Shilling (KES) has entered a period of relative calm against the US Dollar (USD). For local businesses, importers, and the diaspora community sending money home, this stability is a welcome relief.
@@ -74,7 +74,7 @@ const posts = [
     excerpt: 'Forward contracts, natural hedges, and when to use which. Practical guidance for growing businesses.',
     date: 'April 28, 2026',
     readTime: '7 min read',
-    image: '/pexels-kursat-kuzu-42706530-12705278.jpg',
+    image: '/pexels-sergey-pesterev-69811391-8427984.jpg',
     content: `
       <p class="text-lg leading-relaxed text-[#0E0E0E] font-light mb-6">
         For small and medium enterprises (SMEs) in Kenya, currency volatility can make the difference between a highly profitable quarter and a severe deficit. Hedging FX risk is no longer just for large multinationals; it is a vital survival tool for local entrepreneurs.
@@ -104,7 +104,7 @@ const posts = [
     excerpt: 'Our newest location at Capital Centre marks our continued commitment to making FX services accessible.',
     date: 'April 20, 2026',
     readTime: '3 min read',
-    image: '/pexels-kelvin-kibe-3073372-26898331.jpg',
+    image: '/pexels-ben-iwara-1033992193-27742235.jpg',
     content: `
       <p class="text-lg leading-relaxed text-[#0E0E0E] font-light mb-6">
         We are thrilled to announce the opening of our seventh flagship branch at Capital Centre along Mombasa Road, Nairobi. This new branch represents our ongoing vision to deliver premium, reliable, and CBK-regulated currency solutions closer to Nairobi's central hubs.
@@ -193,7 +193,7 @@ export function Blog() {
         eyebrow="The Sunny Forex Blog"
         title="Insights, market notes, and stories from the floor."
         description="Plain-language analysis from a team that has been moving Kenyan money for nearly two decades."
-        imageSrc="/pexels-kelvin-kibe-3073372-26898331.jpg"
+        imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
         imageAlt="Kenyan markets"
         breadcrumb={[
           { label: 'Home', href: '/' },

@@ -42,7 +42,7 @@ export function CtaBand() {
       {/* Background — Nairobi at night with parallax */}
       <motion.div className="absolute inset-0 z-0 opacity-30" style={{ y: bgY }}>
         <img
-          src="/pexels-kursat-kuzu-42706530-12705278.jpg"
+          src="/pexels-mnmshakir-35034068.jpg"
           alt=""
           aria-hidden="true"
           className="w-full h-full object-cover" />

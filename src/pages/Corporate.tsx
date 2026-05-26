@@ -118,7 +118,7 @@ export function Corporate() {
         eyebrow="Enterprise & Corporate"
         title="FX built around your business."
         description="From corporate treasury to cross-border payroll — Sunny Forex partners with Kenyan businesses to move money intelligently, at scale."
-        imageSrc="/pexels-kursat-kuzu-42706530-12705278.jpg"
+        imageSrc="/pexels-maria-stewart-2268904-5643136 (1).jpg"
         imageAlt="Corporate treasury and shipping logistics"
         breadcrumb={[
           { label: 'Home', href: '/' },
@@ -166,7 +166,7 @@ export function Corporate() {
       <section className="py-16 sm:py-24 md:py-32 bg-[#0E0E0E] text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-15">
           <img
-            src="/pexels-kelvin-kibe-3073372-26898331.jpg"
+            src="/pexels-mnmshakir-35034068.jpg"
             alt="Nairobi skylines"
             aria-hidden="true"
             className="w-full h-full object-cover"
