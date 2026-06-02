@@ -18,7 +18,7 @@ const stories = [
     title: 'Reaching New Heights',
     subtitle: 'Guaranteed Rates, Peak Reliability',
     description:
-      'Just as Mt. Kilimanjaro stands tall and firm watching over East Africa, Sunny Forex stands as a beacon of stability. Avoid market volatility by locking in guaranteed rates and finalize your exchange at any of our branches.',
+      'Just as Mt. Kilimanjaro stands tall and firm watching over East Africa, Sunny Remit stands as a beacon of stability. Avoid market volatility by securing guaranteed rates and send money with confidence at any of our branches.',
     accent: '#006B3F',
   },
   {
@@ -210,7 +210,7 @@ export function OurStory() {
                       Ready to experience seamless transactions?
                     </h3>
                     <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light mb-8">
-                      Visit any of our 7 modern branches in Nairobi, lock in your preferred currency rates online in advance, or contact our professional trading desk today.
+                      Visit any of our 7 modern branches in Nairobi, send money at your preferred currency rates online in advance, or contact our professional trading desk today.
                     </p>
 
                     {/* Premium Styled Rounded-Full Button with Arrow-in-div design */}

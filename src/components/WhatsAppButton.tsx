@@ -271,7 +271,7 @@ export function WhatsAppButton() {
                   {branches.map((branch, i) =>
                 <motion.a
                   key={branch.name}
-                  href={`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(`Hello Sunny Forex (${branch.name}), I'd like to enquire about a transaction.`)}`}
+                  href={`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(`Hello Sunny Remit (${branch.name}), I'd like to enquire about a transaction.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   initial={{

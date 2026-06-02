@@ -53,14 +53,14 @@ export function AppSplash({ onComplete }: AppSplashProps) {
           transition={{ duration: FADE_OUT_MS / 1000, ease: 'easeInOut' }}
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-white"
           role="status"
-          aria-label="Loading Sunny Forex">
+          aria-label="Loading Sunny Remit">
           <GlobeLoader />
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.35 }}
             className="font-brand text-xl sm:text-2xl text-[#0E0E0E] mt-8 tracking-tight">
-            Sunny <span className="text-[#7A1220]">Forex</span>
+            Sunny <span className="text-[#7A1220]">Remit</span>
           </motion.p>
           <motion.p
             initial={{ opacity: 0 }}

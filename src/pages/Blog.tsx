@@ -31,7 +31,7 @@ const posts = [
 
       <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">What This Means for Importers and Remitters</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
-        If you are a business owner buying materials internationally, you can now budget with higher accuracy. If you are sending money home, you are receiving fair value without worrying about sudden daily drops. Locking in your exchange rates via Sunny Forex guarantees you receive maximum value during these optimal trading windows.
+        If you are a business owner buying materials internationally, you can now budget with higher accuracy. If you are sending money home, you are receiving fair value without worrying about sudden daily drops. Sending money via Sunny Remit guarantees you receive maximum value during these optimal trading windows.
       </p>
     `
   },
@@ -94,13 +94,13 @@ const posts = [
 
       <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Get Expert Business Support</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
-        At Sunny Forex, our dedicated corporate division partners with local businesses to navigate currency exposures. Contact our corporate desk to establish custom corporate conversion limits.
+        At Sunny Remit, our dedicated corporate division partners with local businesses to navigate currency exposures. Contact our corporate desk to establish custom corporate conversion limits.
       </p>
     `
   },
   {
     category: 'News',
-    title: 'Sunny Forex opens 7th branch in Mombasa Road',
+    title: 'Sunny Remit opens 7th branch in Mombasa Road',
     excerpt: 'Our newest location at Capital Centre marks our continued commitment to making FX services accessible.',
     date: 'April 20, 2026',
     readTime: '3 min read',
@@ -148,7 +148,7 @@ const posts = [
         <li><strong>Workforce Support:</strong> A growing population of Kenyan professionals residing in the Gulf sends support back to families via mobile money services.</li>
       </ul>
 
-      <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Frictionless Settlement via Sunny Forex</h3>
+      <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Frictionless Settlement via Sunny Remit</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
         We specialize in direct AED to KES conversions, giving customers competitive rates and avoiding unnecessary conversion margins. Visit any branch or secure today's live rate on our converter page.
       </p>
@@ -168,7 +168,7 @@ const posts = [
       
       <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Core Pillars of CBK Guidelines</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
-        Sunny Forex fully complies with the three main pillars defined by the Central Bank:
+        Sunny Remit fully complies with the three main pillars defined by the Central Bank:
       </p>
       <ul class="list-disc pl-6 space-y-2 text-gray-600 font-light mb-6">
         <li><strong>Rigorous KYC:</strong> Always bring a valid national identification card or passport for any physical transaction.</li>
@@ -190,7 +190,7 @@ export function Blog() {
   return (
     <>
       <PageHero
-        eyebrow="The Sunny Forex Blog"
+        eyebrow="The Sunny Remit Blog"
         title="Insights, market notes, and stories from the floor."
         description="Plain-language analysis from a team that has been moving Kenyan money for nearly two decades."
         imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
@@ -361,7 +361,7 @@ export function Blog() {
                   <div>
                     <h4 className="text-lg font-medium text-[#0E0E0E] mb-2 flex items-center gap-2">
                       <Lock className="w-4 h-4 text-[#7A1220]" />
-                      <span>Ready to lock in a rate?</span>
+                      <span>Ready to send money?</span>
                     </h4>
                     <p className="text-sm font-light text-gray-500 max-w-md">
                       Don't let foreign exchange volatility affect your transfers. Secure today's live rate in under 2 minutes.
@@ -369,16 +369,9 @@ export function Blog() {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Link
-                      to="/lock-rate"
-                      onClick={() => setSelectedPost(null)}
-                      className="px-6 py-2.5 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium text-sm text-center shadow-md"
-                    >
-                      Lock-In My Rate
-                    </Link>
-                    <Link
                       to="/branches"
                       onClick={() => setSelectedPost(null)}
-                      className="px-6 py-2.5 rounded-full bg-white border border-gray-200 text-[#0E0E0E] hover:bg-gray-50 transition-colors font-medium text-sm text-center"
+                      className="px-6 py-2.5 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium text-sm text-center shadow-md"
                     >
                       Find a Branch
                     </Link>

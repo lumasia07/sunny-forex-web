@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { HeroFeatures } from '../components/HeroFeatures';
@@ -12,6 +12,7 @@ import { CtaBand } from '../components/CtaBand';
 
 export function Home() {
   const location = useLocation();
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
 
   useEffect(() => {
     if (window.location.hash === '#faq') {
@@ -27,9 +28,12 @@ export function Home() {
 
   return (
     <>
-      <Hero />
+      <Hero selectedCurrency={selectedCurrency} />
       <HeroFeatures />
-      <RatesStrip />
+      <RatesStrip onRateClick={(code) => {
+        setSelectedCurrency(code);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }} />
       <Services />
       <PartnersBanner />
       <OurStory />

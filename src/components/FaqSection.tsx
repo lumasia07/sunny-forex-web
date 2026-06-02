@@ -8,12 +8,12 @@ const faqs = [
     a: 'Our seven Nairobi branches are open 365 days a year for your convenience. Weekdays (Monday to Friday) from 9:00 AM to 7:00 PM, and weekends (Saturday, Sunday) and public holidays from 9:00 AM to 6:00 PM.',
   },
   {
-    q: 'How does the Lock-In Rate feature work?',
-    a: "You can secure today's guaranteed exchange rates instantly on our website. Once locked, your rate is guaranteed for a period of 4 hours, giving you ample time to walk into any of our branches and finalize your exchange without worrying about market shifts.",
+    q: 'How does the Send Money feature work?',
+    a: "You can secure today's guaranteed exchange rates instantly on our website. Once confirmed, your rate is guaranteed for a period of 4 hours, giving you ample time to walk into any of our branches and finalize your transfer without worrying about market shifts.",
   },
   {
-    q: 'Is Sunny Forex licensed by the Central Bank of Kenya?',
-    a: 'Yes, Sunny Forex is fully licensed, authorized, and regulated by the Central Bank of Kenya (CBK) as an official foreign exchange bureau. We adhere strictly to all compliance, regulatory guidelines, and anti-money laundering frameworks.',
+    q: 'Is Sunny Remit licensed by the Central Bank of Kenya?',
+    a: 'Yes, Sunny Remit is fully licensed, authorized, and regulated by the Central Bank of Kenya (CBK) as an official foreign exchange bureau. We adhere strictly to all compliance, regulatory guidelines, and anti-money laundering frameworks.',
   },
   {
     q: 'What identification documents do I need to exchange currency?',
@@ -103,7 +103,7 @@ export function FaqSection() {
             Frequently Asked <span className="text-[#7A1220]">Questions.</span>
           </h2>
           <p className="text-xs sm:text-sm text-gray-500 max-w-lg mx-auto font-light leading-relaxed">
-            Everything you need to know about our licensing, cash locking procedures, branch operational times, and remittance networks.
+            Everything you need to know about our licensing, transfer procedures, branch operational times, and remittance networks.
           </p>
         </div>
 

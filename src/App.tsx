@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { AppSplash, markSplashSeen, shouldShowSplash } from './components/AppSplash';
@@ -48,7 +48,7 @@ function AppContent() {
           <Route path="/branches" element={<BranchesPage />} />
           <Route path="/corporate" element={<Corporate />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/lock-rate" element={<LockRate />} />
+          <Route path="/lock-rate" element={<Navigate to="/branches" replace />} />
         </Routes>
       </main>
       <Footer />

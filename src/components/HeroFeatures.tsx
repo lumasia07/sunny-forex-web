@@ -19,88 +19,16 @@ export function HeroFeatures() {
         className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12"
         style={{ y: sectionY, opacity: sectionOpacity }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
           
-          {/* Column 1 — Tall Left Globe Card with Beach background image (Height: 480px) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -4 }}
-            className="col-span-1 lg:row-span-2 rounded-2xl md:rounded-[1.75rem] relative overflow-hidden group min-h-[350px] lg:h-[480px] transition-all hover:shadow-[0_24px_64px_rgba(0,0,0,0.25)] bg-black"
-          >
-            <img
-              src="/pexels-ben-iwara-1033992193-27742235.jpg"
-              alt="Diani Beach background"
-              className="absolute inset-0 w-full h-full object-cover opacity-45 group-hover:opacity-55 transition-all duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E] via-[#0E0E0E]/75 to-[#7A1220]/45 z-[1]" />
-            
-            <div className="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-between items-start">
-              <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-                <Globe className="w-5 h-5 text-[#D4A24C] animate-[spin_25s_linear_infinite]" strokeWidth={1.75} />
-              </div>
-
-              <div className="mt-auto z-10">
-                <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#D4A24C] mb-2 block">
-                  Global Connectivity
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight mb-3">
-                  Borderless Reach
-                </h3>
-                <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
-                  Connect seamlessly with global financial networks. Send money, receive payouts, and trade major currencies instantly from Kenya to the world.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Column 2 — Clean Stack of Burgundy + Lime cards (Height: 480px) */}
-          <div className="col-span-1 lg:row-span-2 flex flex-col justify-between gap-5 h-full min-h-[300px] lg:h-[480px]">
-            
-            {/* 2a — Burgundy card (Height: 230px) */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -3, boxShadow: '0 20px 48px rgba(122, 18, 32, 0.2)' }}
-              className="rounded-2xl md:rounded-[1.75rem] bg-[#7A1220] p-6 flex flex-col justify-between flex-1 lg:h-[230px] transition-all"
-            >
-              <Users className="w-6 h-6 text-white/35" strokeWidth={1.5} />
-              <div>
-                <p className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">100+</p>
-                <p className="text-xs font-medium text-white/85 mt-1 leading-snug">
-                  Clients & payout partners
-                </p>
-              </div>
-            </motion.div>
-
-            {/* 2b — Lime accent card (Height: 230px) */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -3, boxShadow: '0 20px 48px rgba(0, 107, 63, 0.08)' }}
-              className="rounded-2xl md:rounded-[1.75rem] bg-[#E8F8D4] p-6 flex flex-col justify-end flex-1 lg:h-[230px] transition-all"
-            >
-              <p className="font-display text-2xl sm:text-3xl font-bold text-[#0E0E0E] tracking-tight">6+</p>
-              <p className="text-xs font-semibold text-[#0E0E0E]/75 mt-1 leading-snug">
-                Payout networks integrated
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Column 3 & 4 — Double-width Center Stats Card with top-center Get Started CTA (Height: 480px) */}
+          {/* Card 1 — Double-width Main Volume & CTA Card (Row 1, Cols 1-2 on lg) */}
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -4 }}
-            className="col-span-1 md:col-span-2 lg:col-span-2 lg:col-start-3 lg:row-span-2 lg:row-start-1 rounded-2xl md:rounded-[1.75rem] bg-white border border-gray-200 shadow-[0_12px_48px_rgba(0,0,0,0.06)] p-6 sm:p-8 flex flex-col justify-between min-h-[420px] lg:h-[480px] transition-all hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)]"
+            className="col-span-1 md:col-span-2 lg:col-span-2 rounded-2xl md:rounded-[1.75rem] bg-white border border-gray-200 shadow-[0_12px_48px_rgba(0,0,0,0.06)] p-6 sm:p-8 flex flex-col justify-between min-h-[350px] md:h-[320px] lg:h-[340px] transition-all hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)]"
           >
             {/* Header: trending icon & chart */}
             <div className="flex items-start justify-between">
@@ -128,7 +56,7 @@ export function HeroFeatures() {
             {/* Premium centered Get Started CTA button (above Stats text) */}
             <div className="flex justify-center w-full my-4 z-10">
               <Link
-                to="/lock-rate"
+                to="/branches"
                 className="bg-[#0E0E0E] hover:bg-[#1a1a1a] text-white font-medium pl-6 pr-2 py-2 rounded-full shadow-lg transition-all duration-300 group text-[10px] uppercase tracking-wider flex items-center justify-between select-none w-fit border border-white/5"
               >
                 <span className="font-bold tracking-widest px-4">Get Started</span>
@@ -139,22 +67,24 @@ export function HeroFeatures() {
             </div>
 
             {/* Volume Stats */}
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Monthly volume</p>
-              <p className="font-display text-4xl sm:text-5xl font-bold text-[#0E0E0E] tracking-tight leading-none">
-                2.4M+
-              </p>
-              <p className="text-xs text-gray-500 mt-2 font-medium">KES equivalent processed</p>
-            </div>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Monthly volume</p>
+                <p className="font-display text-4xl sm:text-5xl font-bold text-[#0E0E0E] tracking-tight leading-none">
+                  2.4M+
+                </p>
+                <p className="text-xs text-gray-500 mt-2 font-medium">KES equivalent processed</p>
+              </div>
 
-            {/* M-Pesa Tag */}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#006B3F]/10 w-fit mb-2">
-              <img src="/mpesa-card-bg.png" alt="" className="w-7 h-7 rounded-lg object-cover" aria-hidden />
-              <span className="text-[10px] font-bold text-[#006B3F]">M-Pesa · Instant wallet payouts</span>
+              {/* M-Pesa Tag */}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#006B3F]/10 w-fit">
+                <img src="/mpesa-card-bg.png" alt="" className="w-7 h-7 rounded-lg object-cover" aria-hidden />
+                <span className="text-[10px] font-bold text-[#006B3F]">M-Pesa · Instant wallet payouts</span>
+              </div>
             </div>
 
             {/* Footer Stats Grid */}
-            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-gray-100">
+            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-gray-100 mt-4">
               <div>
                 <p className="font-display text-lg sm:text-xl font-bold text-[#7A1220]">17+</p>
                 <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Years</p>
@@ -165,19 +95,87 @@ export function HeroFeatures() {
               </div>
               <div>
                 <p className="font-display text-lg sm:text-xl font-bold text-[#D4A24C]">+12%</p>
-                <p className="text-[9px] font-bold text-emerald-600 uppercase tracking-wider mt-0.5">Growth</p>
+                <p className="text-[9px] font-bold text-[#006B3F] uppercase tracking-wider mt-0.5">Growth</p>
               </div>
             </div>
           </motion.div>
 
-          {/* Column 5 — Tall Right Landscape Card (Height: 480px) */}
+          {/* Card 2 — Globe Card (Row 1, Col 3 on lg) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4 }}
+            className="col-span-1 rounded-2xl md:rounded-[1.75rem] relative overflow-hidden group min-h-[300px] md:h-[300px] lg:h-[340px] transition-all hover:shadow-[0_24px_64px_rgba(0,0,0,0.25)] bg-black"
+          >
+            <img
+              src="/pexels-ben-iwara-1033992193-27742235.jpg"
+              alt="Diani Beach background"
+              className="absolute inset-0 w-full h-full object-cover opacity-45 group-hover:opacity-55 transition-all duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E] via-[#0E0E0E]/75 to-[#7A1220]/45 z-[1]" />
+            
+            <div className="relative z-10 h-full p-6 flex flex-col justify-between items-start">
+              <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-sm">
+                <Globe className="w-5 h-5 text-[#D4A24C] animate-[spin_25s_linear_infinite]" strokeWidth={1.75} />
+              </div>
+
+              <div className="mt-auto z-10">
+                <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#D4A24C] mb-1.5 block">
+                  Global Connectivity
+                </span>
+                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-tight mb-2">
+                  Borderless Reach
+                </h3>
+                <p className="text-[11px] sm:text-xs text-white/75 leading-relaxed font-light">
+                  Connect seamlessly with global financial networks. Send money, receive payouts, and trade major currencies instantly from Kenya to the world.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 3 — Burgundy Card (Row 2, Col 1 on lg) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4, boxShadow: '0 20px 48px rgba(122, 18, 32, 0.2)' }}
+            className="col-span-1 rounded-2xl md:rounded-[1.75rem] bg-[#7A1220] p-6 flex flex-col justify-between h-[180px] md:h-[200px] lg:h-[240px] transition-all"
+          >
+            <Users className="w-6 h-6 text-white/35" strokeWidth={1.5} />
+            <div>
+              <p className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">100+</p>
+              <p className="text-xs font-medium text-white/85 mt-1 leading-snug">
+                Clients & payout partners
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Card 4 — Lime Card (Row 2, Col 2 on lg) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4, boxShadow: '0 20px 48px rgba(0, 107, 63, 0.08)' }}
+            className="col-span-1 rounded-2xl md:rounded-[1.75rem] bg-[#E8F8D4] p-6 flex flex-col justify-end h-[180px] md:h-[200px] lg:h-[240px] transition-all"
+          >
+            <p className="font-display text-2xl sm:text-3xl font-bold text-[#0E0E0E] tracking-tight">6+</p>
+            <p className="text-xs font-semibold text-[#0E0E0E]/75 mt-1 leading-snug">
+              Payout networks integrated
+            </p>
+          </motion.div>
+
+          {/* Card 5 — Optimal Rates / Landscape Card (Row 2, Col 3 on lg) */}
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -4 }}
-            className="col-span-1 relative rounded-2xl md:rounded-[1.75rem] overflow-hidden group min-h-[350px] lg:h-[480px] transition-all hover:shadow-[0_24px_64px_rgba(0,0,0,0.25)] bg-black"
+            className="col-span-1 relative rounded-2xl md:rounded-[1.75rem] overflow-hidden group min-h-[220px] md:h-[200px] lg:h-[240px] transition-all hover:shadow-[0_24px_64px_rgba(0,0,0,0.25)] bg-black"
           >
             <img
               src="/pexels-sergey-pesterev-69811391-8427984.jpg"
@@ -186,24 +184,24 @@ export function HeroFeatures() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E] via-[#0E0E0E]/75 to-[#7A1220]/45 z-0" />
             
-            <div className="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-between items-start">
+            <div className="relative z-10 h-full p-6 flex flex-col justify-between items-start">
               <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-sm">
                 <Gauge className="w-5 h-5 text-[#D4A24C]" strokeWidth={1.75} />
               </div>
               
               <div className="mt-auto">
-                <p className="text-lg font-bold text-white leading-tight tracking-tight">
+                <p className="text-sm font-bold text-white leading-tight tracking-tight">
                   Optimal rates. Zero hidden fees.
                 </p>
-                <p className="text-xs text-white/70 mt-2 font-light">CBK-regulated transparency.</p>
+                <p className="text-[11px] text-white/70 mt-1 font-light">CBK-regulated transparency.</p>
                 
                 <Link
                   to="/forex"
-                  className="inline-flex justify-between items-center gap-3 pl-5 pr-1.5 py-1.5 mt-5 rounded-full bg-[#E8F8D4] text-[#0E0E0E] font-bold text-[10px] uppercase tracking-wider hover:bg-white transition-all group/link"
+                  className="inline-flex justify-between items-center gap-3 pl-4 pr-1.5 py-1.5 mt-3 rounded-full bg-[#E8F8D4] text-[#0E0E0E] font-bold text-[9px] uppercase tracking-wider hover:bg-white transition-all group/link"
                 >
                   <span className="font-semibold">Explore forex</span>
-                  <span className="w-7 h-7 rounded-full bg-[#006B3F]/15 flex items-center justify-center group-hover/link:bg-[#006B3F]/25 transition-colors">
-                    <ArrowRight className="w-3.5 h-3.5 text-[#006B3F] group-hover/link:translate-x-0.5 transition-transform" strokeWidth={2.5} />
+                  <span className="w-6 h-6 rounded-full bg-[#006B3F]/15 flex items-center justify-center group-hover/link:bg-[#006B3F]/25 transition-colors">
+                    <ArrowRight className="w-3 h-3 text-[#006B3F] group-hover/link:translate-x-0.5 transition-transform" strokeWidth={2.5} />
                   </span>
                 </Link>
               </div>

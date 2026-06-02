@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
 import { CtaBand } from '../components/CtaBand';
 import {
-  Lock,
+  Send,
   ArrowRight,
   TrendingUp,
   Info,
@@ -86,7 +86,7 @@ export function LockRate() {
   const feeInSource = selectedMethod.fee;
   const totalToPay = sendNum + feeInSource;
   
-  const handleLockInSubmit = (e: React.FormEvent) => {
+  const handleSendMoneySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!senderName || !senderPhone || !receiverName) return;
     
@@ -109,13 +109,13 @@ export function LockRate() {
     <>
       <PageHero
         eyebrow="Remittance & Forex"
-        title="Lock-In Your Exchange Rate"
+        title="Send Money Abroad"
         description="Secure today's guaranteed exchange rates instantly. Avoid market volatility and finalize your trade at any branch within 4 hours."
         imageSrc="/pexels-ben-iwara-1033992193-27742235.jpg"
-        imageAlt="Forex Rate lock-in"
+        imageAlt="Forex Send Money"
         breadcrumb={[
           { label: 'Home', href: '/' },
-          { label: 'Lock Rate' }
+          { label: 'Send Money' }
         ]}
       />
 
@@ -221,8 +221,8 @@ export function LockRate() {
                   disabled={sendNum <= 0}
                   className="w-full flex justify-center items-center gap-3 py-4 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Lock className="w-4 h-4" />
-                  <span>Lock-In This Rate</span>
+                  <Send className="w-4 h-4" />
+                  <span>Send Money Now</span>
                 </button>
               </div>
             </div>
@@ -277,7 +277,7 @@ export function LockRate() {
                 <div className="flex items-start gap-4">
                   <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h5 className="text-sm font-medium text-[#0E0E0E] mb-1">Guaranteed Rate Lock</h5>
+                    <h5 className="text-sm font-medium text-[#0E0E0E] mb-1">Guaranteed Rate Protection</h5>
                     <p className="text-xs font-light text-gray-500 leading-relaxed">
                       Securing this rate guarantees the exact exchange amount for 4 hours. No market movements will affect your locked exchange value.
                     </p>
@@ -299,7 +299,7 @@ export function LockRate() {
         </div>
       </section>
 
-      {/* Lock In Dialog Modal */}
+      {/* Send Money Dialog Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -328,10 +328,10 @@ export function LockRate() {
 
               {!isSuccess ? (
                 /* Form Details Form */
-                <form onSubmit={handleLockInSubmit} className="p-8">
+                <form onSubmit={handleSendMoneySubmit} className="p-8">
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <h3 className="text-2xl font-light text-[#0E0E0E]">Complete Lock-In</h3>
+                      <h3 className="text-2xl font-light text-[#0E0E0E]">Complete Your Transfer</h3>
                       <p className="text-xs font-light text-gray-400 mt-1 uppercase tracking-wider">Provide details to secure rate reference</p>
                     </div>
                     <button
@@ -414,11 +414,11 @@ export function LockRate() {
 
                   <div className="bg-[#FAFAF7] border border-gray-100 rounded-2xl p-4 mb-6 flex justify-between items-center text-xs font-light text-gray-500">
                     <div>
-                      <span className="block font-medium text-[#0E0E0E]">Locked Rate:</span>
+                      <span className="block font-medium text-[#0E0E0E]">Secured Rate:</span>
                       <span>1 {sendCurrency} = {selectedCurData.rate.toFixed(2)} KES</span>
                     </div>
                     <div className="text-right">
-                      <span className="block font-medium text-emerald-600">You Lock In:</span>
+                      <span className="block font-medium text-emerald-600">You Send:</span>
                       <span className="font-mono text-sm font-semibold">{receiveNum.toLocaleString(undefined, { maximumFractionDigits: 2 })} KES</span>
                     </div>
                   </div>
@@ -427,8 +427,8 @@ export function LockRate() {
                     type="submit"
                     className="w-full flex justify-center items-center gap-3 py-3.5 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium shadow-md"
                   >
-                    <Lock className="w-4 h-4" />
-                    <span>Confirm Lock-In Rate</span>
+                    <Send className="w-4 h-4" />
+                    <span>Confirm Send Money</span>
                   </button>
                 </form>
               ) : (
@@ -438,7 +438,7 @@ export function LockRate() {
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
 
-                  <h3 className="text-2xl font-light text-[#0E0E0E] mb-2">Rate Locked Successfully!</h3>
+                  <h3 className="text-2xl font-light text-[#0E0E0E] mb-2">Transfer Initiated Successfully!</h3>
                   <p className="text-sm font-light text-gray-500 max-w-sm mb-6 leading-relaxed">
                     Your exchange rate of <strong className="text-[#0E0E0E]">1 {sendCurrency} = {selectedCurData.rate.toFixed(2)} KES</strong> has been secured for the next <strong className="text-[#0E0E0E]">4 hours</strong>.
                   </p>
@@ -452,7 +452,7 @@ export function LockRate() {
                   {/* Details Card */}
                   <div className="border border-gray-100 rounded-2xl p-5 mb-8 w-full text-left text-sm space-y-3 font-light">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Locked Amount:</span>
+                      <span className="text-gray-400">Transfer Amount:</span>
                       <span className="font-semibold text-[#0E0E0E]">{sendNum.toLocaleString()} {sendCurrency}</span>
                     </div>
                     <div className="flex justify-between">
@@ -477,7 +477,7 @@ export function LockRate() {
                   </div>
 
                   <p className="text-xs font-light text-gray-400 mb-8 leading-relaxed">
-                    A representative will contact you shortly at <strong>{senderPhone}</strong> to complete the transaction, or you can present reference code <strong>{txRef}</strong> at any selected Sunny Forex branch within 4 hours.
+                    A representative will contact you shortly at <strong>{senderPhone}</strong> to complete the transaction, or you can present reference code <strong>{txRef}</strong> at any selected Sunny Remit branch within 4 hours.
                   </p>
 
                   <button

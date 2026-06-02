@@ -100,11 +100,12 @@ const rates = [
   change: 0.02
 }];
 
-function RateCard({ rate }: { rate: (typeof rates)[number] }) {
+function RateCard({ rate, onClick }: { rate: (typeof rates)[number]; onClick?: () => void }) {
   const isUp = rate.change >= 0;
   return (
     <motion.div
-      className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-lg transition-all min-w-[280px]"
+      onClick={onClick}
+      className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-lg transition-all min-w-[280px] cursor-pointer"
       whileHover={{ y: -3, scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
       <div className="flex flex-col items-center gap-1">
@@ -151,7 +152,7 @@ function RateCard({ rate }: { rate: (typeof rates)[number] }) {
     </motion.div>
   );
 }
-export function RatesStrip() {
+export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -210,7 +211,11 @@ export function RatesStrip() {
 
         <div className="flex marquee">
           {loopRates.map((rate, index) =>
-          <RateCard key={`${rate.code}-${index}`} rate={rate} />
+          <RateCard
+            key={`${rate.code}-${index}`}
+            rate={rate}
+            onClick={() => onRateClick?.(rate.code)}
+          />
           )}
         </div>
       </motion.div>

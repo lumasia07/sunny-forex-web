@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Lock, TrendingUp } from 'lucide-react';
+import { ArrowRight, Send, TrendingUp } from 'lucide-react';
 
 const currencies = [
   { code: 'USD', flag: '🇺🇸', rate: 130.5 },
@@ -79,10 +79,10 @@ export function HeroCalculator() {
         </div>
 
         <Link
-          to={`/lock-rate?cur=${sendCurrency}`}
+          to="/branches"
           className="w-full flex justify-center items-center gap-2 py-3.5 rounded-xl bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-all font-bold text-sm shadow-lg shadow-[#7A1220]/25 hover:shadow-[#7A1220]/35 hover:-translate-y-0.5">
-          <Lock className="w-4 h-4" />
-          Lock-In This Rate
+          <Send className="w-4 h-4" />
+          Send Money
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

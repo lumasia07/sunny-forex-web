@@ -66,8 +66,8 @@ const steps = [
   },
   {
     n: '02',
-    title: 'Lock-In Today\'s Rate',
-    body: 'Convert instantly online and lock in the guaranteed rates for 4 hours to bypass volatility.'
+    title: 'Send Money Today',
+    body: 'Convert instantly online and secure guaranteed rates for 4 hours to bypass volatility.'
   },
   {
     n: '03',
@@ -179,7 +179,7 @@ function CorridorCard({
       className="h-full"
     >
       <Link
-        to={`/lock-rate?cur=${corridor.currency}`}
+        to="/branches"
         className="group relative flex h-full items-center gap-4 overflow-hidden rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-500 hover:border-[#7A1220]/40 hover:shadow-xl"
       >
         <div className="absolute inset-0 bg-white" />
@@ -280,15 +280,15 @@ export function Remittance() {
                 Popular corridors.
               </h2>
               <p className="type-lead max-w-md">
-                Select your transfer route below to lock in the rates directly.
+                Select your transfer route below to send money directly.
               </p>
             </div>
             <Link
-              to="/lock-rate"
+              to="/branches"
               className="inline-flex items-center gap-2 py-3 px-6 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium text-sm shadow-md"
             >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Convert Instantly</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Find a Branch</span>
             </Link>
           </div>
 

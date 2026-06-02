@@ -54,7 +54,7 @@ const faqs = [
   },
   {
     q: 'How are your rates determined?',
-    a: 'Our rates are based on live interbank rates with a transparent spread. You can lock in a rate online for up to 4 hours before completing your exchange.'
+    a: 'Our rates are based on live interbank rates with a transparent spread. You can secure a rate online for up to 4 hours before completing your exchange.'
   },
   {
     q: 'What documents do I need?',
@@ -219,11 +219,11 @@ function ForexRateRow({ rate }: { rate: (typeof forexRates)[number] }) {
 
       <div className="relative z-10 text-right">
         <Link
-          to={`/lock-rate?cur=${rate.code}`}
+          to="/branches"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7A1220] group-hover:text-white transition-colors duration-500 group-hover:px-3 group-hover:py-1.5 group-hover:rounded-full group-hover:bg-white/15"
         >
-          <Lock className="w-3 h-3" />
-          <span>Lock Rate</span>
+          <ArrowRight className="w-3 h-3" />
+          <span>Find Branch</span>
         </Link>
       </div>
     </motion.div>
@@ -241,7 +241,7 @@ export function Forex() {
       <PageHero
         eyebrow="Currency Exchange"
         title="Exchange currencies with confidence"
-        description="Competitive rates, instant service, and seven branches across Nairobi — Sunny Forex has been Kenya's trusted bureau since 2008."
+        description="Competitive rates, instant service, and seven branches across Nairobi — Sunny Remit has been Kenya's trusted bureau since 2008."
         imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
         imageAlt="Currency exchange board rates"
         breadcrumb={[
@@ -263,15 +263,15 @@ export function Forex() {
                 Today's Live Board Rates
               </h2>
               <p className="type-lead max-w-md">
-                Licensed and regulated by the Central Bank of Kenya. Rates are guaranteed when locked in.
+                Licensed and regulated by the Central Bank of Kenya. Rates are guaranteed when secured.
               </p>
             </div>
             <Link
-              to="/lock-rate"
+              to="/branches"
               className="inline-flex items-center gap-2 py-3 px-6 rounded-full bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-colors font-medium text-sm shadow-md"
             >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Lock-In Any Rate</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Find a Branch</span>
             </Link>
           </div>
 
@@ -305,7 +305,7 @@ export function Forex() {
           <div className="mb-16 max-w-2xl">
             <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
             <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
-              Why exchange with Sunny Forex.
+              Why exchange with Sunny Remit.
             </h2>
             <p className="type-lead">
               The fundamentals that have kept us Kenya's trusted bureau for over 17 years.

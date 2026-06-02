@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, RefreshCcw, Send, Smartphone } from 'lucide-react';
@@ -70,51 +70,54 @@ function ServiceCard({
   index: number;
 }) {
   const Icon = service.icon;
+  const [isHovered, setIsHovered] = useState(false);
 
   const inner = (
     <>
-      <div className="absolute inset-0 bg-white" />
-      <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
-      
-      {/* Decorative accent corner */}
-      <motion.div
-        className="absolute top-0 right-0 w-24 h-24 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500"
-        style={{
-          background: `radial-gradient(circle at 100% 0%, ${service.accent}, transparent 70%)`,
-        }}
-      />
-
-      <div className="relative z-10 flex flex-col min-h-[280px] sm:min-h-[300px] h-full p-5 sm:p-6 group-hover:[&_*]:text-white">
-        <motion.div
-          className="w-10 h-10 rounded-full bg-[#7A1220]/8 border border-[#7A1220]/15 flex items-center justify-center mb-4 group-hover:bg-white/10 group-hover:border-white/30 transition-colors duration-500 cursor-default"
-          whileHover={{
-            scale: 1.12,
-            rotate: 8,
-          }}
-          transition={{ type: 'spring', stiffness: 400, damping: 16 }}>
-          <Icon className="w-4 h-4 text-[#7A1220] group-hover:text-white transition-colors duration-500" strokeWidth={1.75} />
-        </motion.div>
+      <div className="relative z-10 flex flex-col min-h-[300px] sm:min-h-[330px] h-full p-6 sm:p-8">
+        <div
+          className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 bg-[#FFFFFF]/10"
+          style={{
+            backgroundColor: service.accent,
+          }}>
+          <Icon
+            className="w-5 h-5 text-white"
+            strokeWidth={2}
+          />
+        </div>
 
         {/* Service number */}
-        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-300 group-hover:text-white/30 transition-colors duration-500 mb-2">
+        <span 
+          className="text-[10px] font-bold tracking-[0.3em] uppercase transition-colors duration-300 mb-2 block"
+          style={{ color: isHovered ? service.accent : '#D1D5DB' }}
+        >
           0{index + 1}
         </span>
 
-        <AnimatedTitle title={service.title} />
+        <h3 
+          className="text-2xl sm:text-3xl font-semibold leading-tight tracking-tight mb-3 transition-colors duration-300"
+          style={{ color: isHovered ? service.accent : '#0E0E0E' }}
+        >
+          <LiveWords text={service.title} variant="neutral" />
+        </h3>
 
         <LiveBlock
-          className="text-sm sm:text-base text-gray-500 group-hover:text-white font-light leading-relaxed mb-3 transition-colors duration-500"
+          className="text-sm sm:text-base text-gray-500 font-light leading-relaxed mb-4 transition-colors duration-300"
           variant="neutral"
           inline={false}>
           {service.description}
         </LiveBlock>
 
         <motion.span
-          className="inline-flex items-center gap-2 text-sm font-bold text-[#7A1220] group-hover:text-[#FAFAF7] w-fit mt-auto cursor-default transition-colors duration-500"
+          className="inline-flex items-center gap-2 text-sm font-bold w-fit mt-auto cursor-default transition-colors duration-300"
+          style={{ color: service.accent }}
           whileHover={{ x: 8, scale: 1.05 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
           <LiveBlock variant="neutral">Learn more</LiveBlock>
-          <span className="w-8 h-8 rounded-full bg-[#7A1220]/10 group-hover:bg-white/20 flex items-center justify-center transition-colors duration-500">
+          <span 
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300"
+            style={{ backgroundColor: isHovered ? `${service.accent}20` : `${service.accent}10` }}
+          >
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </span>
         </motion.span>
@@ -123,20 +126,30 @@ function ServiceCard({
   );
 
   const cardClass =
-    'group relative block h-full rounded-3xl overflow-hidden border border-gray-200 bg-white shadow-lg group-hover:shadow-2xl group-hover:border-[#7A1220]/40 transition-all duration-500';
+    'group relative block h-full rounded-xl overflow-hidden border bg-white shadow-lg transition-all duration-500';
+
+  const cardStyle = {
+    borderTop: `4px solid ${isHovered ? service.accent : 'transparent'}`,
+    borderLeft: '1px solid #E5E7EB',
+    borderRight: '1px solid #E5E7EB',
+    borderBottom: '1px solid #E5E7EB',
+    boxShadow: isHovered ? '0 20px 40px rgba(0, 0, 0, 0.08)' : '0 10px 30px rgba(0, 0, 0, 0.04)',
+    backgroundColor: '#FFFFFF',
+    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+  };
 
   return (
     <motion.div
       variants={cardVariants}
-      whileHover={{ y: -8 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="h-full">
       {service.href ? (
-        <Link to={service.href} className={cardClass}>
+        <Link to={service.href} className={cardClass} style={cardStyle}>
           {inner}
         </Link>
       ) : (
-        <div className={cardClass}>{inner}</div>
+        <div className={cardClass} style={cardStyle}>{inner}</div>
       )}
     </motion.div>
   );

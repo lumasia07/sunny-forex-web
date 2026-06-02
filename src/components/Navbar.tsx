@@ -96,7 +96,7 @@ export function Navbar() {
             <Link
               to="/"
               className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 lg:flex-none group"
-              aria-label="Sunny Forex home">
+              aria-label="Sunny Remit home">
               <img
                 src="/logo-mark.png"
                 alt=""
@@ -104,7 +104,7 @@ export function Navbar() {
                 className="h-10 w-10 sm:h-11 sm:w-11 md:h-12 md:w-12 object-contain shrink-0 transition-transform duration-300 group-hover:scale-[1.03]"
               />
               <span className="font-brand text-base sm:text-lg md:text-xl text-[#0E0E0E] truncate leading-none">
-                Sunny <span className="text-[#7A1220]">Forex</span>
+                Sunny <span className="text-[#7A1220]">Remit</span>
               </span>
             </Link>
 

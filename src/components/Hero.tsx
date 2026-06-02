@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Zap } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react';
 import { HeroLockRateCard } from './HeroLockRateCard';
 
-export function Hero() {
+export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -64,12 +64,7 @@ export function Hero() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center gap-2 text-[#006B3F]">
-                <motion.span
-                  animate={{ rotate: [0, -10, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}>
-                  <Zap className="w-7 h-7 lg:w-9 lg:h-9 fill-[#D4A24C] text-[#D4A24C]" />
-                </motion.span>
+                className="text-[#006B3F] block">
                 Instant exchange.
               </motion.span>
             </motion.h1>
@@ -88,9 +83,9 @@ export function Hero() {
               transition={{ duration: 0.5, delay: 0.12 }}
               className="flex flex-wrap items-center gap-3 mb-6">
               <Link
-                to="/lock-rate"
+                to="/branches"
                 className="btn-glow inline-flex justify-center items-center gap-3 pl-7 pr-2 py-2 rounded-full font-bold text-white text-sm sm:text-base group">
-                Lock-In My Rate
+                Send Money Now
                 <span className="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center group-hover:bg-black/30 transition-colors">
                   <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
                 </span>
@@ -128,7 +123,7 @@ export function Hero() {
             transition={{ duration: 0.55, delay: 0.1 }}
             className="order-2 w-full flex items-center justify-center lg:justify-end shrink-0"
           >
-            <HeroLockRateCard />
+            <HeroLockRateCard selectedCurrency={selectedCurrency} />
           </motion.div>
 
         </div>

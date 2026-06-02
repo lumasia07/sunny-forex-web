@@ -8,7 +8,6 @@ const routesWithContact = new Set([
   '/branches',
   '/corporate',
   '/blog',
-  '/lock-rate',
 ]);
 
 type ContactLinkProps = React.ComponentPropsWithoutRef<'a'> & {
