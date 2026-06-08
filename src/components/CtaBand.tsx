@@ -8,20 +8,20 @@ const contactMethods = [
 {
   icon: Phone,
   label: 'Speak to a specialist',
-  value: '+254 722 350 400',
-  href: 'tel:+254722350400'
+  value: '+254 722 590 049',
+  href: 'tel:+254722590049'
 },
 {
   icon: Mail,
   label: 'Email us',
-  value: 'info@sunnyremit.com',
+  value: 'info@sunnyremit.com / info@sunnyforex.co.ke',
   href: 'mailto:info@sunnyremit.com'
 },
 {
   icon: MapPin,
   label: 'Visit our headquarters',
-  value: 'Woodridge Centre, Wood Avenue, Kilimani Nairobi, Kenya',
-  href: 'https://www.google.com/maps/search/?api=1&query=Woodridge+Centre+Wood+Avenue+Kilimani+Nairobi'
+  value: 'Lavington Avenue Complex, Ground Floor, James Gichuru Road, Lavington, Nairobi, Kenya',
+  href: 'https://www.google.com/maps/search/?api=1&query=Lavington+Avenue+Complex+James+Gichuru+Road+Nairobi'
 }];
 
 export function CtaBand() {

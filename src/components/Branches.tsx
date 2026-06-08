@@ -10,43 +10,43 @@ const branches = [
     name: 'Kilimani Branch',
     area: 'Kilimani',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+Kilimani+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Kilimani+Nairobi'
   },
   {
     name: 'Valley Arcade Branch',
     area: 'Lavington',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+Valley+Arcade+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Valley+Arcade+Nairobi'
   },
   {
     name: 'GTC Mall Branch',
     area: 'Westlands',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+GTC+Mall+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+GTC+Mall+Nairobi'
   },
   {
     name: 'Village Market New Wing Branch',
     area: 'Gigiri',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+Village+Market+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Village+Market+Nairobi'
   },
   {
     name: 'Village Market Old Wing Branch',
     area: 'Gigiri',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+Village+Market+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Village+Market+Nairobi'
   },
   {
     name: 'Runda Branch',
     area: 'Runda',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+Runda+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Runda+Nairobi'
   },
   {
-    name: 'Lavington Branch',
+    name: 'Lavington Branch (HQ)',
     area: 'Lavington',
     hours: '9 AM - 7 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sunny+Remit+Lavington+Nairobi'
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Lavington+Nairobi'
   }
 ];
 

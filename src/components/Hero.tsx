@@ -1,8 +1,15 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star } from 'lucide-react';
 import { HeroLockRateCard } from './HeroLockRateCard';
+
+const landscapeImages = [
+  '/pexels-sergey-pesterev-69811391-8427984.jpg',
+  '/pexels-kelvin-kibe-3073372-26898331.jpg',
+  '/pexels-ben-iwara-1033992193-27742235.jpg',
+  '/pexels-mnmshakir-35034068.jpg'
+];
 
 export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -14,23 +21,42 @@ export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) 
   // Gentle scroll-only parallax on background image
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '8%']);
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % landscapeImages.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       ref={sectionRef}
       className="hero-viewport relative w-full overflow-hidden"
     >
-      {/* Background image — simple scroll parallax */}
+      {/* Background image slideshow — simple scroll parallax */}
       <div className="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
-        <motion.img
-          src="/12419.jpg"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          style={{ y: bgY }}
-        />
+        <AnimatePresence mode="popLayout">
+          <motion.img
+            key={landscapeImages[currentImageIndex]}
+            src={landscapeImages[currentImageIndex]}
+            alt=""
+            initial={{ opacity: 0, scale: 1.0 }}
+            animate={{ opacity: 1, scale: 1.08 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1.5, ease: 'easeInOut' },
+              scale: { duration: 6.5, ease: 'linear' }
+            }}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            style={{ y: bgY }}
+          />
+        </AnimatePresence>
 
         {/* Dynamic Overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.90] via-white/[0.75] to-white/[0.30] lg:to-white/20 z-[1]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/50 z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.65] via-white/[0.30] to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-white/15 z-[1]" />
         
         {/* Premium ambient maroon & gold brand glows for rich 3D backlighting */}
         <div
@@ -56,16 +82,16 @@ export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="font-display font-bold text-[#0E0E0E] text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] tracking-tight leading-[1.08] mb-5 max-w-xl">
-              Global reach.
+              Global Reach.
               <br />
-              <span className="text-[#7A1220]">Local trust.</span>
+              <span className="text-[#7A1220]">Local Trust.</span>
               <br />
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[#006B3F] block">
-                Instant exchange.
+                Instant Exchange.
               </motion.span>
             </motion.h1>
 

@@ -15,8 +15,8 @@ export function Footer() {
                 aria-hidden="true"
                 className="h-14 w-14 object-contain"
               />
-              <span className="font-brand text-xl text-[#0E0E0E]">
-                Sunny <span className="text-[#7A1220]">Remit</span>
+              <span className="font-brand text-xl text-[#7A1220]">
+                SunnyRemit
               </span>
             </Link>
             <p className="text-sm text-[#0E0E0E]/75 font-normal leading-relaxed mb-6">
@@ -123,7 +123,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-400 font-light">
-            © {new Date().getFullYear()} Sunny Remit Bureau Ltd. All rights
+            © {new Date().getFullYear()} SunnyRemit Forex & Money Remittance Ltd. All rights
             reserved.
           </p>
           <div className="flex items-center gap-3">

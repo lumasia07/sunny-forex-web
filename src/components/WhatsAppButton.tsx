@@ -59,11 +59,11 @@ const branches = [
     status: 'Open'
   },
   {
-    name: 'Lavington Branch',
+    name: 'Lavington Branch (HQ)',
     area: 'Lavington',
-    address: 'Lavington Avenue Complex G/F, James Gichuru Road Nairobi, Kenya',
-    phone: '+254 722 155 599',
-    whatsapp: '254722155599',
+    address: 'Lavington Avenue Complex, Ground Floor, James Gichuru Road, Lavington, Nairobi, Kenya',
+    phone: '+254 722 590 049',
+    whatsapp: '254722590049',
     hours: 'Mon-Fri | 9:00 AM to 7:00 PM · Sat-Sun | 9:00 AM to 6:00 PM',
     status: 'Open'
   }
@@ -271,7 +271,7 @@ export function WhatsAppButton() {
                   {branches.map((branch, i) =>
                 <motion.a
                   key={branch.name}
-                  href={`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(`Hello Sunny Remit (${branch.name}), I'd like to enquire about a transaction.`)}`}
+                  href={`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(`Hello SunnyRemit (${branch.name}), I'd like to enquire about a transaction.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   initial={{

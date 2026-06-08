@@ -18,7 +18,7 @@ const stories = [
     title: 'Reaching New Heights',
     subtitle: 'Guaranteed Rates, Peak Reliability',
     description:
-      'Just as Mt. Kilimanjaro stands tall and firm watching over East Africa, Sunny Remit stands as a beacon of stability. Avoid market volatility by securing guaranteed rates and send money with confidence at any of our branches.',
+      'Just as Mt. Kilimanjaro stands tall and firm watching over East Africa, SunnyRemit stands as a beacon of stability. Avoid market volatility by securing guaranteed rates and send money with confidence at any of our branches.',
     accent: '#006B3F',
   },
   {

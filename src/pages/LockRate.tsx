@@ -477,7 +477,7 @@ export function LockRate() {
                   </div>
 
                   <p className="text-xs font-light text-gray-400 mb-8 leading-relaxed">
-                    A representative will contact you shortly at <strong>{senderPhone}</strong> to complete the transaction, or you can present reference code <strong>{txRef}</strong> at any selected Sunny Remit branch within 4 hours.
+                    A representative will contact you shortly at <strong>{senderPhone}</strong> to complete the transaction, or you can present reference code <strong>{txRef}</strong> at any selected SunnyRemit branch within 4 hours.
                   </p>
 
                   <button

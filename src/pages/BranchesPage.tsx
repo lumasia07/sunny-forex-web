@@ -12,7 +12,7 @@ const branches = [
     address: 'Woodridge Centre, Wood Avenue, Kilimani, Nairobi',
     phone: '+254 722 350 400',
     hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    flagship: true,
+    flagship: false,
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Woodridge+Centre+Wood+Avenue+Kilimani+Nairobi',
     x: 45, // Map Coordinate Percentages
     y: 55,
@@ -79,12 +79,12 @@ const branches = [
   },
   {
     id: 6,
-    name: 'Lavington Branch',
+    name: 'Lavington Branch (HQ)',
     area: 'Lavington',
     address: 'Lavington Avenue Complex G/F, James Gichuru Road, Nairobi',
-    phone: '+254 722 155 599',
+    phone: '+254 722 590 049',
     hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    flagship: false,
+    flagship: true,
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Lavington+Avenue+Complex+James+Gichuru+Road+Nairobi',
     x: 22,
     y: 50,
@@ -92,7 +92,7 @@ const branches = [
 ];
 
 export function BranchesPage() {
-  const [selectedBranchId, setSelectedBranchId] = useState(0);
+  const [selectedBranchId, setSelectedBranchId] = useState(6);
 
   const selectedBranch = branches.find((b) => b.id === selectedBranchId) || branches[0];
 

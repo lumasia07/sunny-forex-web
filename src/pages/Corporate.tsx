@@ -117,7 +117,7 @@ export function Corporate() {
       <PageHero
         eyebrow="Enterprise & Corporate"
         title="FX built around your business."
-        description="From corporate treasury to cross-border payroll — Sunny Remit partners with Kenyan businesses to move money intelligently, at scale."
+        description="From corporate treasury to cross-border payroll — SunnyRemit partners with Kenyan businesses to move money intelligently, at scale."
         imageSrc="/pexels-maria-stewart-2268904-5643136 (1).jpg"
         imageAlt="Corporate treasury and shipping logistics"
         breadcrumb={[
@@ -184,7 +184,7 @@ export function Corporate() {
                 Trusted by businesses across East Africa.
               </h2>
               <p className="text-base sm:text-lg text-white/70 font-normal leading-relaxed mb-6 sm:mb-8">
-                From logistics firms handling cross-border freight payments to NGOs running multi-currency grant programs — businesses choose Sunny Remit when stakes are high.
+                From logistics firms handling cross-border freight payments to NGOs running multi-currency grant programs — businesses choose SunnyRemit when stakes are high.
               </p>
               <button
                 onClick={() => setIsModalOpen(true)}

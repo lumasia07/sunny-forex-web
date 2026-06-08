@@ -12,8 +12,8 @@ const faqs = [
     a: "You can secure today's guaranteed exchange rates instantly on our website. Once confirmed, your rate is guaranteed for a period of 4 hours, giving you ample time to walk into any of our branches and finalize your transfer without worrying about market shifts.",
   },
   {
-    q: 'Is Sunny Remit licensed by the Central Bank of Kenya?',
-    a: 'Yes, Sunny Remit is fully licensed, authorized, and regulated by the Central Bank of Kenya (CBK) as an official foreign exchange bureau. We adhere strictly to all compliance, regulatory guidelines, and anti-money laundering frameworks.',
+    q: 'Is SunnyRemit licensed by the Central Bank of Kenya?',
+    a: 'Yes, SunnyRemit is fully licensed, authorized, and regulated by the Central Bank of Kenya (CBK) as an official foreign exchange bureau. We adhere strictly to all compliance, regulatory guidelines, and anti-money laundering frameworks.',
   },
   {
     q: 'What identification documents do I need to exchange currency?',

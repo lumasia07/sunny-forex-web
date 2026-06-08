@@ -31,7 +31,7 @@ const posts = [
 
       <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">What This Means for Importers and Remitters</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
-        If you are a business owner buying materials internationally, you can now budget with higher accuracy. If you are sending money home, you are receiving fair value without worrying about sudden daily drops. Sending money via Sunny Remit guarantees you receive maximum value during these optimal trading windows.
+        If you are a business owner buying materials internationally, you can now budget with higher accuracy. If you are sending money home, you are receiving fair value without worrying about sudden daily drops. Sending money via SunnyRemit guarantees you receive maximum value during these optimal trading windows.
       </p>
     `
   },
@@ -94,13 +94,13 @@ const posts = [
 
       <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Get Expert Business Support</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
-        At Sunny Remit, our dedicated corporate division partners with local businesses to navigate currency exposures. Contact our corporate desk to establish custom corporate conversion limits.
+        At SunnyRemit, our dedicated corporate division partners with local businesses to navigate currency exposures. Contact our corporate desk to establish custom corporate conversion limits.
       </p>
     `
   },
   {
     category: 'News',
-    title: 'Sunny Remit opens 7th branch in Mombasa Road',
+    title: 'SunnyRemit opens 7th branch in Mombasa Road',
     excerpt: 'Our newest location at Capital Centre marks our continued commitment to making FX services accessible.',
     date: 'April 20, 2026',
     readTime: '3 min read',
@@ -148,7 +148,7 @@ const posts = [
         <li><strong>Workforce Support:</strong> A growing population of Kenyan professionals residing in the Gulf sends support back to families via mobile money services.</li>
       </ul>
 
-      <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Frictionless Settlement via Sunny Remit</h3>
+      <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Frictionless Settlement via SunnyRemit</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
         We specialize in direct AED to KES conversions, giving customers competitive rates and avoiding unnecessary conversion margins. Visit any branch or secure today's live rate on our converter page.
       </p>
@@ -168,7 +168,7 @@ const posts = [
       
       <h3 class="text-xl font-medium text-[#0E0E0E] mt-8 mb-4">Core Pillars of CBK Guidelines</h3>
       <p class="leading-relaxed text-gray-600 font-light mb-4">
-        Sunny Remit fully complies with the three main pillars defined by the Central Bank:
+        SunnyRemit fully complies with the three main pillars defined by the Central Bank:
       </p>
       <ul class="list-disc pl-6 space-y-2 text-gray-600 font-light mb-6">
         <li><strong>Rigorous KYC:</strong> Always bring a valid national identification card or passport for any physical transaction.</li>
@@ -190,7 +190,7 @@ export function Blog() {
   return (
     <>
       <PageHero
-        eyebrow="The Sunny Remit Blog"
+        eyebrow="The SunnyRemit Blog"
         title="Insights, market notes, and stories from the floor."
         description="Plain-language analysis from a team that has been moving Kenyan money for nearly two decades."
         imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"

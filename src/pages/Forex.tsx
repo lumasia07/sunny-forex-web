@@ -241,7 +241,7 @@ export function Forex() {
       <PageHero
         eyebrow="Currency Exchange"
         title="Exchange currencies with confidence"
-        description="Competitive rates, instant service, and seven branches across Nairobi — Sunny Remit has been Kenya's trusted bureau since 2008."
+        description="Competitive rates, instant service, and seven branches across Nairobi — SunnyRemit has been Kenya's trusted bureau since 2008."
         imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
         imageAlt="Currency exchange board rates"
         breadcrumb={[
@@ -305,7 +305,7 @@ export function Forex() {
           <div className="mb-16 max-w-2xl">
             <span className="inline-block w-10 h-px bg-[#7A1220] mb-6" />
             <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
-              Why exchange with Sunny Remit.
+              Why exchange with SunnyRemit.
             </h2>
             <p className="type-lead">
               The fundamentals that have kept us Kenya's trusted bureau for over 17 years.

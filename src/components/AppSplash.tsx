@@ -11,7 +11,7 @@ function preloadHeroBackground(): Promise<void> {
     const img = new Image();
     img.onload = () => resolve();
     img.onerror = () => resolve();
-    img.src = '/12419-hero.webp';
+    img.src = '/pexels-sergey-pesterev-69811391-8427984.jpg';
   });
 }
 
@@ -53,14 +53,14 @@ export function AppSplash({ onComplete }: AppSplashProps) {
           transition={{ duration: FADE_OUT_MS / 1000, ease: 'easeInOut' }}
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-white"
           role="status"
-          aria-label="Loading Sunny Remit">
+          aria-label="Loading SunnyRemit">
           <GlobeLoader />
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.35 }}
-            className="font-brand text-xl sm:text-2xl text-[#0E0E0E] mt-8 tracking-tight">
-            Sunny <span className="text-[#7A1220]">Remit</span>
+            className="font-brand text-xl sm:text-2xl text-[#7A1220] mt-8 tracking-tight">
+            SunnyRemit
           </motion.p>
           <motion.p
             initial={{ opacity: 0 }}

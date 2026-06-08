@@ -29,7 +29,7 @@ export function Home() {
   return (
     <>
       <Hero selectedCurrency={selectedCurrency} />
-      <HeroFeatures />
+      {/* <HeroFeatures /> */}
       <RatesStrip onRateClick={(code) => {
         setSelectedCurrency(code);
         window.scrollTo({ top: 0, behavior: 'smooth' });
