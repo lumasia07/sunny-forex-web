@@ -54,9 +54,9 @@ export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) 
           />
         </AnimatePresence>
 
-        {/* Dynamic Overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.65] via-white/[0.30] to-transparent z-[1]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-white/15 z-[1]" />
+        {/* Dynamic Overlays for readability - sleek, dark, and clear */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/[0.55] via-black/[0.25] to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/[0.15] via-transparent to-black/[0.30] z-[1]" />
         
         {/* Premium ambient maroon & gold brand glows for rich 3D backlighting */}
         <div
@@ -81,16 +81,16 @@ export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) 
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-bold text-[#0E0E0E] text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] tracking-tight leading-[1.08] mb-5 max-w-xl">
+              className="font-display font-bold text-white text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] tracking-tight leading-[1.08] mb-5 max-w-xl">
               Global Reach.
               <br />
-              <span className="text-[#7A1220]">Local Trust.</span>
+              <span className="text-[#FF5263]">Local Trust.</span>
               <br />
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[#006B3F] block">
+                className="text-[#10B981] block">
                 Instant Exchange.
               </motion.span>
             </motion.h1>
@@ -99,7 +99,7 @@ export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.06 }}
-              className="text-[15px] sm:text-base leading-relaxed mb-7 max-w-md text-[#0E0E0E]/70">
+              className="text-[15px] sm:text-base leading-relaxed mb-7 max-w-md text-white/80">
               Moving the Kenyan shilling across continents — and bringing the world's currencies home — with care, since 2008.
             </motion.p>
 
@@ -130,14 +130,14 @@ export function Hero({ selectedCurrency }: { selectedCurrency: string | null }) 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.18 }}
-              className="flex items-center gap-2 text-xs text-gray-600">
+              className="flex items-center gap-2 text-xs text-white/70">
               <div className="flex gap-0.5 text-[#D4A24C]">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-current" />
                 ))}
               </div>
               <span>
-                <span className="font-bold text-[#0E0E0E]">CBK Licensed</span> · Since 2008
+                <span className="font-bold text-white">CBK Licensed</span> · Since 2008
               </span>
             </motion.div>
           </div>
