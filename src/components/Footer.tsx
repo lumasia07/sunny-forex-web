@@ -8,16 +8,12 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <Link to="/" className="inline-flex items-center gap-3 mb-6 group">
+            <Link to="/" className="inline-flex items-center mb-6 group">
               <img
-                src="/logo-mark.png"
-                alt=""
-                aria-hidden="true"
-                className="h-14 w-14 object-contain"
+                src="/logo.png"
+                alt="SunnyRemit"
+                className="h-10 w-auto object-contain"
               />
-              <span className="font-brand text-xl text-[#7A1220]">
-                SunnyRemit
-              </span>
             </Link>
             <p className="text-sm text-[#0E0E0E]/75 font-normal leading-relaxed mb-6">
               Kenya's trusted forex bureau and remittance partner. Licensed and
