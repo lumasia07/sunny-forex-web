@@ -195,9 +195,9 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
           {/* Send Button */}
           <Link
             to="/branches"
-            className="w-full flex justify-center items-center gap-2 py-3.5 rounded-xl bg-[#7A1220] text-white hover:bg-[#5C0D18] transition-all font-bold text-sm uppercase tracking-wider shadow-md shadow-[#7A1220]/15 mt-2">
+            className="w-full flex justify-center items-center gap-2 py-3.5 rounded-xl bg-[#7A1220] hover:bg-[#5C0D18] transition-all font-figtree font-semibold text-sm tracking-wide shadow-md shadow-[#7A1220]/15 mt-2 text-white">
             <Send className="w-4 h-4 text-white/80" />
-            Send Money Now
+            Send Money
           </Link>
 
         </div>

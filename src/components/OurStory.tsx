@@ -6,35 +6,35 @@ import { LiveBlock, LiveWords } from './LiveText';
 
 const stories = [
   {
-    src: '/pexels-mnmshakir-35034068.jpg',
-    title: "Empowering Kenya's Trade",
-    subtitle: 'Local Trust, Global Impact',
+    src: '/globe-futuristic.png',
+    title: 'Global Remittance Hub',
+    subtitle: 'Fast, Secure, Direct Transfer',
     description:
-      "From Nairobi's commercial hub to the furthest reaches of the savannah, we empower local enterprises and individuals with instant, competitive currency exchange. We run deep in Kenyan soil, carrying the resilience and pride of our nation into every trade.",
+      'Send money instantly from anywhere in the world directly to Kenyan bank accounts, mobile money wallets, or for cash pick-up at any of our branches. Fast processing, transparent fees, and complete peace of mind.',
     accent: '#B91C1C',
   },
   {
-    src: '/pexels-sergey-pesterev-69811391-8427984.jpg',
-    title: 'Reaching New Heights',
-    subtitle: 'Guaranteed Rates, Peak Reliability',
+    src: '/globe-futuristic.png',
+    title: 'Guaranteed Real-Time Rates',
+    subtitle: 'Lock Rates, Beat Volatility',
     description:
-      'Just as Mt. Kilimanjaro stands tall and firm watching over East Africa, SunnyRemit stands as a beacon of stability. Avoid market volatility by securing guaranteed rates and send money with confidence at any of our branches.',
+      'Secure highly competitive live exchange rates instantly online. Our platform locks your exchange rate for 24 hours so you can complete your transfers without worrying about sudden market fluctuations.',
     accent: '#006B3F',
   },
   {
-    src: '/pexels-ben-iwara-1033992193-27742235.jpg',
-    title: 'Connecting Coast to Capital',
-    subtitle: 'Seamless Mobile & Cash Flow',
+    src: '/globe-futuristic.png',
+    title: 'Seamless Mobile Wallet Flow',
+    subtitle: 'Direct M-Pesa Integration',
     description:
-      "Whether sending funds to coastal tourism hotspots in Diani or managing corporate capital in Nairobi CBD, our real-time mobile money and M-Pesa integrations make local transfers absolutely effortless.",
+      "Send funds directly to M-Pesa and other leading mobile money wallets. Our real-time API integrations make global-to-local mobile money transfers absolutely instantaneous and effortless.",
     accent: '#0EA5E9',
   },
   {
-    src: '/pexels-maria-stewart-2268904-5643136 (1).jpg',
-    title: 'Bridging Global Borders',
-    subtitle: 'Worldwide Remittance Network',
+    src: '/globe-futuristic.png',
+    title: 'Worldwide Payout Partners',
+    subtitle: 'Global Network Reach',
     description:
-      'Partnering with global networks like Western Union, MoneyGram, and Ria, we connect families across continents. Fast, secure, and licensed by the Central Bank of Kenya — bringing the world closer with every shilling.',
+      'Partnering with top global payout networks like Western Union, MoneyGram, and Ria, we connect families across continents. Fully CBK-licensed, secure, and trusted with every shilling.',
     accent: '#D4A24C',
   },
 ];
@@ -44,6 +44,29 @@ export function OurStory() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const mockups = [
+    {
+      image: '/devices-1-tr.png',
+      alt: 'All-In-One Money Transfer Platform Showcase'
+    },
+    {
+      image: '/laptop-1-tr.png',
+      alt: 'Laptop Dashboard Peak Reliability'
+    },
+    {
+      image: '/phone-2-tr.png',
+      alt: 'Seamless Cash Transfers Mobile View'
+    },
+    {
+      image: '/phone-1-tr.png',
+      alt: 'Fast Mobile Remittance Mobile App'
+    },
+    {
+      image: '/phone-3-tr.png',
+      alt: 'Interbank Live Tracking Mobile Screen'
+    }
+  ];
 
   const totalSlides = stories.length + 1; // +1 for the CTA Slide
 
@@ -82,6 +105,15 @@ export function OurStory() {
   const togglePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsPlaying(!isPlaying);
+  };
+
+  const handleScrollToCalculator = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const element = document.getElementById('rates-calculator');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      window.history.pushState(null, '', '/#rates-calculator');
+    }
   };
 
   const isCtaSlide = currentIndex === stories.length;
@@ -132,7 +164,7 @@ export function OurStory() {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Background Images */}
+          {/* Background Images with Higher Blur and Tint */}
           <div className="absolute inset-0 w-full h-full">
             <AnimatePresence mode="wait">
               {isCtaSlide ? (
@@ -151,147 +183,203 @@ export function OurStory() {
                   <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
                 </motion.div>
               ) : (
-                <motion.img
-                  key={currentSlide?.src}
-                  src={currentSlide?.src}
-                  alt={currentSlide?.title}
-                  className="absolute inset-0 w-full h-full object-cover origin-center"
-                  initial={{ scale: 1.06, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 0.7 }}
-                  exit={{ scale: 0.96, opacity: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
+                <motion.div
+                  key={currentIndex}
+                  className="absolute inset-0 bg-[#090909] flex items-center justify-center overflow-hidden"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  {/* Blurred Digital Globe */}
+                  <img
+                    src="/globe-futuristic.png"
+                    alt="Digital Globe Background"
+                    className="absolute inset-0 w-full h-full object-cover origin-center filter blur-[14px] opacity-25"
+                  />
+                  {/* Subtle grid background */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
+                </motion.div>
               )}
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
           </div>
 
-          {/* Frosted Glass Floating Card for Text Overlay */}
-          <div className="absolute inset-0 p-6 sm:p-8 md:p-10 flex items-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-lg md:max-w-xl backdrop-blur-xl bg-black/40 border border-white/10 rounded-[2rem] p-6 sm:p-8 md:p-10 shadow-2xl flex flex-col justify-between min-h-[75%] sm:min-h-[85%] md:min-h-0 relative z-20 overflow-hidden"
-              >
-                {/* Visual Glass Glow */}
-                <div
-                  className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[60px] opacity-20 transition-colors duration-700"
-                  style={{ backgroundColor: accentColor }}
-                />
+          {/* Main Overlay Content */}
+          <div className="absolute inset-0 p-4 sm:p-6 md:p-8 lg:p-12 flex items-center z-20">
+            <div className="w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              
+              {/* Left Column: Frosted Glass Card for Text Overlay */}
+              <div className="col-span-1 lg:col-span-7 xl:col-span-6 flex items-center justify-start h-full">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full max-w-lg backdrop-blur-xl bg-black/45 border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-6 md:p-8 lg:p-10 shadow-2xl flex flex-col justify-between min-h-[85%] lg:min-h-0 relative overflow-hidden"
+                  >
+                    {/* Visual Glass Glow */}
+                    <div
+                      className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[60px] opacity-20 transition-colors duration-700 pointer-events-none"
+                      style={{ backgroundColor: accentColor }}
+                    />
 
-                {!isCtaSlide && currentSlide ? (
-                  <div className="flex flex-col flex-1 justify-center">
-                    <span
-                      className="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 block w-fit"
-                      style={{ color: accentColor }}
-                    >
-                      {currentSlide.subtitle}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight mb-4">
-                      {currentSlide.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light mb-6">
-                      {currentSlide.description}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col flex-1 justify-center items-start">
-                    <span
-                      className="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 block"
-                      style={{ color: '#7A1220' }}
-                    >
-                      Experience Premium Exchange
-                    </span>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight mb-4">
-                      Ready to experience seamless transactions?
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light mb-8">
-                      Visit any of our 7 modern branches in Nairobi, send money at your preferred currency rates online in advance, or contact our professional trading desk today.
-                    </p>
-
-                    {/* Premium Styled Rounded-Full Button with Arrow-in-div design */}
-                    <Link
-                      to="/branches"
-                      className="inline-flex items-center gap-4 bg-[#7A1220] hover:bg-[#911a2a] text-white font-medium pl-6 pr-2 py-2 rounded-full shadow-lg transition-all duration-300 group text-sm select-none"
-                    >
-                      <span className="font-semibold px-2">Contact Us Now</span>
-                      <span className="w-10 h-10 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 shadow-md">
-                        <ArrowRight className="w-5 h-5" />
-                      </span>
-                    </Link>
-                  </div>
-                )}
-
-                {/* Progress Indicators & Navigation Bar inside Card */}
-                <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/10 gap-4">
-                  <div className="flex items-center gap-2">
-                    {/* Previous Button */}
-                    <button
-                      onClick={handlePrev}
-                      className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
-                      aria-label="Previous slide"
-                    >
-                      <ChevronLeft className="w-4 h-4 text-white" />
-                    </button>
-                    {/* Next Button */}
-                    <button
-                      onClick={handleNext}
-                      className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
-                      aria-label="Next slide"
-                    >
-                      <ChevronRight className="w-4 h-4 text-white" />
-                    </button>
-
-                    {/* Auto-play Pause Control */}
-                    <button
-                      onClick={togglePlay}
-                      className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors ml-1"
-                      aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-3.5 h-3.5 text-white" />
-                      ) : (
-                        <Play className="w-3.5 h-3.5 text-white ml-0.5" />
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Horizontal Linear Indicators */}
-                  <div className="flex gap-2">
-                    {Array.from({ length: totalSlides }).map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleDotClick(i)}
-                        className="group relative py-2 px-1 focus:outline-none"
-                        aria-label={`Go to slide ${i + 1}`}
-                      >
-                        <div
-                          className="h-1 rounded-full transition-all duration-500 overflow-hidden relative"
-                          style={{
-                            width: i === currentIndex ? '2.5rem' : '0.5rem',
-                            backgroundColor: i === currentIndex ? accentColor : 'rgba(255,255,255,0.2)',
-                          }}
+                    {!isCtaSlide && currentSlide ? (
+                      <div className="flex flex-col flex-1 justify-center">
+                        <span
+                          className="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 block w-fit"
+                          style={{ color: accentColor }}
                         >
-                          {i === currentIndex && isPlaying && !isHovered && (
-                            <motion.div
-                              className="absolute top-0 bottom-0 left-0 bg-white"
-                              initial={{ width: '0%' }}
-                              animate={{ width: '100%' }}
-                              transition={{ duration: 6, ease: 'linear' }}
-                              key={currentIndex}
-                            />
+                          {currentSlide.subtitle}
+                        </span>
+                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight mb-2 sm:mb-4">
+                          {currentSlide.title}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs md:text-sm text-white/75 leading-relaxed font-light mb-3 sm:mb-6">
+                          {currentSlide.description}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col flex-1 justify-center items-start">
+                        <span
+                          className="text-[10px] font-bold tracking-[0.25em] uppercase mb-2 block"
+                          style={{ color: '#7A1220' }}
+                        >
+                          Experience Premium Exchange
+                        </span>
+                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight mb-2 sm:mb-4">
+                          Ready to experience seamless transactions?
+                        </h3>
+                        <p className="text-[11px] sm:text-xs md:text-sm text-white/75 leading-relaxed font-light mb-4 sm:mb-8">
+                          Visit any of our 7 modern branches in Nairobi, send money at your preferred currency rates online in advance, or contact our professional trading desk today.
+                        </p>
+
+                        {/* Premium Styled Rounded-Full Button with Arrow-in-div design */}
+                        <a
+                          href="/#rates-calculator"
+                          onClick={handleScrollToCalculator}
+                          className="inline-flex items-center gap-4 bg-[#7A1220] hover:bg-[#911a2a] text-white font-medium pl-6 pr-2 py-2 rounded-full shadow-lg transition-all duration-300 group text-sm select-none cursor-pointer"
+                        >
+                          <span className="font-semibold px-2 font-figtree">Send Money</span>
+                          <span className="w-10 h-10 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 shadow-md">
+                            <ArrowRight className="w-5 h-5" />
+                          </span>
+                        </a>
+                      </div>
+                    )}
+
+                    {/* Progress Indicators & Navigation Bar inside Card */}
+                    <div className="flex items-center justify-between mt-auto pt-4 sm:pt-6 border-t border-white/10 gap-4">
+                      <div className="flex items-center gap-2">
+                        {/* Previous Button */}
+                        <button
+                          onClick={handlePrev}
+                          className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
+                          aria-label="Previous slide"
+                        >
+                          <ChevronLeft className="w-4 h-4 text-white" />
+                        </button>
+                        {/* Next Button */}
+                        <button
+                          onClick={handleNext}
+                          className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors"
+                          aria-label="Next slide"
+                        >
+                          <ChevronRight className="w-4 h-4 text-white" />
+                        </button>
+
+                        {/* Auto-play Pause Control */}
+                        <button
+                          onClick={togglePlay}
+                          className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors ml-1"
+                          aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
+                        >
+                          {isPlaying ? (
+                            <Pause className="w-3.5 h-3.5 text-white" />
+                          ) : (
+                            <Play className="w-3.5 h-3.5 text-white ml-0.5" />
                           )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                        </button>
+                      </div>
+
+                      {/* Horizontal Linear Indicators */}
+                      <div className="flex gap-2">
+                        {Array.from({ length: totalSlides }).map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => handleDotClick(i)}
+                            className="group relative py-2 px-1 focus:outline-none"
+                            aria-label={`Go to slide ${i + 1}`}
+                          >
+                            <div
+                              className="h-1 rounded-full transition-all duration-500 overflow-hidden relative"
+                              style={{
+                                width: i === currentIndex ? '2.5rem' : '0.5rem',
+                                backgroundColor: i === currentIndex ? accentColor : 'rgba(255,255,255,0.2)',
+                              }}
+                            >
+                              {i === currentIndex && isPlaying && !isHovered && (
+                                <motion.div
+                                  className="absolute top-0 bottom-0 left-0 bg-white"
+                                  initial={{ width: '0%' }}
+                                  animate={{ width: '100%' }}
+                                  transition={{ duration: 6, ease: 'linear' }}
+                                  key={currentIndex}
+                                />
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Right Column: High-tech floating device mockup */}
+              <div className="hidden lg:col-span-5 xl:col-span-6 lg:flex items-center justify-center h-full relative overflow-visible">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full h-full max-h-[85%] flex items-center justify-center relative overflow-visible"
+                  >
+                    {/* Glowing colored ambient gradient bubble behind mockup */}
+                    <div 
+                      className="absolute w-[75%] h-[75%] rounded-full blur-[80px] opacity-40 transition-colors duration-700 pointer-events-none"
+                      style={{ 
+                        background: `radial-gradient(circle, ${accentColor} 0%, transparent 70%)` 
+                      }} 
+                    />
+
+                    {/* Drift Animation Container */}
+                    <motion.div
+                      animate={{
+                        y: [0, -12, 0]
+                      }}
+                      transition={{
+                        duration: 7,
+                        repeat: Infinity,
+                        ease: 'easeInOut'
+                      }}
+                      className="w-full h-full flex items-center justify-center p-4 z-10"
+                    >
+                      <img
+                        src={mockups[currentIndex].image}
+                        alt={mockups[currentIndex].alt}
+                        className="w-full h-full max-h-[280px] xl:max-h-[340px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] select-none"
+                      />
+                    </motion.div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+            </div>
           </div>
 
           {/* Subtle Outer Nav Chevrons (desktop only for premium spacing) */}

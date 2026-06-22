@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Hero } from '../components/Hero';
-import { HeroFeatures } from '../components/HeroFeatures';
+import { DeviceShowcaseSection } from '../components/DeviceShowcaseSection';
+import { RateCalculatorSection } from '../components/RateCalculatorSection';
 import { RatesStrip } from '../components/RatesStrip';
 import { Services } from '../components/Services';
 import { OurStory } from '../components/OurStory';
@@ -28,11 +29,15 @@ export function Home() {
 
   return (
     <>
-      <Hero selectedCurrency={selectedCurrency} />
-      {/* <HeroFeatures /> */}
+      <Hero />
+      <DeviceShowcaseSection />
+      <RateCalculatorSection selectedCurrency={selectedCurrency} />
       <RatesStrip onRateClick={(code) => {
         setSelectedCurrency(code);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const element = document.getElementById('rates-calculator');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }} />
       <Services />
       <PartnersBanner />

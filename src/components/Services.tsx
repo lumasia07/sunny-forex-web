@@ -1,202 +1,167 @@
-import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, RefreshCcw, Send, Smartphone } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { LiveBlock, LiveWords } from './LiveText';
-
-const services = [
-  {
-    icon: RefreshCcw,
-    title: 'Forex Exchange',
-    description:
-      'Competitive rates for major global currencies. Instant exchange with no hidden fees at any of our branches.',
-    href: '/forex',
-    accent: '#7A1220',
-  },
-  {
-    icon: Send,
-    title: 'Money Remittance',
-    description:
-      'Send and receive money globally through our trusted international partners. Fast, secure, and reliable.',
-    href: '/remittance',
-    accent: '#006B3F',
-  },
-  {
-    icon: Smartphone,
-    title: 'M-Pesa Transfers',
-    description:
-      'Seamless integration with mobile money. Convert your currency directly to or from your M-Pesa wallet instantly.',
-    href: '/remittance',
-    accent: '#D4A24C',
-  },
-];
-
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 60, scale: 0.95 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.9,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  },
-};
-
-function AnimatedTitle({ title }: { title: string }) {
-  return (
-    <h3 className="text-2xl sm:text-3xl font-semibold text-[#0E0E0E] group-hover:text-white leading-tight tracking-tight mb-3 transition-colors duration-500">
-      <LiveWords text={title} variant="neutral" />
-    </h3>
-  );
-}
-
-function ServiceCard({
-  service,
-  index,
-}: {
-  service: (typeof services)[number];
-  index: number;
-}) {
-  const Icon = service.icon;
-  const [isHovered, setIsHovered] = useState(false);
-
-  const inner = (
-    <>
-      <div className="relative z-10 flex flex-col min-h-[300px] sm:min-h-[330px] h-full p-6 sm:p-8">
-        <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 bg-[#FFFFFF]/10"
-          style={{
-            backgroundColor: service.accent,
-          }}>
-          <Icon
-            className="w-5 h-5 text-white"
-            strokeWidth={2}
-          />
-        </div>
-
-        {/* Service number */}
-        <span 
-          className="text-[10px] font-bold tracking-[0.3em] uppercase transition-colors duration-300 mb-2 block"
-          style={{ color: isHovered ? service.accent : '#D1D5DB' }}
-        >
-          0{index + 1}
-        </span>
-
-        <h3 
-          className="text-2xl sm:text-3xl font-semibold leading-tight tracking-tight mb-3 transition-colors duration-300"
-          style={{ color: isHovered ? service.accent : '#0E0E0E' }}
-        >
-          <LiveWords text={service.title} variant="neutral" />
-        </h3>
-
-        <LiveBlock
-          className="text-sm sm:text-base text-gray-500 font-light leading-relaxed mb-4 transition-colors duration-300"
-          variant="neutral"
-          inline={false}>
-          {service.description}
-        </LiveBlock>
-
-        <motion.span
-          className="inline-flex items-center gap-2 text-sm font-bold w-fit mt-auto cursor-default transition-colors duration-300"
-          style={{ color: service.accent }}
-          whileHover={{ x: 8, scale: 1.05 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
-          <LiveBlock variant="neutral">Learn more</LiveBlock>
-          <span 
-            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300"
-            style={{ backgroundColor: isHovered ? `${service.accent}20` : `${service.accent}10` }}
-          >
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </span>
-        </motion.span>
-      </div>
-    </>
-  );
-
-  const cardClass =
-    'group relative block h-full rounded-xl overflow-hidden border bg-white shadow-lg transition-all duration-500';
-
-  const cardStyle = {
-    borderTop: `4px solid ${isHovered ? service.accent : 'transparent'}`,
-    borderLeft: '1px solid #E5E7EB',
-    borderRight: '1px solid #E5E7EB',
-    borderBottom: '1px solid #E5E7EB',
-    boxShadow: isHovered ? '0 20px 40px rgba(0, 0, 0, 0.08)' : '0 10px 30px rgba(0, 0, 0, 0.04)',
-    backgroundColor: '#FFFFFF',
-    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-  };
-
-  return (
-    <motion.div
-      variants={cardVariants}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="h-full">
-      {service.href ? (
-        <Link to={service.href} className={cardClass} style={cardStyle}>
-          {inner}
-        </Link>
-      ) : (
-        <div className={cardClass} style={cardStyle}>{inner}</div>
-      )}
-    </motion.div>
-  );
-}
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
+  
+  const handleScrollToCalculator = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById('rates-calculator');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      window.history.pushState(null, '', '/#rates-calculator');
+    }
+  };
 
-  const headingY = useTransform(scrollYProgress, [0, 0.3], [40, 0]);
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  const featureRows = [
+    {
+      title: 'Forex Exchange',
+      description: 'Competitive live rates for major global currencies. Instantly calculate rates online and visit any of our 7 Nairobi branches for immediate, commission-free pickup.',
+      ctaText: 'Check Rates',
+      ctaType: 'scroll',
+      image: '/laptop-2-tr.png',
+      imageAlt: 'Sleek Laptop Live Rates Converter Dashboard',
+      imagePosition: 'right', // image on right, text on left
+      accent: '#7A1220',
+      gradient: 'from-[#7A1220]/5 via-transparent to-[#D4A24C]/5'
+    },
+    {
+      title: 'Money Remittance',
+      description: 'Send and receive money internationally through our secure, fully licensed global remittance platform. Direct transfers to mobile wallets and major international banks.',
+      ctaText: 'Send Money',
+      ctaType: 'scroll',
+      image: '/devices-1-tr.png',
+      imageAlt: 'All-In-One Money Transfer Platform Showcase',
+      imagePosition: 'left', // image on left, text on right
+      accent: '#006B3F',
+      gradient: 'from-emerald-500/5 via-transparent to-transparent'
+    },
+    {
+      title: 'M-Pesa Transfers',
+      description: 'Seamless integration with mobile wallets. Instantly convert international currencies directly into your M-Pesa wallet, or top-up for global transfers in one click.',
+      ctaText: 'Explore Transfers',
+      ctaType: 'link',
+      ctaHref: '/remittance',
+      image: '/phone-3-tr.png',
+      imageAlt: 'Live Interbank Remittance Mobile App Tracking Screen',
+      imagePosition: 'right', // image on right, text on left
+      accent: '#D4A24C',
+      gradient: 'from-[#D4A24C]/5 via-transparent to-[#7A1220]/5'
+    }
+  ];
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 lg:py-24 bg-white overflow-hidden">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white overflow-hidden border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <motion.div
-          style={{ y: headingY, opacity: headingOpacity }}
-          className="mb-16 max-w-2xl">
-          <motion.span
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left"
-          />
-          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4">
+        
+        {/* Section Header */}
+        <div className="mb-16 md:mb-24 max-w-2xl">
+          <span className="inline-block w-12 h-px bg-[#7A1220] mb-5 origin-left" />
+          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-[#0E0E0E]">
             <LiveWords text="Services built for how Kenya moves money." />
           </h2>
-          <LiveBlock className="type-lead" variant="neutral" inline={false}>
-            From cash exchange at our branches to instant M-Pesa transfers — every service is
-            engineered for speed, transparency, and trust.
+          <LiveBlock className="type-lead text-gray-500 max-w-xl font-light" variant="neutral" inline={false}>
+            From cash exchange at our modern branches to instant M-Pesa transfers — every service is engineered for speed, transparency, and trust.
           </LiveBlock>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-80px' }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {services.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
-          ))}
-        </motion.div>
+        {/* Feature Rows */}
+        <div className="space-y-24 md:space-y-36">
+          {featureRows.map((row, index) => {
+            const isImageRight = row.imagePosition === 'right';
+            return (
+              <div 
+                key={row.title}
+                className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center overflow-visible"
+              >
+                {/* Column 1: Text or Image based on position */}
+                <div className={`order-1 ${isImageRight ? 'lg:order-1' : 'lg:order-2'} space-y-6 relative z-10`}>
+                  
+                  {/* Decorative number tag */}
+                  <span className="text-[10px] font-bold tracking-[0.25em] uppercase block" style={{ color: row.accent }}>
+                    0{index + 1} / FEATURED SERVICE
+                  </span>
+                  
+                  <h3 className="type-headline text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0E0E0E]">
+                    <LiveWords text={row.title} variant="neutral" />
+                  </h3>
+                  
+                  <p className="text-sm sm:text-base text-gray-500 font-light leading-relaxed max-w-lg">
+                    {row.description}
+                  </p>
+                  
+                  <div className="pt-2">
+                    {row.ctaType === 'scroll' ? (
+                      <a
+                        href="/#rates-calculator"
+                        onClick={handleScrollToCalculator}
+                        className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full font-figtree font-bold text-white transition-all duration-300 group select-none shadow-sm text-sm"
+                        style={{ backgroundColor: row.accent }}
+                      >
+                        <span>{row.ctaText}</span>
+                        <span className="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5">
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </a>
+                    ) : (
+                      <Link
+                        to={row.ctaHref || '/'}
+                        className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full font-figtree font-bold text-white transition-all duration-300 group select-none shadow-sm text-sm"
+                        style={{ backgroundColor: row.accent }}
+                      >
+                        <span>{row.ctaText}</span>
+                        <span className="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5">
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
+                {/* Column 2: Image or Text based on position */}
+                <div className={`order-2 ${isImageRight ? 'lg:order-2' : 'lg:order-1'} relative flex items-center justify-center overflow-visible`}>
+                  
+                  {/* Glowing background bubble behind device */}
+                  <div className={`absolute w-[80%] h-[80%] rounded-full bg-gradient-to-tr ${row.gradient} filter blur-3xl opacity-60 z-0 pointer-events-none`} />
+
+                  {/* Tech frame layout container */}
+                  <div className="relative w-full aspect-[1.25/1] max-w-[500px] flex items-center justify-center z-10">
+                    <motion.div
+                      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: true, margin: '-100px' }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                      className="w-full h-full flex items-center justify-center relative"
+                    >
+                      <motion.div
+                        animate={{
+                          y: [0, -10, 0]
+                        }}
+                        transition={{
+                          duration: 8,
+                          repeat: Infinity,
+                          ease: 'easeInOut'
+                        }}
+                        className="w-full h-full flex items-center justify-center"
+                      >
+                        <img 
+                          src={row.image} 
+                          alt={row.imageAlt}
+                          className="w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.08)] select-none"
+                        />
+                      </motion.div>
+                    </motion.div>
+                  </div>
+
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
       </div>
     </section>
   );
