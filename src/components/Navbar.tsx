@@ -220,8 +220,7 @@ export function Navbar() {
             </div>
           </div>
  
-          {/* 3. RIGHT PILL: CTA Button (with Arrow) / Mobile Hamburger Menu */}
-          <div className={`h-11 sm:h-12 md:h-16 flex items-center rounded-full border transition-all duration-300 ${
+          <div className={`h-11 sm:h-12 md:h-16 flex items-center rounded-full border transition-all duration-300 lg:border-none lg:bg-transparent lg:shadow-none lg:p-0 ${
             isScrolledPastHero 
               ? 'border-white/10 bg-[#0E0E0E]/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] p-1' 
               : 'border-gray-200/80 bg-white/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(122,18,32,0.05)] p-1'
