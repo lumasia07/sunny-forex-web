@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Send, TrendingUp } from 'lucide-react';
+import { fetchFromApi } from '../lib/api';
 
-const currencies = [
+const defaultCurrencies = [
   { code: 'USD', flag: '🇺🇸', rate: 130.5 },
   { code: 'EUR', flag: '🇪🇺', rate: 141.2 },
   { code: 'GBP', flag: '🇬🇧', rate: 165.8 },
@@ -12,10 +13,28 @@ const currencies = [
 export function HeroCalculator() {
   const [sendAmount, setSendAmount] = useState('1000');
   const [sendCurrency, setSendCurrency] = useState('USD');
+  const [currencies, setCurrencies] = useState<any[]>(defaultCurrencies);
+
+  useEffect(() => {
+    fetchFromApi<any[]>('rates')
+      .then(data => {
+        if (data && data.length > 0) {
+          const formatted = data.map(r => ({
+            code: r.currency_code,
+            flag: r.flag_emoji,
+            rate: parseFloat(r.sell_rate)
+          }));
+          setCurrencies(formatted);
+        }
+      })
+      .catch(err => console.warn('Hero calculator API offline, using fallback:', err));
+  }, []);
 
   const selected = currencies.find((c) => c.code === sendCurrency) || currencies[0];
   const sendNum = parseFloat(sendAmount) || 0;
   const receiveNum = sendNum * selected.rate;
+  
+  const flagCode = sendCurrency.substring(0, 2).toLowerCase();
 
   return (
     <div className="rate-widget w-full rounded-2xl sm:rounded-3xl border border-gray-200/80 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.06)] overflow-hidden">
@@ -47,16 +66,23 @@ export function HeroCalculator() {
                 min="0"
                 className="flex-1 min-w-0 text-xl sm:text-2xl font-bold text-[#0E0E0E] bg-transparent border-none outline-none p-0 tabular-nums tracking-tight"
               />
-              <select
-                value={sendCurrency}
-                onChange={(e) => setSendCurrency(e.target.value)}
-                className="shrink-0 text-xs font-semibold bg-white border border-gray-200 rounded-lg px-2 py-1.5 outline-none focus:border-[#7A1220] cursor-pointer shadow-sm">
-                {currencies.map((cur) => (
-                  <option key={cur.code} value={cur.code}>
-                    {cur.flag} {cur.code}
-                  </option>
-                ))}
-              </select>
+              <div className="flex items-center gap-1.5">
+                <img 
+                  src={`https://flagcdn.com/w40/${flagCode}.png`}
+                  className="h-4 w-6 rounded object-cover shadow border border-gray-200"
+                  alt=""
+                />
+                <select
+                  value={sendCurrency}
+                  onChange={(e) => setSendCurrency(e.target.value)}
+                  className="shrink-0 text-xs font-semibold bg-white border border-gray-200 rounded-lg px-2 py-1.5 outline-none focus:border-[#7A1220] cursor-pointer shadow-sm">
+                  {currencies.map((cur) => (
+                    <option key={cur.code} value={cur.code}>
+                      {cur.code}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 

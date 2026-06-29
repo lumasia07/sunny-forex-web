@@ -60,6 +60,8 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
     setReceiveAmount((sendNum * newSelected.rate).toFixed(0));
   };
 
+  const flagCode = sendCurrency.substring(0, 2).toLowerCase();
+
   return (
     <div className="hero-lock-card w-full max-w-[400px] mx-auto lg:mx-0 lg:ml-auto">
       <div className="relative rounded-2xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-gray-100 bg-white">
@@ -73,7 +75,7 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
             </span>
-            <span className="font-display text-xs font-bold text-[#0E0E0E] uppercase tracking-wider">Send Money</span>
+            <span class="font-display text-xs font-bold text-[#0E0E0E] uppercase tracking-wider">Send Money</span>
           </div>
           <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full flex items-center gap-1">
             <TrendingUp className="w-2.5 h-2.5" />
@@ -100,7 +102,12 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
             </div>
             <div className="relative w-[115px] bg-[#7A1220] text-white flex items-center justify-between px-3 shrink-0">
               <span className="flex items-center gap-1.5 font-bold text-xs">
-                {selected.flag} {sendCurrency}
+                <img 
+                  src={`https://flagcdn.com/w40/${flagCode}.png`}
+                  className="h-3 w-4.5 rounded object-cover shadow border border-white/20"
+                  alt=""
+                />
+                {sendCurrency}
               </span>
               <span className="text-[9px] opacity-80">▼</span>
               <select
@@ -109,7 +116,7 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                 {currencies.map((cur) => (
                   <option key={cur.code} value={cur.code} className="text-[#0E0E0E]">
-                    {cur.flag} {cur.code}
+                    {cur.code}
                   </option>
                 ))}
               </select>
@@ -148,13 +155,18 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
             </div>
             <div className="relative w-[115px] bg-[#7A1220] text-white flex items-center justify-between px-3 shrink-0">
               <span className="flex items-center gap-1.5 font-bold text-xs">
-                🇰🇪 KES
+                <img 
+                  src="https://flagcdn.com/w40/ke.png"
+                  className="h-3 w-4.5 rounded object-cover shadow border border-white/20"
+                  alt="KE"
+                />
+                KES
               </span>
               <span className="text-[9px] opacity-80">▼</span>
               <select
                 disabled
                 className="absolute inset-0 w-full h-full opacity-0 cursor-not-allowed">
-                <option value="KES">🇰🇪 KES</option>
+                <option value="KES">KES</option>
               </select>
             </div>
           </div>

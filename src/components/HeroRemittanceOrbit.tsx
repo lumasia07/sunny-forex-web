@@ -81,6 +81,8 @@ export function HeroRemittanceOrbit() {
       {nodes.map((node, i) => {
         const { x, y } = polarToXY(node.ring, node.angle, 28);
         const Icon = node.icon;
+        const flagCode = node.id === 'uk' ? 'gb' : node.id;
+        
         return (
           <motion.div
             key={node.id}
@@ -93,8 +95,12 @@ export function HeroRemittanceOrbit() {
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 3 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
               className="flex flex-col items-center gap-1">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white shadow-lg shadow-black/8 border border-gray-100 flex items-center justify-center text-lg sm:text-xl ring-2 ring-white">
-                {node.flag}
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white shadow-lg shadow-black/8 border border-gray-100 flex items-center justify-center ring-2 ring-white overflow-hidden">
+                <img 
+                  src={`https://flagcdn.com/w40/${flagCode}.png`}
+                  className="w-full h-full object-cover"
+                  alt={node.label}
+                />
               </div>
               <span className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0E0E0E] text-[9px] font-semibold text-white uppercase tracking-wider">
                 <Icon className="w-2.5 h-2.5 text-[#D4A24C]" />

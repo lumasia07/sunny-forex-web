@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { fetchFromApi } from '../lib/api';
 
-const faqs = [
+const defaultFaqs = [
   {
     q: 'What are your operational hours for currency exchange?',
     a: 'Our seven Nairobi branches are open 365 days a year for your convenience. Weekdays (Monday to Friday) from 9:00 AM to 7:00 PM, and weekends (Saturday, Sunday) and public holidays from 9:00 AM to 6:00 PM.',
@@ -30,7 +31,7 @@ function AccordionItem({
   isOpen,
   onToggle,
 }: {
-  faq: (typeof faqs)[number];
+  faq: (typeof defaultFaqs)[number];
   isOpen: boolean;
   onToggle: () => void;
 }) {
@@ -72,7 +73,22 @@ function AccordionItem({
 }
 
 export function FaqSection() {
+  const [faqs, setFaqs] = useState<any[]>(defaultFaqs);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchFromApi<any[]>('faqs')
+      .then(data => {
+        if (data && data.length > 0) {
+          const formatted = data.map(f => ({
+            q: f.question,
+            a: f.answer
+          }));
+          setFaqs(formatted);
+        }
+      })
+      .catch(err => console.warn('FAQ API offline, using fallback:', err));
+  }, []);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex((current) => (current === index ? null : index));

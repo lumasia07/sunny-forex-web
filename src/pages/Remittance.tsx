@@ -57,16 +57,15 @@ const corridors = [
   }
 ];
 
-
 const steps = [
   {
     n: '01',
-    title: 'Choose Your Corridor',
-    body: 'Select the currency you wish to trade or remit. We support 50+ active global corridors.'
+    title: 'Select Destination',
+    body: 'Choose from over 50 corridors globally. Check transaction speed and zero-fee status.'
   },
   {
     n: '02',
-    title: 'Send Money Today',
+    title: 'Input Amount & Rate',
     body: 'Convert instantly online and secure guaranteed rates for 4 hours to bypass volatility.'
   },
   {
@@ -169,6 +168,8 @@ function CorridorCard({
   corridor: (typeof corridors)[number];
   index: number;
 }) {
+  const flagCode = corridor.currency.substring(0, 2).toLowerCase();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -185,13 +186,11 @@ function CorridorCard({
         <div className="absolute inset-0 bg-white" />
         <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
 
-        <span
-          className="relative z-10 text-2xl transition-transform duration-500 group-hover:scale-110"
-          role="img"
-          aria-label={corridor.country}
-        >
-          {corridor.flag}
-        </span>
+        <img
+          src={`https://flagcdn.com/w40/${flagCode}.png`}
+          className="relative z-10 h-5 w-7 rounded object-cover shadow border border-gray-100 group-hover:scale-110 transition-transform duration-500"
+          alt={corridor.country}
+        />
 
         <div className="relative z-10 flex flex-1 flex-col min-w-0">
           <span className="text-sm font-medium text-[#0E0E0E] group-hover:text-white transition-colors duration-500 truncate">

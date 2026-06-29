@@ -1,11 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LiveBlock, LiveWords } from './LiveText';
 import { SplitColumnsReveal, splitGridMotion } from './SplitColumnsReveal';
+import { fetchFromApi } from '../lib/api';
 
-const branches = [
+const defaultBranches = [
   {
     name: 'Kilimani Branch',
     area: 'Kilimani',
@@ -51,7 +52,25 @@ const branches = [
 ];
 
 export function Branches() {
+  const [branches, setBranches] = useState<any[]>(defaultBranches);
   const sectionRef = useRef<HTMLElement>(null);
+  
+  useEffect(() => {
+    fetchFromApi<any[]>('branches')
+      .then(data => {
+        if (data && data.length > 0) {
+          const formatted = data.map(b => ({
+            name: b.name,
+            area: b.area,
+            hours: b.hours,
+            mapUrl: b.map_url
+          }));
+          setBranches(formatted);
+        }
+      })
+      .catch(err => console.warn('Branches API offline, using fallback:', err));
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],

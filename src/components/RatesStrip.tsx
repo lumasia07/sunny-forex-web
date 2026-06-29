@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { LiveBlock, LiveWords } from './LiveText';
-const rates = [
+import { fetchFromApi } from '../lib/api';
+
+const defaultRates = [
 {
   code: 'USD',
   flag: '🇺🇸',
@@ -100,21 +102,24 @@ const rates = [
   change: 0.02
 }];
 
-function RateCard({ rate, onClick }: { rate: (typeof rates)[number]; onClick?: () => void }) {
+function RateCard({ rate, onClick }: { rate: (typeof defaultRates)[number]; onClick?: () => void }) {
   const isUp = rate.change >= 0;
+  const flagCode = rate.code.substring(0, 2).toLowerCase();
+  
   return (
     <motion.div
       onClick={onClick}
       className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-100 hover:border-[#7A1220]/30 hover:shadow-lg transition-all min-w-[280px] cursor-pointer"
       whileHover={{ y: -3, scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
-      <div className="flex flex-col items-center gap-1">
-        <motion.span
-          className="text-2xl leading-none cursor-default"
+      <div class="flex flex-col items-center gap-1.5">
+        <motion.img
+          src={`https://flagcdn.com/w40/${flagCode}.png`}
+          className="h-5 w-7 rounded object-cover shadow border border-gray-100"
           whileHover={{ scale: 1.2, rotate: 5 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 15 }}>
-          {rate.flag}
-        </motion.span>
+          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+          alt={rate.code}
+        />
         <LiveBlock className="text-[10px] font-semibold tracking-wider text-gray-400" variant="dark">
           {rate.code}
         </LiveBlock>
@@ -152,7 +157,10 @@ function RateCard({ rate, onClick }: { rate: (typeof rates)[number]; onClick?: (
     </motion.div>
   );
 }
+
 export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => void }) {
+  const [rates, setRates] = useState<any[]>(defaultRates);
+  const [lastUpdated, setLastUpdated] = useState<string>('just now');
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -162,7 +170,25 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
   const headingY = useTransform(scrollYProgress, [0, 0.3], [30, 0]);
   const headingOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
 
-  // Duplicate rates for seamless infinite scroll
+  useEffect(() => {
+    fetchFromApi<any[]>('rates')
+      .then(data => {
+        if (data && data.length > 0) {
+          const formatted = data.map(r => ({
+            code: r.currency_code,
+            flag: r.flag_emoji,
+            name: r.currency_name,
+            buy: parseFloat(r.buy_rate),
+            sell: parseFloat(r.sell_rate),
+            change: parseFloat(r.change_pct)
+          }));
+          setRates(formatted);
+          setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        }
+      })
+      .catch(err => console.warn('Could not fetch rates from CMS API:', err));
+  }, []);
+
   const loopRates = [...rates, ...rates];
   return (
     <section ref={sectionRef} className="w-full bg-white border-y border-gray-100 py-10 overflow-hidden">
@@ -194,7 +220,7 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
             LIVE
           </span>
           <span className="text-gray-400">·</span>
-          <span className="text-gray-500">Updated just now</span>
+          <span className="text-gray-500">Updated {lastUpdated}</span>
         </div>
       </motion.div>
 
@@ -205,7 +231,6 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="relative overflow-hidden">
-        {/* Edge fades */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
@@ -234,5 +259,4 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
         }
       `}</style>
     </section>);
-
 }

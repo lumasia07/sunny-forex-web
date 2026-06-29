@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { DeviceShowcaseSection } from '../components/DeviceShowcaseSection';
-import { RateCalculatorSection } from '../components/RateCalculatorSection';
 import { RatesStrip } from '../components/RatesStrip';
 import { Services } from '../components/Services';
 import { OurStory } from '../components/OurStory';
@@ -10,10 +9,11 @@ import { Branches } from '../components/Branches';
 import { PartnersBanner } from '../components/PartnersBanner';
 import { FaqSection } from '../components/FaqSection';
 import { CtaBand } from '../components/CtaBand';
+import { useSeo } from '../hooks/useSeo';
 
 export function Home() {
+  useSeo('home');
   const location = useLocation();
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
 
   useEffect(() => {
     if (window.location.hash === '#faq') {
@@ -31,14 +31,7 @@ export function Home() {
     <>
       <Hero />
       <DeviceShowcaseSection />
-      <RateCalculatorSection selectedCurrency={selectedCurrency} />
-      <RatesStrip onRateClick={(code) => {
-        setSelectedCurrency(code);
-        const element = document.getElementById('rates-calculator');
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }} />
+      <RatesStrip />
       <Services />
       <PartnersBanner />
       <OurStory />

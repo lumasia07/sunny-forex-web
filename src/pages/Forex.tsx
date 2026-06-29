@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
-import { RatesStrip } from '../components/RatesStrip';
 import { CtaBand } from '../components/CtaBand';
+import { RatesStrip } from '../components/RatesStrip';
 import { ContactLink } from '../components/ContactLink';
-import { Link } from 'react-router-dom';
+import { fetchFromApi } from '../lib/api';
+import { useSeo } from '../hooks/useSeo';
 import {
   ArrowRight,
   ShieldCheck,
@@ -14,8 +15,9 @@ import {
   Lock,
   TrendingUp
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const forexRates = [
+const defaultForexRates = [
   { code: 'USD', name: 'US Dollar', flag: '🇺🇸', buy: 128.50, sell: 130.50 },
   { code: 'EUR', name: 'Euro', flag: '🇪🇺', buy: 139.20, sell: 141.20 },
   { code: 'GBP', name: 'British Pound', flag: '🇬🇧', buy: 164.10, sell: 166.10 },
@@ -99,8 +101,7 @@ function ForexFeatureCard({
         <h3 className="text-lg sm:text-xl font-semibold text-[#0E0E0E] group-hover:text-white mb-3 transition-colors duration-500">
           {feature.title}
         </h3>
-
-        <p className="text-sm sm:text-base text-gray-500 group-hover:text-white/90 font-normal leading-relaxed transition-colors duration-500">
+        <p className="text-xs sm:text-sm font-light text-gray-500 group-hover:text-white/85 leading-relaxed transition-colors duration-500">
           {feature.description}
         </p>
       </div>
@@ -123,32 +124,23 @@ function FaqItem({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 ${
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className={`relative overflow-hidden rounded-2xl border transition-all duration-500 ${
         isActive
-          ? 'border-[#7A1220]/40 shadow-lg'
-          : 'border-gray-100 bg-white hover:border-[#7A1220]/40 hover:shadow-md'
+          ? 'bg-[#7A1220] border-[#7A1220] shadow-lg'
+          : 'bg-white border-gray-150 hover:border-[#7A1220]/30'
       }`}
     >
-      <div className="absolute inset-0 bg-white" />
-      <div
-        className={`absolute inset-0 bg-[#7A1220] transition-opacity duration-500 ${
-          isActive ? 'opacity-[0.88]' : 'opacity-0 group-hover:opacity-[0.88]'
-        }`}
-      />
-
       <button
-        type="button"
-        aria-expanded={isOpen}
         onClick={() => onToggle(index)}
-        className="relative z-10 flex w-full items-center justify-between gap-6 px-7 py-5 text-left"
+        className="w-full flex items-center justify-between px-7 py-5 text-left font-medium select-none group"
       >
         <span
-          className={`text-base md:text-lg font-medium transition-colors duration-500 ${
-            isActive ? 'text-white' : 'text-[#0E0E0E] group-hover:text-white'
+          className={`text-base sm:text-lg font-medium transition-colors duration-500 ${
+            isActive ? 'text-white' : 'text-[#0E0E0E] group-hover:text-[#7A1220]'
           }`}
         >
           {faq.q}
@@ -185,7 +177,7 @@ function FaqItem({
 const rateRowGrid =
   'grid grid-cols-[minmax(200px,2fr)_72px_minmax(100px,1fr)_minmax(100px,1fr)_minmax(120px,1fr)] items-center min-w-[640px]';
 
-function ForexRateRow({ rate }: { rate: (typeof forexRates)[number] }) {
+function ForexRateRow({ rate }: { rate: any }) {
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: -2 }}
@@ -231,11 +223,31 @@ function ForexRateRow({ rate }: { rate: (typeof forexRates)[number] }) {
 }
 
 export function Forex() {
+  useSeo('forex');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [rates, setRates] = useState<any[]>(defaultForexRates);
+
+  useEffect(() => {
+    fetchFromApi<any[]>('rates')
+      .then(data => {
+        if (data && data.length > 0) {
+          const formatted = data.map(r => ({
+            code: r.currency_code,
+            name: r.currency_name,
+            flag: r.flag_emoji,
+            buy: parseFloat(r.buy_rate),
+            sell: parseFloat(r.sell_rate)
+          }));
+          setRates(formatted);
+        }
+      })
+      .catch(err => console.warn('Forex board API offline, using fallback:', err));
+  }, []);
 
   const toggleFaq = (index: number) => {
     setOpenFaq((current) => (current === index ? null : index));
   };
+
   return (
     <>
       <PageHero
@@ -289,7 +301,7 @@ export function Forex() {
                 </div>
 
                 <div className="divide-y divide-gray-100 text-sm font-light text-gray-600">
-                  {forexRates.map((rate) => (
+                  {rates.map((rate) => (
                     <ForexRateRow key={rate.code} rate={rate} />
                   ))}
                 </div>
