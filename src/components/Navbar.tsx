@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { ContactLink } from './ContactLink';
+import {
+  ArrowRight,
+  Building2,
+  ChevronDown,
+  CircleHelp,
+  Headphones,
+  Landmark,
+  MapPin,
+  Send,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ContactLink } from './ContactLink';
 
-const pillLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Forex', href: '/forex' },
-  { name: 'Remittance', href: '/remittance' },
-  { name: 'Branches', href: '/branches' },
-  { name: 'Corporate', href: '/corporate' },
-  { name: 'FAQ', href: '/#faq' },
-  { name: 'Blog', href: '/blog' },
-];
-
-const menuLinks = pillLinks;
+type DropdownName = 'products' | 'support' | null;
 
 function MenuIcon({ className }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      width="20"
-      height="20"
-      viewBox="0 0 18 18"
-      fill="none"
-      aria-hidden="true">
+    <svg className={className} width="20" height="20" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <line x1="3" y1="4" x2="15" y2="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <line x1="5.5" y1="9" x2="12.5" y2="9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <line x1="3" y1="14" x2="15" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -34,13 +27,7 @@ function MenuIcon({ className }: { className?: string }) {
 
 function CloseIcon({ className }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      width="20"
-      height="20"
-      viewBox="0 0 18 18"
-      fill="none"
-      aria-hidden="true">
+    <svg className={className} width="20" height="20" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <line x1="4.5" y1="4.5" x2="13" y2="13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
       <line x1="14.5" y1="3.5" x2="3.5" y2="14.5" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" />
     </svg>
@@ -49,37 +36,31 @@ function CloseIcon({ className }: { className?: string }) {
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+  const [activeDropdown, setActiveDropdown] = useState<DropdownName>(null);
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
-  const [logoColor, setLogoColor] = useState<'red' | 'black'>('red');
+  const [logoColor, setLogoColor] = useState<'red' | 'white'>('red');
+  const location = useLocation();
+  const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > 400) {
-        setIsScrolledPastHero(true);
-      } else {
-        setIsScrolledPastHero(false);
-      }
-    };
-
+    const handleScroll = () => setIsScrolledPastHero(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Auto-switch logo color between red and black every 5.5 seconds on the hero section for better focus time
   useEffect(() => {
     if (isScrolledPastHero) return;
     const interval = setInterval(() => {
-      setLogoColor((prev) => (prev === 'red' ? 'black' : 'red'));
+      setLogoColor((previous) => (previous === 'red' ? 'white' : 'red'));
     }, 5500);
     return () => clearInterval(interval);
   }, [isScrolledPastHero]);
 
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname]);
+    setActiveDropdown(null);
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -88,237 +69,284 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const closeDropdown = (event: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener('pointerdown', closeDropdown);
+    return () => document.removeEventListener('pointerdown', closeDropdown);
+  }, []);
+
   const handleLogoTap = () => {
     if (!isScrolledPastHero) {
-      setLogoColor((prev) => (prev === 'red' ? 'black' : 'red'));
+      setLogoColor((previous) => (previous === 'red' ? 'white' : 'red'));
     }
   };
 
-  const handleSendMoneyClick = (e: React.MouseEvent) => {
+  const handleSendMoneyClick = (event: React.MouseEvent) => {
     setMenuOpen(false);
     if (location.pathname === '/') {
-      e.preventDefault();
       const element = document.getElementById('rates-calculator');
       if (element) {
+        event.preventDefault();
         element.scrollIntoView({ behavior: 'smooth' });
         window.history.pushState(null, '', '/#rates-calculator');
       }
     }
   };
 
-  const isHomepage = location.pathname === '/';
-  const showLogoPill = !isHomepage || isScrolledPastHero;
+  const handleFaqClick = (event: React.MouseEvent) => {
+    setMenuOpen(false);
+    setActiveDropdown(null);
+    if (location.pathname === '/') {
+      const element = document.getElementById('faq');
+      if (element) {
+        event.preventDefault();
+        element.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', '/#faq');
+      }
+    }
+  };
+
+  const productsActive = location.pathname === '/forex' || location.pathname === '/remittance';
+  const supportActive = location.hash === '#faq' || location.hash === '#contact';
+  const desktopLinkClass = (active: boolean) =>
+    `relative flex h-11 items-center gap-1.5 px-3 font-figtree text-[13px] font-semibold transition-colors xl:px-4 ${
+      active ? 'text-white' : 'text-white/70 hover:text-white'
+    }`;
+
+  const dropdownPanelClass = 'rounded-2xl border border-white/10 bg-[#171717]/[0.98] p-2 shadow-[0_18px_50px_rgba(0,0,0,0.16)] backdrop-blur-xl';
+
+  const dropdownItemClass = 'group flex items-start gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-white/5';
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 pt-4 sm:pt-5 md:pt-6 pointer-events-none translate-y-0">
-        <div className="max-w-[90rem] mx-auto flex items-center justify-between gap-4 pointer-events-auto">
-          
-          {/* Left Container: Logo Pill + Links Pill (Pushed Left) */}
-          <div className="flex items-center gap-4">
-            {showLogoPill && (
+      <nav className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-5 lg:px-10 md:pt-6">
+        <motion.div
+          ref={headerRef}
+          initial={{ opacity: 0, y: -12, scale: 0.99 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') setActiveDropdown(null);
+          }}
+          className="pointer-events-auto mx-auto flex h-14 max-w-[90rem] items-center rounded-[1.5rem] border border-white/10 bg-[#0E0E0E]/95 px-3 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 sm:h-16 sm:px-4 md:h-[4.5rem] md:px-5"
+        >
+          <Link
+            to="/"
+            onClick={handleLogoTap}
+            className="group relative flex h-8 w-28 shrink-0 items-center overflow-hidden sm:w-32 md:w-36"
+            aria-label="SunnyRemit home"
+          >
+            {isScrolledPastHero ? (
+              <img
+                src="/logo-white.png"
+                alt="SunnyRemit"
+                className="h-6 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] sm:h-7"
+              />
+            ) : (
               <motion.div
-                initial={{ opacity: 0, x: -15, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -15, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                className={`h-11 sm:h-12 md:h-16 flex items-center px-4 md:px-5 rounded-full border transition-all duration-300 ${
-                  isScrolledPastHero 
-                    ? 'border-white/10 bg-[#0E0E0E]/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]' 
-                    : 'border-gray-200/80 bg-white/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(122,18,32,0.05)]'
-                }`}
+                animate={{ y: logoColor === 'white' ? '-50%' : '0%' }}
+                transition={{ type: 'spring', stiffness: 80, damping: 16 }}
+                className="absolute left-0 top-0 flex h-[200%] w-full flex-col"
               >
-                <Link
-                  to="/"
-                  onClick={handleLogoTap}
-                  className="relative overflow-hidden h-7 sm:h-8 w-28 sm:w-32 md:w-36 shrink-0 group flex items-center"
-                  aria-label="SunnyRemit home">
-                  
-                  {isScrolledPastHero ? (
-                    /* Static White Logo when header is black */
-                    <img
-                      src="/logo-white.png"
-                      alt="SunnyRemit White"
-                      className="h-6 sm:h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                    />
-                  ) : (
-                    /* Odometer / Money Counter Logo roll stack (Red <-> Black) */
-                    <motion.div
-                      animate={{
-                        y: logoColor === 'black' ? '-50%' : '0%'
-                      }}
-                      transition={{
-                        type: 'spring',
-                        stiffness: 80,
-                        damping: 16,
-                      }}
-                      className="absolute left-0 top-0 w-full h-[200%] flex flex-col justify-start"
-                    >
-                      {/* 1. Red Logo */}
-                      <div className="h-1/2 w-full flex items-center justify-start">
-                        <img
-                          src="/logo-red.png"
-                          alt="SunnyRemit Red"
-                          className="h-6 sm:h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                        />
-                      </div>
-                      {/* 2. Black Logo */}
-                      <div className="h-1/2 w-full flex items-center justify-start">
-                        <img
-                          src="/logo-black.png"
-                          alt="SunnyRemit Black"
-                          className="h-6 sm:h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </Link>
+                <div className="flex h-1/2 w-full items-center">
+                  <img src="/logo-red.png" alt="SunnyRemit Red" className="h-6 w-auto object-contain sm:h-7" />
+                </div>
+                <div className="flex h-1/2 w-full items-center">
+                  <img src="/logo-white.png" alt="SunnyRemit White" className="h-6 w-auto object-contain sm:h-7" />
+                </div>
               </motion.div>
             )}
- 
-            {/* Navigation Links Pill (Pushed Left next to Logo, or far left when Logo is hidden) */}
-            <div className="hidden lg:block">
-              <div className={`h-11 sm:h-12 md:h-16 flex items-center gap-3 px-3.5 rounded-full border transition-all duration-300 ${
-                isScrolledPastHero 
-                  ? 'border-white/10 bg-[#0E0E0E]/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]' 
-                  : 'border-gray-200/80 bg-white/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(122,18,32,0.05)]'
-              }`}>
-                {pillLinks.map((link) => {
-                  const isActive = location.pathname === link.href;
-                  const isFaq = link.name === 'FAQ';
+          </Link>
 
-                  const handleLinkClick = (e: React.MouseEvent) => {
-                    if (isFaq && location.pathname === '/') {
-                      e.preventDefault();
-                      const element = document.getElementById('faq');
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                        window.history.pushState(null, '', '/#faq');
-                      }
-                    }
-                  };
+          <div className="mx-auto hidden items-center lg:flex">
+            <Link to="/" className={desktopLinkClass(location.pathname === '/' && !supportActive)}>
+              Home
+              {location.pathname === '/' && !supportActive && (
+                <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />
+              )}
+            </Link>
 
-                  return (
-                    <Link
-                      key={link.name}
-                      to={link.href}
-                      onClick={handleLinkClick}
-                      className={`font-figtree px-5 sm:px-6 md:h-11 flex items-center justify-center text-xs sm:text-[13px] font-bold rounded-full tracking-wide transition-all duration-300 select-none ${
-                        isActive 
-                          ? isScrolledPastHero
-                            ? 'bg-gradient-to-r from-white to-gray-100 text-[#0E0E0E] shadow-[0_4px_12px_rgba(255,255,255,0.15)] hover:scale-[1.02]'
-                            : 'bg-gradient-to-r from-[#7A1220] to-[#B91C1C] text-white shadow-[0_4px_14px_rgba(122,18,32,0.25)] hover:scale-[1.02]'
-                          : isScrolledPastHero
-                            ? 'text-white hover:text-white hover:bg-white/5'
-                            : 'text-[#0E0E0E] hover:text-[#7A1220] hover:bg-gradient-to-r hover:from-[#7A1220]/5 hover:to-[#B91C1C]/5'
-                      }`}>
-                      {link.name}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('products')}
+              onMouseLeave={() => setActiveDropdown(null)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setActiveDropdown(null);
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setActiveDropdown((current) => (current === 'products' ? null : 'products'))}
+                aria-expanded={activeDropdown === 'products'}
+                aria-haspopup="menu"
+                className={desktopLinkClass(productsActive)}
+              >
+                Products
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${activeDropdown === 'products' ? 'rotate-180' : ''}`} />
+                {productsActive && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+              </button>
+
+              {activeDropdown === 'products' && (
+                <div className="absolute left-1/2 top-full w-72 -translate-x-1/2 pt-3" role="menu">
+                  <div className={dropdownPanelClass}>
+                    <Link to="/forex" className={dropdownItemClass} role="menuitem">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#7A1220]/10 text-[#7A1220]">
+                        <Landmark className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <strong className="block font-figtree text-sm text-white">Forex</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">
+                          Exchange major currencies securely.
+                        </span>
+                      </span>
                     </Link>
-                  );
-                })}
-              </div>
+                    <Link to="/remittance" className={dropdownItemClass} role="menuitem">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#D4A24C]/15 text-[#9A641D]">
+                        <Send className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <strong className="block font-figtree text-sm text-white">Remittance</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">
+                          Send and receive money worldwide.
+                        </span>
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <Link to="/branches" className={desktopLinkClass(location.pathname === '/branches')}>
+              Branches
+              {location.pathname === '/branches' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+            </Link>
+            <Link to="/corporate" className={desktopLinkClass(location.pathname === '/corporate')}>
+              Corporate
+              {location.pathname === '/corporate' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+            </Link>
+            <Link to="/blog" className={desktopLinkClass(location.pathname === '/blog')}>
+              Blog
+              {location.pathname === '/blog' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+            </Link>
+
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('support')}
+              onMouseLeave={() => setActiveDropdown(null)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setActiveDropdown(null);
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setActiveDropdown((current) => (current === 'support' ? null : 'support'))}
+                aria-expanded={activeDropdown === 'support'}
+                aria-haspopup="menu"
+                className={desktopLinkClass(supportActive)}
+              >
+                Support
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${activeDropdown === 'support' ? 'rotate-180' : ''}`} />
+                {supportActive && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+              </button>
+
+              {activeDropdown === 'support' && (
+                <div className="absolute left-1/2 top-full w-72 -translate-x-1/2 pt-3" role="menu">
+                  <div className={dropdownPanelClass}>
+                    <Link to="/#faq" onClick={handleFaqClick} className={dropdownItemClass} role="menuitem">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#7A1220]/10 text-[#7A1220]">
+                        <CircleHelp className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <strong className="block font-figtree text-sm text-white">FAQs</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">Answers to common questions.</span>
+                      </span>
+                    </Link>
+                    <ContactLink className={dropdownItemClass} onNavigate={() => setActiveDropdown(null)} role="menuitem">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#D4A24C]/15 text-[#9A641D]">
+                        <Headphones className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <strong className="block font-figtree text-sm text-white">Contact Us</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">Speak with our support team.</span>
+                      </span>
+                    </ContactLink>
+                    <Link to="/branches" className={dropdownItemClass} role="menuitem">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600/10 text-emerald-700">
+                        <MapPin className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <strong className="block font-figtree text-sm text-white">Find a Branch</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">Get in-person assistance.</span>
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
- 
-          <div className={`h-11 sm:h-12 md:h-16 flex items-center rounded-full border transition-all duration-300 lg:border-none lg:bg-transparent lg:shadow-none lg:p-0 ${
-            isScrolledPastHero 
-              ? 'border-white/10 bg-[#0E0E0E]/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] p-1' 
-              : 'border-gray-200/80 bg-white/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(122,18,32,0.05)] p-1'
-          }`}>
-            {/* Desktop Send Money Button */}
-            <Link
-              to="/#rates-calculator"
-              onClick={handleSendMoneyClick}
-              className={`font-figtree hidden lg:flex pl-6 pr-2.5 h-11 rounded-full font-semibold transition-all duration-300 text-[13px] sm:text-[14px] tracking-wide whitespace-nowrap items-center justify-between gap-3.5 group shrink-0 select-none cursor-pointer ${
-                isScrolledPastHero
-                  ? 'bg-gradient-to-r from-white to-gray-100 text-[#0E0E0E] shadow-sm hover:scale-[1.02]'
-                  : 'bg-gradient-to-r from-[#7A1220] to-[#B91C1C] text-white shadow-[0_4px_14px_rgba(122,18,32,0.3)] hover:scale-[1.02]'
-              }`}
-            >
-              <span>Send Money</span>
-              <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 shadow-sm ${
-                isScrolledPastHero
-                  ? 'bg-[#0E0E0E] text-white'
-                  : 'bg-white text-[#7A1220]'
-              }`}>
-                <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
-              </span>
-            </Link>
- 
-            {/* Mobile / Tablet Drawer Toggle Button */}
-            <button
-              type="button"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={menuOpen}
-              className={`lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full transition-all duration-300 ${
-                isScrolledPastHero
-                  ? 'text-white/70 hover:text-white hover:bg-white/10'
-                  : 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-gray-50'
-              }`}>
-              {menuOpen ? <CloseIcon /> : <MenuIcon />}
-            </button>
-          </div>
- 
-        </div>
+
+          <Link
+            to="/#rates-calculator"
+            onClick={handleSendMoneyClick}
+            className="ml-auto hidden h-11 shrink-0 items-center justify-between gap-3 rounded-full bg-white py-1 pl-5 pr-1 font-figtree text-[13px] font-semibold text-[#0E0E0E] shadow-sm transition-all hover:scale-[1.02] lg:flex"
+          >
+            Send Money
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0E0E0E] text-white">
+              <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+            </span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            className="ml-auto flex h-10 w-10 items-center justify-center rounded-full text-white hover:bg-white/10 lg:hidden"
+          >
+            {menuOpen ? <CloseIcon /> : <MenuIcon />}
+          </button>
+        </motion.div>
       </nav>
- 
+
       {menuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
+          <div className="absolute inset-0 bg-[#0E0E0E]/30 backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
           <div
-            className="absolute inset-0 bg-[#0E0E0E]/30 backdrop-blur-sm"
-            onClick={() => setMenuOpen(false)}
-          />
-          <div className={`absolute top-[5.5rem] sm:top-24 left-4 right-4 rounded-3xl border p-6 shadow-2xl animate-fade-in transition-all duration-300 ${
-            isScrolledPastHero 
-              ? 'border-white/10 bg-[#0E0E0E]/98 text-white' 
-              : 'border-gray-200 bg-white text-[#0E0E0E]'
-          }`}>
-            <div className="flex flex-col gap-1">
-              {menuLinks.map((link) => {
-                const isActive = location.pathname === link.href;
-                const isFaq = link.name === 'FAQ';
- 
-                const handleMobileClick = (e: React.MouseEvent) => {
-                  setMenuOpen(false);
-                  if (isFaq && location.pathname === '/') {
-                    e.preventDefault();
-                    const element = document.getElementById('faq');
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                      window.history.pushState(null, '', '/#faq');
-                    }
-                  }
-                };
- 
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    onClick={handleMobileClick}
-                    className={`font-figtree font-semibold px-4 py-3.5 text-lg rounded-xl transition-colors ${
-                      isActive 
-                        ? isScrolledPastHero 
-                          ? 'text-white bg-white/10'
-                          : 'text-[#7A1220] bg-[#7A1220]/5'
-                        : isScrolledPastHero
-                          ? 'text-white/70 hover:text-white hover:bg-white/5'
-                          : 'text-[#0E0E0E]/70 hover:text-[#7A1220] hover:bg-gray-50'
-                    }`}>
-                    {link.name}
-                  </Link>
-                );
-              })}
-              
-              {/* Mobile Menu Drawer CTA Button */}
+            className="absolute left-4 right-4 top-[5.5rem] max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl border border-white/10 bg-[#0E0E0E]/[0.98] p-4 text-white shadow-2xl animate-fade-in sm:top-24"
+          >
+            <div className="space-y-1">
+              <Link to="/" className="block rounded-xl px-4 py-3 font-figtree text-base font-semibold" onClick={() => setMenuOpen(false)}>Home</Link>
+
+              <p className="px-4 pb-1 pt-4 font-figtree text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Products</p>
+              <Link to="/forex" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5" onClick={() => setMenuOpen(false)}>
+                <Landmark className="h-4 w-4 text-[#7A1220]" /> Forex
+              </Link>
+              <Link to="/remittance" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5" onClick={() => setMenuOpen(false)}>
+                <Send className="h-4 w-4 text-[#7A1220]" /> Remittance
+              </Link>
+
+              <div className="my-2 h-px bg-white/10" />
+              <Link to="/branches" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold" onClick={() => setMenuOpen(false)}><Building2 className="h-4 w-4 text-[#7A1220]" /> Branches</Link>
+              <Link to="/corporate" className="block rounded-xl px-4 py-3 font-figtree font-semibold" onClick={() => setMenuOpen(false)}>Corporate</Link>
+              <Link to="/blog" className="block rounded-xl px-4 py-3 font-figtree font-semibold" onClick={() => setMenuOpen(false)}>Blog</Link>
+
+              <p className="px-4 pb-1 pt-4 font-figtree text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Support</p>
+              <Link to="/#faq" onClick={handleFaqClick} className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5"><CircleHelp className="h-4 w-4 text-[#7A1220]" /> FAQs</Link>
+              <ContactLink className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5" onNavigate={() => setMenuOpen(false)}><Headphones className="h-4 w-4 text-[#7A1220]" /> Contact Us</ContactLink>
+
               <Link
                 to="/#rates-calculator"
                 onClick={handleSendMoneyClick}
-                className="font-figtree pl-6 pr-2 py-2 rounded-full text-base font-semibold text-white bg-[#7A1220] hover:bg-[#911a2a] transition-all flex items-center justify-between group shadow-md"
+                className="mt-3 flex items-center justify-between rounded-full bg-[#7A1220] py-2 pl-6 pr-2 font-figtree font-semibold text-white shadow-md"
               >
-                <span>Send Money</span>
-                <span className="w-9 h-9 rounded-full bg-white text-[#7A1220] flex items-center justify-center transition-transform">
-                  <ArrowRight className="w-4.5 h-4.5 text-[#7A1220]" strokeWidth={2.5} />
+                Send Money
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#7A1220]">
+                  <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
                 </span>
               </Link>
             </div>
