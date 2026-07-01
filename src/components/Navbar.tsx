@@ -290,16 +290,25 @@ export function Navbar() {
             </div>
           </div>
 
-          <Link
-            to="/#rates-calculator"
-            onClick={handleSendMoneyClick}
-            className="ml-auto hidden h-11 shrink-0 items-center justify-between gap-3 rounded-full bg-white py-1 pl-5 pr-1 font-figtree text-[13px] font-semibold text-[#0E0E0E] shadow-sm transition-all hover:scale-[1.02] lg:flex"
-          >
-            Send Money
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0E0E0E] text-white">
-              <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
-            </span>
-          </Link>
+          <div className="ml-auto hidden items-center gap-6 lg:flex">
+            <Link
+              to="/developers"
+              className="h-11 shrink-0 flex items-center justify-center px-6 rounded-full bg-white/10 border border-white/15 text-[13px] font-bold text-white hover:bg-white/20 hover:border-white/25 active:scale-95 transition-all shadow-sm"
+            >
+              Developer Portal
+            </Link>
+
+            <Link
+              to="/#rates-calculator"
+              onClick={handleSendMoneyClick}
+              className="h-11 shrink-0 items-center justify-between gap-3 rounded-full bg-white py-1 pl-5 pr-1 font-figtree text-[13px] font-semibold text-[#0E0E0E] shadow-sm transition-all hover:scale-[1.02] flex"
+            >
+              Send Money
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0E0E0E] text-white">
+                <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+              </span>
+            </Link>
+          </div>
 
           <button
             type="button"

@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,8 +17,17 @@
         body {
             background-color: #050505;
             color: #ffffff;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
             overflow: hidden;
+        }
+        .fade-container {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .opacity-0 {
+            opacity: 0 !important;
         }
         .digital-font {
             font-family: 'Orbitron', monospace;
@@ -59,8 +68,19 @@
         </div>
     </header>
 
+    <!-- Pinned Market Majors -->
+    <div class="mb-8">
+        <div class="text-[10px] font-bold text-brand-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+            <span>Market Majors (Pinned)</span>
+        </div>
+        <div class="grid grid-cols-4 gap-6" id="majors-row">
+            <!-- USD, EUR, GBP, AED Pinned Row -->
+        </div>
+    </div>
+
     <!-- Main Grid: 2 columns for TV ratio layouts -->
-    <main class="flex-grow grid grid-cols-2 gap-8 items-stretch mb-6">
+    <main id="rates-main" class="flex-grow grid grid-cols-2 gap-8 items-stretch mb-6 fade-container">
         <!-- Col 1 -->
         <div class="space-y-4 flex flex-col justify-between">
             <div class="grid grid-cols-[1.5fr_1fr_1fr] px-6 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/5 pb-2">
@@ -119,41 +139,126 @@
             counterEl.innerText = count;
         }, 1000);
 
+        // Carousel variables
+        let allRates = [];
+        let majorRates = [];
+        let cycleRates = [];
+        let currentPage = 0;
+        let cycleInterval = null;
+
         // Fetch rates dynamically from internal API
         function fetchRates() {
             fetch('/api/v1/rates')
                 .then(res => res.json())
                 .then(data => {
-                    const col1 = document.getElementById('rates-col-1');
-                    const col2 = document.getElementById('rates-col-2');
+                    allRates = data;
                     
-                    col1.innerHTML = '';
-                    col2.innerHTML = '';
+                    // Filter majors (USD, EUR, GBP, AED)
+                    const majorCodes = ['USD', 'EUR', 'GBP', 'AED'];
+                    majorRates = allRates.filter(r => majorCodes.includes(r.currency_code));
                     
-                    const mid = Math.ceil(data.length / 2);
+                    // The rest will cycle
+                    cycleRates = allRates.filter(r => !majorCodes.includes(r.currency_code));
                     
-                    data.forEach((rate, index) => {
-                        const targetCol = index < mid ? col1 : col2;
-                        const row = document.createElement('div');
-                        row.className = 'glass-card flex-grow rounded-2xl px-6 py-4 grid grid-cols-[1.5fr_1fr_1fr] items-center transition-all duration-500 hover:border-emerald-500/30';
-                        
-                        const flagCode = rate.currency_code.substring(0, 2).toLowerCase();
-                        
-                        row.innerHTML = `
-                            <div class="flex items-center gap-5">
-                                <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-8 w-11 rounded-lg object-cover shadow-lg border border-white/10" alt="${rate.currency_code}" />
-                                <div>
-                                    <span class="text-xl font-bold text-white block">${rate.currency_code}</span>
-                                    <span class="text-xs text-gray-500">${rate.currency_name}</span>
-                                </div>
-                            </div>
-                            <div class="text-right text-2xl font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
-                            <div class="text-right text-2xl font-bold digital-font text-rose-500 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
-                        `;
-                        targetCol.appendChild(row);
-                    });
+                    // Order cycleRates alphabetically
+                    cycleRates.sort((a, b) => a.currency_code.localeCompare(b.currency_code));
+                    
+                    // Render majors
+                    renderMajors();
+                    
+                    // Render initial cycle page
+                    renderCyclePage();
+                    
+                    // Set up cycling interval if not already running
+                    if (!cycleInterval) {
+                        cycleInterval = setInterval(nextCyclePage, 10000); // cycle every 10 seconds
+                    }
                 })
                 .catch(err => console.error('Failed to load rates board:', err));
+        }
+
+        function renderMajors() {
+            const majorsRow = document.getElementById('majors-row');
+            majorsRow.innerHTML = '';
+            
+            majorRates.forEach(rate => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-2xl p-5 flex items-center justify-between border border-white/5 shadow-lg';
+                
+                const flagCode = rate.currency_code.substring(0, 2).toLowerCase();
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-8 w-11 rounded-lg object-cover border border-white/10" alt="${rate.currency_code}" />
+                        <div>
+                            <span class="text-lg font-bold text-white block">${rate.currency_code}</span>
+                            <span class="text-[10px] text-gray-500">${rate.currency_name}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
+                        <div class="text-lg font-bold digital-font text-rose-500 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
+                    </div>
+                `;
+                majorsRow.appendChild(card);
+            });
+        }
+
+        function renderCyclePage() {
+            const col1 = document.getElementById('rates-col-1');
+            const col2 = document.getElementById('rates-col-2');
+            
+            col1.innerHTML = '';
+            col2.innerHTML = '';
+            
+            const itemsPerPage = 10;
+            const startIndex = currentPage * itemsPerPage;
+            const pageItems = cycleRates.slice(startIndex, startIndex + itemsPerPage);
+            
+            const mid = Math.ceil(pageItems.length / 2);
+            
+            pageItems.forEach((rate, index) => {
+                const targetCol = index < mid ? col1 : col2;
+                const row = document.createElement('div');
+                row.className = 'glass-card flex-grow rounded-2xl px-6 py-4 grid grid-cols-[1.5fr_1fr_1fr] items-center transition-all duration-500 hover:border-emerald-500/30';
+                
+                const flagCode = rate.currency_code.substring(0, 2).toLowerCase();
+                
+                row.innerHTML = `
+                    <div class="flex items-center gap-5">
+                        <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-8 w-11 rounded-lg object-cover shadow-lg border border-white/10" alt="${rate.currency_code}" />
+                        <div>
+                            <span class="text-xl font-bold text-white block">${rate.currency_code}</span>
+                            <span class="text-xs text-gray-500">${rate.currency_name}</span>
+                        </div>
+                    </div>
+                    <div class="text-right text-2xl font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
+                    <div class="text-right text-2xl font-bold digital-font text-rose-500 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
+                `;
+                targetCol.appendChild(row);
+            });
+        }
+
+        function nextCyclePage() {
+            const mainContainer = document.getElementById('rates-main');
+            if (!mainContainer) return;
+            
+            // Fade out
+            mainContainer.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                const totalPages = Math.ceil(cycleRates.length / 10);
+                if (totalPages > 0) {
+                    currentPage = (currentPage + 1) % totalPages;
+                } else {
+                    currentPage = 0;
+                }
+                
+                renderCyclePage();
+                
+                // Fade in
+                mainContainer.classList.remove('opacity-0');
+            }, 500);
         }
 
         // Initial load

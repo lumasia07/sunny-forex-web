@@ -97,7 +97,7 @@ export function FaqSection() {
   return (
     <section
       id="faq"
-      className="py-16 md:py-20 lg:py-24 bg-[#FAFAF7] border-t border-gray-100 relative overflow-hidden scroll-mt-28"
+      className="py-16 md:py-20 lg:py-24 bg-white border-t border-gray-100 relative overflow-hidden scroll-mt-28"
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#7A1220]/[0.015] rounded-full blur-[100px]" />
@@ -123,7 +123,13 @@ export function FaqSection() {
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl border border-gray-200/80 p-6 sm:p-10 shadow-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-[#FAFAF7] rounded-[2rem] border border-gray-100/70 p-6 sm:p-10 shadow-none"
+        >
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
@@ -132,7 +138,7 @@ export function FaqSection() {
               onToggle={() => toggleAccordion(index)}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

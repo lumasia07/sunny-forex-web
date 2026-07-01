@@ -10,6 +10,7 @@ import { BranchesPage } from './pages/BranchesPage';
 import { Corporate } from './pages/Corporate';
 import { Blog } from './pages/Blog';
 import { LockRate } from './pages/LockRate';
+import { Developers } from './pages/Developers';
 import { WhatsAppButton } from './components/WhatsAppButton';
 
 function ScrollToTop() {
@@ -48,6 +49,7 @@ function AppContent() {
           <Route path="/branches" element={<BranchesPage />} />
           <Route path="/corporate" element={<Corporate />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/developers" element={<Developers />} />
           <Route path="/lock-rate" element={<Navigate to="/branches" replace />} />
         </Routes>
       </main>

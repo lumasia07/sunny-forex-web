@@ -36,26 +36,46 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Seed forex rates
-        $rates = [
-            ['currency_code' => 'USD', 'flag_emoji' => '🇺🇸', 'currency_name' => 'US Dollar', 'buy_rate' => 130.5, 'sell_rate' => 132.0, 'change_pct' => 0.42],
-            ['currency_code' => 'EUR', 'flag_emoji' => '🇪🇺', 'currency_name' => 'Euro', 'buy_rate' => 141.2, 'sell_rate' => 143.5, 'change_pct' => -0.18],
-            ['currency_code' => 'GBP', 'flag_emoji' => '🇬🇧', 'currency_name' => 'British Pound', 'buy_rate' => 165.8, 'sell_rate' => 168.2, 'change_pct' => 0.31],
-            ['currency_code' => 'AED', 'flag_emoji' => '🇦🇪', 'currency_name' => 'UAE Dirham', 'buy_rate' => 35.4, 'sell_rate' => 36.1, 'change_pct' => 0.05],
-            ['currency_code' => 'ZAR', 'flag_emoji' => '🇿🇦', 'currency_name' => 'South African Rand', 'buy_rate' => 6.8, 'sell_rate' => 7.1, 'change_pct' => -0.22],
-            ['currency_code' => 'INR', 'flag_emoji' => '🇮🇳', 'currency_name' => 'Indian Rupee', 'buy_rate' => 1.54, 'sell_rate' => 1.62, 'change_pct' => 0.08],
-            ['currency_code' => 'JPY', 'flag_emoji' => '🇯🇵', 'currency_name' => 'Japanese Yen', 'buy_rate' => 0.83, 'sell_rate' => 0.89, 'change_pct' => -0.04],
-            ['currency_code' => 'CAD', 'flag_emoji' => '🇨🇦', 'currency_name' => 'Canadian Dollar', 'buy_rate' => 94.2, 'sell_rate' => 96.1, 'change_pct' => 0.15],
-            ['currency_code' => 'AUD', 'flag_emoji' => '🇦🇺', 'currency_name' => 'Australian Dollar', 'buy_rate' => 84.5, 'sell_rate' => 86.2, 'change_pct' => 0.27],
-            ['currency_code' => 'CHF', 'flag_emoji' => '🇨🇭', 'currency_name' => 'Swiss Franc', 'buy_rate' => 146.3, 'sell_rate' => 148.5, 'change_pct' => 0.19],
-            ['currency_code' => 'UGX', 'flag_emoji' => '🇺🇬', 'currency_name' => 'Ugandan Shilling', 'buy_rate' => 0.034, 'sell_rate' => 0.036, 'change_pct' => -0.01],
-            ['currency_code' => 'TZS', 'flag_emoji' => '🇹🇿', 'currency_name' => 'Tanzanian Shilling', 'buy_rate' => 0.051, 'sell_rate' => 0.053, 'change_pct' => 0.02],
+        // Seed forex rates from Wikipedia JSON
+        $jsonPath = database_path('seeders/wiki_currencies.json');
+        $wikiCurrencies = json_decode(file_get_contents($jsonPath), true);
+
+        // Realistic KES exchange rates and flags for default key currencies
+        $defaultRates = [
+            'USD' => ['flag_emoji' => '🇺🇸', 'buy_rate' => 130.5, 'sell_rate' => 132.0, 'change_pct' => 0.42],
+            'EUR' => ['flag_emoji' => '🇪🇺', 'buy_rate' => 141.2, 'sell_rate' => 143.5, 'change_pct' => -0.18],
+            'GBP' => ['flag_emoji' => '🇬🇧', 'buy_rate' => 165.8, 'sell_rate' => 168.2, 'change_pct' => 0.31],
+            'AED' => ['flag_emoji' => '🇦🇪', 'buy_rate' => 35.4, 'sell_rate' => 36.1, 'change_pct' => 0.05],
+            'ZAR' => ['flag_emoji' => '🇿🇦', 'buy_rate' => 6.8, 'sell_rate' => 7.1, 'change_pct' => -0.22],
+            'INR' => ['flag_emoji' => '🇮🇳', 'buy_rate' => 1.54, 'sell_rate' => 1.62, 'change_pct' => 0.08],
+            'JPY' => ['flag_emoji' => '🇯🇵', 'buy_rate' => 0.83, 'sell_rate' => 0.89, 'change_pct' => -0.04],
+            'CAD' => ['flag_emoji' => '🇨🇦', 'buy_rate' => 94.2, 'sell_rate' => 96.1, 'change_pct' => 0.15],
+            'AUD' => ['flag_emoji' => '🇦🇺', 'buy_rate' => 84.5, 'sell_rate' => 86.2, 'change_pct' => 0.27],
+            'CHF' => ['flag_emoji' => '🇨🇭', 'buy_rate' => 146.3, 'sell_rate' => 148.5, 'change_pct' => 0.19],
+            'UGX' => ['flag_emoji' => '🇺🇬', 'buy_rate' => 0.034, 'sell_rate' => 0.036, 'change_pct' => -0.01],
+            'TZS' => ['flag_emoji' => '🇹🇿', 'buy_rate' => 0.051, 'sell_rate' => 0.053, 'change_pct' => 0.02],
         ];
 
-        foreach ($rates as $rate) {
-            ForexRate::firstOrCreate(
-                ['currency_code' => $rate['currency_code']],
-                array_merge($rate, ['is_active' => true])
+        foreach ($wikiCurrencies as $currency) {
+            $code = $currency['code'];
+            $name = $currency['name'];
+
+            $rateData = [
+                'currency_name' => $name,
+                'flag_emoji' => '',
+                'buy_rate' => 1.0000,
+                'sell_rate' => 1.0000,
+                'change_pct' => 0.00,
+                'is_active' => true,
+            ];
+
+            if (isset($defaultRates[$code])) {
+                $rateData = array_merge($rateData, $defaultRates[$code]);
+            }
+
+            ForexRate::updateOrCreate(
+                ['currency_code' => $code],
+                $rateData
             );
         }
 

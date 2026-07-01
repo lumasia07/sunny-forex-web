@@ -54,28 +54,32 @@ export function Services() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-white overflow-hidden border-t border-gray-100">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-[#0A0A0A] overflow-hidden border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
         {/* Section Header */}
         <div className="mb-16 md:mb-24 max-w-2xl">
           <span className="inline-block w-12 h-px bg-[#7A1220] mb-5 origin-left" />
-          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-[#0E0E0E]">
-            <LiveWords text="Services built for how Kenya moves money." />
+          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-white">
+            <LiveWords text="Services built for how Kenya moves money." variant="neutral" />
           </h2>
-          <LiveBlock className="type-lead text-gray-500 max-w-xl font-light" variant="neutral" inline={false}>
+          <LiveBlock className="type-lead text-gray-400 max-w-xl font-light" variant="neutral" inline={false}>
             From cash exchange at our modern branches to instant M-Pesa transfers — every service is engineered for speed, transparency, and trust.
           </LiveBlock>
         </div>
 
         {/* Feature Rows */}
-        <div className="space-y-24 md:space-y-36">
+        <div className="space-y-12 md:space-y-16">
           {featureRows.map((row, index) => {
             const isImageRight = row.imagePosition === 'right';
             return (
-              <div 
+              <motion.div 
                 key={row.title}
-                className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center overflow-visible"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 md:p-12 lg:p-16 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center overflow-visible shadow-2xl hover:border-white/10 hover:shadow-[0_25px_60px_rgba(0,0,0,0.2)] transition-all duration-500 group"
               >
                 {/* Column 1: Text or Image based on position */}
                 <div className={`order-1 ${isImageRight ? 'lg:order-1' : 'lg:order-2'} space-y-6 relative z-10`}>
@@ -85,11 +89,11 @@ export function Services() {
                     0{index + 1} / FEATURED SERVICE
                   </span>
                   
-                  <h3 className="type-headline text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0E0E0E]">
+                  <h3 className="type-headline text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
                     <LiveWords text={row.title} variant="neutral" />
                   </h3>
                   
-                  <p className="text-sm sm:text-base text-gray-500 font-light leading-relaxed max-w-lg">
+                  <p className="text-sm sm:text-base text-gray-400 font-light leading-relaxed max-w-lg">
                     {row.description}
                   </p>
                   
@@ -98,22 +102,22 @@ export function Services() {
                       <a
                         href="/#rates-calculator"
                         onClick={handleScrollToCalculator}
-                        className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full font-figtree font-bold text-white transition-all duration-300 group select-none shadow-sm text-sm"
+                        className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full font-figtree font-bold text-white transition-all duration-300 group/btn select-none shadow-sm text-sm"
                         style={{ backgroundColor: row.accent }}
                       >
                         <span>{row.ctaText}</span>
-                        <span className="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5">
+                        <span className="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center transition-transform duration-300 group-hover/btn:translate-x-0.5">
                           <ArrowRight className="w-4 h-4" />
                         </span>
                       </a>
                     ) : (
                       <Link
                         to={row.ctaHref || '/'}
-                        className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full font-figtree font-bold text-white transition-all duration-300 group select-none shadow-sm text-sm"
+                        className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full font-figtree font-bold text-white transition-all duration-300 group/btn select-none shadow-sm text-sm"
                         style={{ backgroundColor: row.accent }}
                       >
                         <span>{row.ctaText}</span>
-                        <span className="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5">
+                        <span className="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center transition-transform duration-300 group-hover/btn:translate-x-0.5">
                           <ArrowRight className="w-4 h-4" />
                         </span>
                       </Link>
@@ -150,14 +154,14 @@ export function Services() {
                         <img 
                           src={row.image} 
                           alt={row.imageAlt}
-                          className="w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.08)] select-none"
+                          className="w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.05)] select-none group-hover:scale-105 transition-transform duration-500"
                         />
                       </motion.div>
                     </motion.div>
                   </div>
 
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

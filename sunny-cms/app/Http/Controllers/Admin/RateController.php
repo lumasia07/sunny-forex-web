@@ -11,10 +11,19 @@ use Illuminate\View\View;
 
 class RateController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $rates = ForexRate::all();
-        return view('admin.rates.index', compact('rates'));
+        $search = $request->input('search');
+
+        $rates = ForexRate::when($search, function ($query, $search) {
+            $query->where('currency_code', 'like', "%{$search}%")
+                  ->orWhere('currency_name', 'like', "%{$search}%");
+        })
+        ->orderBy('currency_code', 'asc')
+        ->paginate(15)
+        ->withQueryString();
+
+        return view('admin.rates.index', compact('rates', 'search'));
     }
 
     public function store(Request $request): RedirectResponse

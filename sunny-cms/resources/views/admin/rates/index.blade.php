@@ -19,15 +19,37 @@
 
     <!-- Add Currency Section -->
     <div class="glass p-6 rounded-3xl mb-8" x-data="{ showAdd: false }">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <h3 class="text-lg font-display font-bold text-white flex items-center gap-2">
                 <span>Active Currency Pairs</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-brand-800/30 text-brand-400 font-mono">{{ $rates->count() }} Pairs</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-brand-800/30 text-brand-400 font-mono">{{ $rates->total() }} Pairs</span>
             </h3>
-            <button @click="showAdd = !showAdd" class="px-4 py-2 rounded-xl bg-brand-800 hover:bg-brand-700 text-white text-xs font-bold transition-all flex items-center gap-1.5">
-                <span x-show="!showAdd">+ Add Currency</span>
-                <span x-show="showAdd">Hide Form</span>
-            </button>
+            
+            <div class="flex items-center gap-3">
+                <!-- Search bar form -->
+                <form action="{{ route('admin.rates.index') }}" method="GET" class="flex items-center gap-2">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            name="search" 
+                            value="{{ request('search') }}" 
+                            placeholder="Search currency..." 
+                            class="bg-white/5 border border-white/10 rounded-xl pl-3 pr-8 py-2 text-white placeholder-gray-500 outline-none focus:border-brand-500 text-xs w-48 transition-all"
+                        >
+                        @if(request('search'))
+                            <a href="{{ route('admin.rates.index') }}" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-sm text-gray-500 hover:text-white" title="Clear search">&times;</a>
+                        @endif
+                    </div>
+                    <button type="submit" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-medium transition-all">
+                        Search
+                    </button>
+                </form>
+
+                <button @click="showAdd = !showAdd" class="px-4 py-2 rounded-xl bg-brand-800 hover:bg-brand-700 text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                    <span x-show="!showAdd">+ Add Currency</span>
+                    <span x-show="showAdd">Hide Form</span>
+                </button>
+            </div>
         </div>
 
         <!-- Add currency form container -->
@@ -121,6 +143,11 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Pagination links -->
+            <div class="mt-6">
+                {{ $rates->links() }}
             </div>
 
             <!-- Mandatory Audit Trail Log Field -->

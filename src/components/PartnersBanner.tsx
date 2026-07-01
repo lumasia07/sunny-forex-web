@@ -30,7 +30,7 @@ export function PartnersBanner() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-white border-y border-gray-100 overflow-hidden">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-[#080808] border-y border-white/5 overflow-hidden">
       <motion.div
         className="max-w-7xl mx-auto px-6 md:px-12 text-center mb-10"
         style={{ y: headingY, opacity: headingOpacity }}>
@@ -41,10 +41,10 @@ export function PartnersBanner() {
           transition={{ duration: 0.6 }}
           className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-center"
         />
-        <h3 className="font-sans font-bold text-[#0E0E0E] text-2xl md:text-3xl tracking-tight uppercase">
-          <LiveWords text="Our Licensed Payout Partners" />
+        <h3 className="font-sans font-bold text-white text-2xl md:text-3xl tracking-tight uppercase">
+          <LiveWords text="Our Licensed Payout Partners" variant="neutral" />
         </h3>
-        <LiveBlock className="text-gray-500 font-light text-sm mt-2 max-w-xl mx-auto" variant="dark" inline={false}>
+        <LiveBlock className="text-gray-400 font-light text-sm mt-2 max-w-xl mx-auto" variant="dark" inline={false}>
           Delivering secure, instant cash pickups and mobile wallet payouts across Nairobi in direct partnership with leading financial networks.
         </LiveBlock>
       </motion.div>
@@ -55,18 +55,18 @@ export function PartnersBanner() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative w-full bg-white py-8 md:py-10 border-y border-gray-200/50 overflow-hidden flex items-center">
+        className="relative w-full bg-[#0A0A0A] py-8 md:py-10 border-y border-white/5 overflow-hidden flex items-center">
         {/* Soft elegant shadow-blur overlays at the sides to give high-fidelity depth */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
 
         {/* Continuous Loop Marquee Strip */}
         <div className="animate-marquee flex items-center gap-16 md:gap-24">
           {marqueeItems.map((p, idx) => (
             <motion.div
               key={idx}
-              className="flex-shrink-0 flex items-center justify-center h-12 md:h-16 w-36 md:w-44 transition-all duration-300 cursor-pointer"
-              whileHover={{ scale: 1.1, y: -4 }}
+              className="flex-shrink-0 flex items-center justify-center h-12 md:h-16 w-36 md:w-44 bg-white rounded-2xl p-3 md:p-4 border border-white/10 shadow-sm opacity-85 hover:opacity-100 transition-all duration-300 cursor-pointer group"
+              whileHover={{ scale: 1.05, y: -2 }}
               transition={{ type: 'spring', stiffness: 400, damping: 15 }}
             >
               <img

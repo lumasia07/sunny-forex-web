@@ -10,7 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Tailwind Play CDN -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -25,8 +25,8 @@
                             }
                         },
                         fontFamily: {
-                            sans: ['Inter', 'sans-serif'],
-                            display: ['Outfit', 'sans-serif'],
+                            sans: ['Lexend', 'sans-serif'],
+                            display: ['Lexend', 'sans-serif'],
                         }
                     }
                 }
@@ -37,6 +37,10 @@
             body {
                 background: linear-gradient(135deg, #0e0e0e 0%, #1c1012 100%);
                 color: #f3f4f6;
+                font-family: 'Lexend', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: optimizeLegibility;
             }
             .glass {
                 background: rgba(255, 255, 255, 0.03);

@@ -7,10 +7,10 @@
 
         <title>{{ $title ?? 'SunnyRemit Admin' }}</title>
 
-        <!-- Fonts: Outfit and Inter -->
+        <!-- Fonts: Lexend -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Tailwind Play CDN -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -43,8 +43,8 @@
                             }
                         },
                         fontFamily: {
-                            sans: ['Inter', 'sans-serif'],
-                            display: ['Outfit', 'sans-serif'],
+                            sans: ['Lexend', 'sans-serif'],
+                            display: ['Lexend', 'sans-serif'],
                         }
                     }
                 }
@@ -57,7 +57,10 @@
             body {
                 background: linear-gradient(135deg, #0e0e0e 0%, #170d0f 100%) !important;
                 color: #f3f4f6 !important;
-                font-family: 'Inter', sans-serif;
+                font-family: 'Lexend', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: optimizeLegibility;
             }
             .glass {
                 background: rgba(255, 255, 255, 0.02) !important;
@@ -138,6 +141,150 @@
             }
             body.light img[src="/symbol-white.png"] {
                 content: url('/symbol-red.png');
+            }
+
+            /* Ensure that any elements with red/brand dark backgrounds (and their children, icons, text, SVGs) have white text and icons, even in light mode. */
+            body.light .bg-brand-500,
+            body.light .bg-brand-600,
+            body.light .bg-brand-700,
+            body.light .bg-brand-800,
+            body.light .bg-brand-900,
+            body.light .bg-brand-950,
+            body.light .bg-red-500,
+            body.light .bg-red-600,
+            body.light .bg-red-700,
+            body.light .bg-red-800,
+            body.light .bg-red-900,
+            body.light .bg-rose-500,
+            body.light .bg-rose-600,
+            body.light .bg-rose-700,
+            body.light .bg-rose-800,
+            body.light .bg-rose-900,
+            body.light .bg-\[\#7A1220\],
+            body.light .bg-\[\#5C0D18\] {
+                color: #ffffff !important;
+            }
+
+            body.light .bg-brand-500 *,
+            body.light .bg-brand-600 *,
+            body.light .bg-brand-700 *,
+            body.light .bg-brand-800 *,
+            body.light .bg-brand-900 *,
+            body.light .bg-brand-950 *,
+            body.light .bg-red-500 *,
+            body.light .bg-red-600 *,
+            body.light .bg-red-700 *,
+            body.light .bg-red-800 *,
+            body.light .bg-red-900 *,
+            body.light .bg-rose-500 *,
+            body.light .bg-rose-600 *,
+            body.light .bg-rose-700 *,
+            body.light .bg-rose-800 *,
+            body.light .bg-rose-900 *,
+            body.light .bg-\[\#7A1220\] *,
+            body.light .bg-\[\#5C0D18\] * {
+                color: #ffffff !important;
+            }
+
+            body.light .bg-brand-500 svg,
+            body.light .bg-brand-600 svg,
+            body.light .bg-brand-700 svg,
+            body.light .bg-brand-800 svg,
+            body.light .bg-brand-900 svg,
+            body.light .bg-brand-950 svg,
+            body.light .bg-red-500 svg,
+            body.light .bg-red-600 svg,
+            body.light .bg-red-700 svg,
+            body.light .bg-red-800 svg,
+            body.light .bg-red-900 svg,
+            body.light .bg-rose-500 svg,
+            body.light .bg-rose-600 svg,
+            body.light .bg-rose-700 svg,
+            body.light .bg-rose-800 svg,
+            body.light .bg-rose-900 svg,
+            body.light .bg-\[\#7A1220\] svg,
+            body.light .bg-\[\#5C0D18\] svg {
+                stroke: #ffffff !important;
+            }
+
+            /* Premium Pagination Styling */
+            nav[role="navigation"] {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            body.light nav[role="navigation"] {
+                border-top-color: #e2e8f0 !important;
+            }
+            nav[role="navigation"] p {
+                color: #9ca3af !important;
+            }
+            body.light nav[role="navigation"] p {
+                color: #475569 !important;
+            }
+            nav[role="navigation"] p span {
+                color: #ffffff !important;
+                font-weight: 600;
+            }
+            body.light nav[role="navigation"] p span {
+                color: #0f172a !important;
+            }
+            nav[role="navigation"] .shadow-sm {
+                box-shadow: none !important;
+                background: transparent !important;
+                border: none !important;
+                display: flex;
+                gap: 0.25rem;
+            }
+            nav[role="navigation"] .shadow-sm a,
+            nav[role="navigation"] .shadow-sm span > span {
+                background: rgba(255, 255, 255, 0.02) !important;
+                border: 1px solid rgba(255, 255, 255, 0.05) !important;
+                color: #9ca3af !important;
+                border-radius: 0.5rem !important;
+                padding: 0.5rem 0.875rem !important;
+                font-size: 0.875rem !important;
+                font-weight: 500 !important;
+                transition: all 0.2s ease !important;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            nav[role="navigation"] .shadow-sm a:hover {
+                background: rgba(255, 255, 255, 0.08) !important;
+                border-color: rgba(255, 255, 255, 0.1) !important;
+                color: #ffffff !important;
+            }
+            nav[role="navigation"] .shadow-sm [aria-current="page"] > span {
+                background: #7A1220 !important;
+                border-color: #E43E63 !important;
+                color: #ffffff !important;
+                font-weight: 600 !important;
+            }
+            nav[role="navigation"] .shadow-sm [aria-disabled="true"] > span {
+                opacity: 0.4 !important;
+                cursor: not-allowed !important;
+            }
+
+            /* Light mode pagination */
+            body.light nav[role="navigation"] .shadow-sm a,
+            body.light nav[role="navigation"] .shadow-sm span > span {
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                color: #475569 !important;
+            }
+            body.light nav[role="navigation"] .shadow-sm a:hover {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+                border-color: #cbd5e1 !important;
+            }
+            body.light nav[role="navigation"] .shadow-sm [aria-current="page"] > span {
+                background: #7A1220 !important;
+                border-color: #7A1220 !important;
+                color: #ffffff !important;
             }
         </style>
     </head>

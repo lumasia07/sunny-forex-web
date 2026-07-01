@@ -6,7 +6,7 @@
     <title>SunnyRemit_AuditReport_{{ now()->format('Ymd') }}</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,8 +16,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
+                        sans: ['Lexend', 'sans-serif'],
+                        display: ['Lexend', 'sans-serif'],
                     }
                 }
             }
@@ -26,9 +26,12 @@
     
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Lexend', sans-serif;
             color: #1f2937;
             background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
         @media print {
             .no-print {

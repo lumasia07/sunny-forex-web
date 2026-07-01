@@ -20,7 +20,11 @@ export function DeviceShowcaseSection() {
       className="relative pt-0 pb-12 sm:pb-16 bg-transparent overflow-visible px-4 sm:px-6 md:px-8 lg:px-12 z-20"
     >
       {/* Outer Maroon Container Card with negative top margin to float and overlap the dark Hero */}
-      <div 
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-7xl mx-auto rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#7A1220] via-[#5C0D18] to-[#400810] border border-white/10 shadow-[0_30px_100px_rgba(122,18,32,0.25)] p-8 sm:p-12 md:p-16 lg:p-20 overflow-hidden relative z-20 -mt-20 sm:-mt-28 md:-mt-36"
       >
         {/* Inside Card Grid Pattern */}
@@ -35,11 +39,11 @@ export function DeviceShowcaseSection() {
           {/* Left Column: Text content & CTA */}
           <div className="space-y-6 text-left">
             <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.1] text-white font-display tracking-tight">
-              The complete stack for cross-border money movement
+              One integrated gateway. Infinite financial reach.
             </h2>
             
             <p className="text-white/80 text-sm sm:text-base font-light leading-relaxed max-w-xl">
-              Collect, convert, and pay out through a single integration. We handle the liquidity, compliance, and local rail connectivity so you don't have to.
+              Consolidate payouts, real-time currency conversions, and mobile transfers under a single unified protocol. We streamline the settlement rails, regulatory compliance, and interbank liquidity so your business can scale without borders.
             </p>
 
             <div className="pt-4">
@@ -77,7 +81,7 @@ export function DeviceShowcaseSection() {
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

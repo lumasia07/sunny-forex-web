@@ -235,12 +235,12 @@ export function Hero() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="mb-5 max-w-[34rem] font-figtree text-[1.95rem] leading-[1.03] tracking-[-0.05em] text-white sm:text-[2.25rem] lg:text-[2.65rem] xl:text-[2.9rem]"
             >
-              <span className="font-light text-white">Global reach for</span>
+              <span className="font-light text-white">Borderless liquidity,</span>
               <br />
-              <span className="font-medium text-white">trusted money</span>
+              <span className="font-medium text-white">built on absolute</span>
               <br />
-              <span className="block pb-1 font-medium text-white">
-                movement.
+              <span className="block pb-1 font-medium text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-[#D4A24C]">
+                trust.
               </span>
             </motion.h1>
 

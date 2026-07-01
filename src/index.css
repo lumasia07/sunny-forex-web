@@ -1,6 +1,5 @@
 /* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
 /* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
 @import 'tailwindcss/base';
@@ -11,7 +10,7 @@
 
 @layer base {
   html {
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Lato', sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -28,28 +27,28 @@
   h5,
   h6 {
     @apply font-bold tracking-tight text-[#0E0E0E];
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Lato', sans-serif;
   }
 }
 
 @layer components {
   .font-display {
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Lato', sans-serif;
     letter-spacing: -0.02em;
   }
 
   .font-figtree {
-    font-family: 'Figtree', sans-serif;
+    font-family: 'Lato', sans-serif;
   }
 
   .type-display {
     @apply font-bold tracking-tight leading-[1.02] text-[#0E0E0E];
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Lato', sans-serif;
   }
 
   .type-headline {
     @apply font-bold tracking-tight leading-[1.08] text-[#0E0E0E];
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Lato', sans-serif;
   }
 
   .type-lead {
@@ -210,7 +209,7 @@
 }
 
 .font-brand {
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -266,7 +265,7 @@ html {
 
 /* Nav links — hero display font + maroon underline on hover */
 .nav-link {
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 600;
   letter-spacing: -0.02em;
   font-size: 15px;
