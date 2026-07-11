@@ -17,15 +17,15 @@ export function DeviceShowcaseSection() {
   return (
     <section 
       ref={sectionRef} 
-      className="relative pt-0 pb-12 sm:pb-16 bg-transparent overflow-visible px-4 sm:px-6 md:px-8 lg:px-12 z-20"
+      className="relative pt-12 md:pt-20 pb-12 sm:pb-16 bg-transparent overflow-visible px-4 sm:px-6 md:px-8 lg:px-12 z-20"
     >
-      {/* Outer Maroon Container Card with negative top margin to float and overlap the dark Hero */}
+      {/* Outer Maroon Container Card */}
       <motion.div 
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-7xl mx-auto rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#7A1220] via-[#5C0D18] to-[#400810] border border-white/10 shadow-[0_30px_100px_rgba(122,18,32,0.25)] p-8 sm:p-12 md:p-16 lg:p-20 overflow-hidden relative z-20 -mt-20 sm:-mt-28 md:-mt-36"
+        className="w-full max-w-7xl mx-auto rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#7A1220] via-[#5C0D18] to-[#400810] border border-white/10 shadow-[0_30px_100px_rgba(122,18,32,0.15)] p-8 sm:p-12 md:p-16 lg:p-20 overflow-hidden relative z-20 mt-0"
       >
         {/* Inside Card Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] z-0 pointer-events-none rounded-2xl sm:rounded-3xl" />

@@ -3,9 +3,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Lexend', 'sans-serif'],
-        brand: ['Lexend', 'sans-serif'],
-        display: ['Lexend', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'sans-serif'],
+        brand: ['Plus Jakarta Sans', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'sans-serif'],
       },
       letterSpacing: {
         tighter: '-0.03em',

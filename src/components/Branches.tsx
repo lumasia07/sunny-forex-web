@@ -79,13 +79,13 @@ export function Branches() {
   const gridY = useTransform(scrollYProgress, [0.1, 0.5], [30, 0]);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 lg:py-24 bg-[#0A0A0A] overflow-hidden">
+    <section ref={sectionRef} className="py-16 md:py-20 lg:py-24 bg-[#F8F9FA] overflow-hidden border-t border-gray-150">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <SplitColumnsReveal
           className="mb-16 items-end"
           gap="gap-6 md:gap-8"
           left={
-            <div>
+            <div className="text-left">
               <motion.span
                 initial={{
                   scaleX: 0
@@ -102,10 +102,10 @@ export function Branches() {
                 }}
                 className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left" />
               
-              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 text-white">
+              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 text-gray-900">
                 <LiveWords text="7 branches. All across Nairobi." variant="neutral" />
               </h2>
-              <LiveBlock className="type-lead max-w-md text-gray-400 font-light" variant="dark" inline={false}>
+              <LiveBlock className="type-lead max-w-md text-gray-500 font-light font-figtree" variant="neutral" inline={false}>
                 Strategically located in Nairobi's key areas. Open 365 days a year
                 including weekends and public holidays.
               </LiveBlock>
@@ -117,11 +117,11 @@ export function Branches() {
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
               <Link
                 to="/branches"
-                className="inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full border border-white/10 text-sm font-bold text-white hover:border-[#7A1220]/40 hover:bg-[#7A1220]/10 transition-colors group w-full sm:w-auto justify-center sm:justify-start">
-                <LiveBlock className="text-sm font-bold text-white" variant="light">
+                className="inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full border border-gray-300 text-sm font-bold text-gray-700 hover:border-[#7A1220]/40 hover:bg-[#7A1220]/5 transition-colors group w-full sm:w-auto justify-center sm:justify-start">
+                <LiveBlock className="text-sm font-bold text-gray-700" variant="neutral">
                   View all branches
                 </LiveBlock>
-                <span className="w-8 h-8 rounded-full bg-[#7A1220]/20 flex items-center justify-center group-hover:bg-[#7A1220]/30 transition-colors">
+                <span className="w-8 h-8 rounded-full bg-[#7A1220]/10 text-[#7A1220] flex items-center justify-center group-hover:bg-[#7A1220]/20 transition-colors">
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </span>
               </Link>
@@ -138,7 +138,7 @@ export function Branches() {
               key={branch.name}
               {...splitGridMotion(index)}
               whileHover={{ y: -6 }}
-              className="bg-gradient-to-br from-[#7A1220] to-[#5C0D18] border border-white/10 hover:border-white/20 hover:shadow-2xl rounded-3xl p-6 flex flex-col justify-between transition-all duration-500 relative overflow-hidden group h-[190px] cursor-default"
+              className="bg-gradient-to-br from-[#7A1220] to-[#5C0D18] border border-white/10 hover:border-white/20 hover:shadow-2xl rounded-3xl p-6 flex flex-col justify-between transition-all duration-500 relative overflow-hidden group h-[190px] cursor-default text-left"
             >
               {/* Soft background ambient dot */}
               <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -156,7 +156,7 @@ export function Branches() {
                 <h3 className="text-base font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug">
                   {branch.name}
                 </h3>
-                <p className="text-xs text-white/80 font-light mt-1">
+                <p className="text-xs text-white/80 font-light mt-1 font-figtree">
                   {branch.area}
                 </p>
               </div>
@@ -166,7 +166,7 @@ export function Branches() {
                   href={branch.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300"
+                  className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300 font-figtree"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <span>Get Directions</span>

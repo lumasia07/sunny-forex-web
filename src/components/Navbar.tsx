@@ -115,12 +115,12 @@ export function Navbar() {
   const supportActive = location.hash === '#faq' || location.hash === '#contact';
   const desktopLinkClass = (active: boolean) =>
     `relative flex h-11 items-center gap-1.5 px-3 font-figtree text-[13px] font-semibold transition-colors xl:px-4 ${
-      active ? 'text-white' : 'text-white/70 hover:text-white'
+      active ? 'text-[#7A1220]' : 'text-black hover:text-[#7A1220]'
     }`;
 
-  const dropdownPanelClass = 'rounded-2xl border border-white/10 bg-[#171717]/[0.98] p-2 shadow-[0_18px_50px_rgba(0,0,0,0.16)] backdrop-blur-xl';
+  const dropdownPanelClass = 'rounded-2xl border border-gray-150 bg-white p-2 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-xl';
 
-  const dropdownItemClass = 'group flex items-start gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-white/5';
+  const dropdownItemClass = 'group flex items-start gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-gray-50';
 
   return (
     <>
@@ -133,7 +133,7 @@ export function Navbar() {
           onKeyDown={(event) => {
             if (event.key === 'Escape') setActiveDropdown(null);
           }}
-          className="pointer-events-auto mx-auto flex h-14 max-w-[90rem] items-center rounded-[1.5rem] border border-white/10 bg-[#0E0E0E]/95 px-3 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 sm:h-16 sm:px-4 md:h-[4.5rem] md:px-5"
+          className="pointer-events-auto mx-auto flex h-14 max-w-[90rem] items-center rounded-full border border-gray-200 bg-white/90 px-3 shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-all duration-300 sm:h-16 sm:px-4 md:h-[4.5rem] md:px-5"
         >
           <Link
             to="/"
@@ -143,7 +143,7 @@ export function Navbar() {
           >
             {isScrolledPastHero ? (
               <img
-                src="/logo-white.png"
+                src="/logo-red.png"
                 alt="SunnyRemit"
                 className="h-6 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] sm:h-7"
               />
@@ -157,7 +157,7 @@ export function Navbar() {
                   <img src="/logo-red.png" alt="SunnyRemit Red" className="h-6 w-auto object-contain sm:h-7" />
                 </div>
                 <div className="flex h-1/2 w-full items-center">
-                  <img src="/logo-white.png" alt="SunnyRemit White" className="h-6 w-auto object-contain sm:h-7" />
+                  <img src="/logo-black.png" alt="SunnyRemit Black" className="h-6 w-auto object-contain sm:h-7" />
                 </div>
               </motion.div>
             )}
@@ -167,7 +167,7 @@ export function Navbar() {
             <Link to="/" className={desktopLinkClass(location.pathname === '/' && !supportActive)}>
               Home
               {location.pathname === '/' && !supportActive && (
-                <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />
+                <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#7A1220] xl:inset-x-4" />
               )}
             </Link>
 
@@ -188,7 +188,7 @@ export function Navbar() {
               >
                 Products
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${activeDropdown === 'products' ? 'rotate-180' : ''}`} />
-                {productsActive && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+                {productsActive && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#7A1220] xl:inset-x-4" />}
               </button>
 
               {activeDropdown === 'products' && (
@@ -199,8 +199,8 @@ export function Navbar() {
                         <Landmark className="h-4 w-4" />
                       </span>
                       <span>
-                        <strong className="block font-figtree text-sm text-white">Forex</strong>
-                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">
+                        <strong className="block font-figtree text-sm text-gray-800">Forex</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">
                           Exchange major currencies securely.
                         </span>
                       </span>
@@ -210,8 +210,8 @@ export function Navbar() {
                         <Send className="h-4 w-4" />
                       </span>
                       <span>
-                        <strong className="block font-figtree text-sm text-white">Remittance</strong>
-                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">
+                        <strong className="block font-figtree text-sm text-gray-800">Remittance</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">
                           Send and receive money worldwide.
                         </span>
                       </span>
@@ -223,15 +223,15 @@ export function Navbar() {
 
             <Link to="/branches" className={desktopLinkClass(location.pathname === '/branches')}>
               Branches
-              {location.pathname === '/branches' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+              {location.pathname === '/branches' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#7A1220] xl:inset-x-4" />}
             </Link>
             <Link to="/corporate" className={desktopLinkClass(location.pathname === '/corporate')}>
               Corporate
-              {location.pathname === '/corporate' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+              {location.pathname === '/corporate' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#7A1220] xl:inset-x-4" />}
             </Link>
             <Link to="/blog" className={desktopLinkClass(location.pathname === '/blog')}>
               Blog
-              {location.pathname === '/blog' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+              {location.pathname === '/blog' && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#7A1220] xl:inset-x-4" />}
             </Link>
 
             <div
@@ -251,7 +251,7 @@ export function Navbar() {
               >
                 Support
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${activeDropdown === 'support' ? 'rotate-180' : ''}`} />
-                {supportActive && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#B91C1C] xl:inset-x-4" />}
+                {supportActive && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-[#7A1220] xl:inset-x-4" />}
               </button>
 
               {activeDropdown === 'support' && (
@@ -262,8 +262,8 @@ export function Navbar() {
                         <CircleHelp className="h-4 w-4" />
                       </span>
                       <span>
-                        <strong className="block font-figtree text-sm text-white">FAQs</strong>
-                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">Answers to common questions.</span>
+                        <strong className="block font-figtree text-sm text-gray-800">FAQs</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">Answers to common questions.</span>
                       </span>
                     </Link>
                     <ContactLink className={dropdownItemClass} onNavigate={() => setActiveDropdown(null)} role="menuitem">
@@ -271,8 +271,8 @@ export function Navbar() {
                         <Headphones className="h-4 w-4" />
                       </span>
                       <span>
-                        <strong className="block font-figtree text-sm text-white">Contact Us</strong>
-                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">Speak with our support team.</span>
+                        <strong className="block font-figtree text-sm text-gray-800">Contact Us</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">Speak with our support team.</span>
                       </span>
                     </ContactLink>
                     <Link to="/branches" className={dropdownItemClass} role="menuitem">
@@ -280,8 +280,8 @@ export function Navbar() {
                         <MapPin className="h-4 w-4" />
                       </span>
                       <span>
-                        <strong className="block font-figtree text-sm text-white">Find a Branch</strong>
-                        <span className="mt-0.5 block font-figtree text-[11px] text-white/50">Get in-person assistance.</span>
+                        <strong className="block font-figtree text-sm text-gray-800">Find a Branch</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">Get in-person assistance.</span>
                       </span>
                     </Link>
                   </div>
@@ -293,18 +293,18 @@ export function Navbar() {
           <div className="ml-auto hidden items-center gap-6 lg:flex">
             <Link
               to="/developers"
-              className="h-11 shrink-0 flex items-center justify-center px-6 rounded-full bg-white/10 border border-white/15 text-[13px] font-bold text-white hover:bg-white/20 hover:border-white/25 active:scale-95 transition-all shadow-sm"
+              className="h-11 shrink-0 flex items-center justify-center px-6 rounded-full bg-gray-50 border border-gray-200 text-[13px] font-bold text-gray-700 hover:bg-gray-100 hover:border-gray-300 active:scale-95 transition-all shadow-sm"
             >
-              Developer Portal
+              Developer
             </Link>
 
             <Link
               to="/#rates-calculator"
               onClick={handleSendMoneyClick}
-              className="h-11 shrink-0 items-center justify-between gap-3 rounded-full bg-white py-1 pl-5 pr-1 font-figtree text-[13px] font-semibold text-[#0E0E0E] shadow-sm transition-all hover:scale-[1.02] flex"
+              className="h-11 shrink-0 items-center justify-between gap-3 rounded-full bg-[#7A1220] py-1 pl-5 pr-1 font-figtree text-[13px] font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:bg-[#5C0D18] flex"
             >
               Send Money
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0E0E0E] text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#7A1220]">
                 <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
               </span>
             </Link>
@@ -315,7 +315,7 @@ export function Navbar() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
-            className="ml-auto flex h-10 w-10 items-center justify-center rounded-full text-white hover:bg-white/10 lg:hidden"
+            className="ml-auto flex h-10 w-10 items-center justify-center rounded-full text-gray-800 hover:bg-gray-100 lg:hidden"
           >
             {menuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
@@ -324,29 +324,29 @@ export function Navbar() {
 
       {menuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-[#0E0E0E]/30 backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
+          <div className="absolute inset-0 bg-[#0E0E0E]/20 backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
           <div
-            className="absolute left-4 right-4 top-[5.5rem] max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl border border-white/10 bg-[#0E0E0E]/[0.98] p-4 text-white shadow-2xl animate-fade-in sm:top-24"
+            className="absolute left-4 right-4 top-[5.5rem] max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl border border-gray-250 bg-white p-4 text-gray-800 shadow-2xl animate-fade-in sm:top-24"
           >
             <div className="space-y-1">
-              <Link to="/" className="block rounded-xl px-4 py-3 font-figtree text-base font-semibold" onClick={() => setMenuOpen(false)}>Home</Link>
+              <Link to="/" className="block rounded-xl px-4 py-3 font-figtree text-base font-semibold text-gray-800 hover:text-[#7A1220]" onClick={() => setMenuOpen(false)}>Home</Link>
 
-              <p className="px-4 pb-1 pt-4 font-figtree text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Products</p>
-              <Link to="/forex" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5" onClick={() => setMenuOpen(false)}>
+              <p className="px-4 pb-1 pt-4 font-figtree text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">Products</p>
+              <Link to="/forex" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220] hover:bg-gray-55" onClick={() => setMenuOpen(false)}>
                 <Landmark className="h-4 w-4 text-[#7A1220]" /> Forex
               </Link>
-              <Link to="/remittance" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5" onClick={() => setMenuOpen(false)}>
+              <Link to="/remittance" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220] hover:bg-gray-55" onClick={() => setMenuOpen(false)}>
                 <Send className="h-4 w-4 text-[#7A1220]" /> Remittance
               </Link>
 
-              <div className="my-2 h-px bg-white/10" />
-              <Link to="/branches" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold" onClick={() => setMenuOpen(false)}><Building2 className="h-4 w-4 text-[#7A1220]" /> Branches</Link>
-              <Link to="/corporate" className="block rounded-xl px-4 py-3 font-figtree font-semibold" onClick={() => setMenuOpen(false)}>Corporate</Link>
-              <Link to="/blog" className="block rounded-xl px-4 py-3 font-figtree font-semibold" onClick={() => setMenuOpen(false)}>Blog</Link>
+              <div className="my-2 h-px bg-gray-100" />
+              <Link to="/branches" className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220]" onClick={() => setMenuOpen(false)}><Building2 className="h-4 w-4 text-[#7A1220]" /> Branches</Link>
+              <Link to="/corporate" className="block rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220]" onClick={() => setMenuOpen(false)}>Corporate</Link>
+              <Link to="/blog" className="block rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220]" onClick={() => setMenuOpen(false)}>Blog</Link>
 
-              <p className="px-4 pb-1 pt-4 font-figtree text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Support</p>
-              <Link to="/#faq" onClick={handleFaqClick} className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5"><CircleHelp className="h-4 w-4 text-[#7A1220]" /> FAQs</Link>
-              <ContactLink className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold hover:bg-[#7A1220]/5" onNavigate={() => setMenuOpen(false)}><Headphones className="h-4 w-4 text-[#7A1220]" /> Contact Us</ContactLink>
+              <p className="px-4 pb-1 pt-4 font-figtree text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">Support</p>
+              <Link to="/#faq" onClick={handleFaqClick} className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220] hover:bg-gray-55"><CircleHelp className="h-4 w-4 text-[#7A1220]" /> FAQs</Link>
+              <ContactLink className="flex items-center gap-3 rounded-xl px-4 py-3 font-figtree font-semibold text-gray-800 hover:text-[#7A1220] hover:bg-gray-55" onNavigate={() => setMenuOpen(false)}><Headphones className="h-4 w-4 text-[#7A1220]" /> Contact Us</ContactLink>
 
               <Link
                 to="/#rates-calculator"

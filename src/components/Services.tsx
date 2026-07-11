@@ -54,16 +54,16 @@ export function Services() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-[#0A0A0A] overflow-hidden border-t border-white/5">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white overflow-hidden border-t border-gray-150">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
         {/* Section Header */}
-        <div className="mb-16 md:mb-24 max-w-2xl">
+        <div className="mb-16 md:mb-24 max-w-2xl text-left">
           <span className="inline-block w-12 h-px bg-[#7A1220] mb-5 origin-left" />
-          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-white">
+          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-gray-900">
             <LiveWords text="Services built for how Kenya moves money." variant="neutral" />
           </h2>
-          <LiveBlock className="type-lead text-gray-400 max-w-xl font-light" variant="neutral" inline={false}>
+          <LiveBlock className="type-lead text-gray-500 max-w-xl font-light font-figtree" variant="neutral" inline={false}>
             From cash exchange at our modern branches to instant M-Pesa transfers — every service is engineered for speed, transparency, and trust.
           </LiveBlock>
         </div>
@@ -79,21 +79,21 @@ export function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 md:p-12 lg:p-16 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center overflow-visible shadow-2xl hover:border-white/10 hover:shadow-[0_25px_60px_rgba(0,0,0,0.2)] transition-all duration-500 group"
+                className="bg-[#FCFCFD] border border-gray-200/50 rounded-[2.5rem] p-8 md:p-12 lg:p-16 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center overflow-visible shadow-lg hover:border-gray-300/40 hover:shadow-[0_25px_60px_rgba(0,0,0,0.03)] transition-all duration-500 group"
               >
                 {/* Column 1: Text or Image based on position */}
-                <div className={`order-1 ${isImageRight ? 'lg:order-1' : 'lg:order-2'} space-y-6 relative z-10`}>
+                <div className={`order-1 ${isImageRight ? 'lg:order-1' : 'lg:order-2'} space-y-6 relative z-10 text-left`}>
                   
                   {/* Decorative number tag */}
                   <span className="text-[10px] font-bold tracking-[0.25em] uppercase block" style={{ color: row.accent }}>
                     0{index + 1} / FEATURED SERVICE
                   </span>
                   
-                  <h3 className="type-headline text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+                  <h3 className="type-headline text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
                     <LiveWords text={row.title} variant="neutral" />
                   </h3>
                   
-                  <p className="text-sm sm:text-base text-gray-400 font-light leading-relaxed max-w-lg">
+                  <p className="text-sm sm:text-base text-gray-500 font-light leading-relaxed max-w-lg font-figtree">
                     {row.description}
                   </p>
                   

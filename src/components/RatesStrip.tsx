@@ -109,47 +109,47 @@ function RateCard({ rate, onClick }: { rate: (typeof defaultRates)[number]; onCl
   return (
     <motion.div
       onClick={onClick}
-      className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white/5 border border-white/5 hover:border-[#7A1220]/30 hover:shadow-2xl transition-all min-w-[280px] cursor-pointer"
+      className="flex items-center gap-5 px-7 py-4 mx-1.5 rounded-2xl bg-white border border-gray-200/50 hover:border-[#7A1220]/30 hover:shadow-lg transition-all min-w-[280px] cursor-pointer"
       whileHover={{ y: -3, scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
       <div className="flex flex-col items-center gap-1.5">
         <motion.img
           src={`https://flagcdn.com/w40/${flagCode}.png`}
-          className="h-5 w-7 rounded object-cover shadow border border-white/10"
+          className="h-5 w-7 rounded object-cover shadow border border-gray-150"
           whileHover={{ scale: 1.2, rotate: 5 }}
           transition={{ type: 'spring', stiffness: 400, damping: 15 }}
           alt={rate.code}
         />
-        <LiveBlock className="text-[10px] font-semibold tracking-wider text-gray-500" variant="dark">
+        <LiveBlock className="text-[10px] font-semibold tracking-wider text-gray-400" variant="neutral">
           {rate.code}
         </LiveBlock>
       </div>
-      <div className="w-px h-12 bg-white/10" />
-      <div className="flex-1 flex flex-col">
+      <div className="w-px h-12 bg-gray-200" />
+      <div className="flex-1 flex flex-col text-left">
         <div className="flex items-baseline justify-between gap-2">
-          <LiveBlock className="text-xs font-medium text-gray-500 uppercase tracking-wider" variant="dark">
+          <LiveBlock className="text-xs font-medium text-gray-400 uppercase tracking-wider" variant="neutral">
             Buy
           </LiveBlock>
-          <LiveBlock className="text-base font-medium text-white tabular-nums" variant="dark">
+          <LiveBlock className="text-base font-medium text-gray-800 tabular-nums" variant="neutral">
             {rate.buy.toFixed(2)}
           </LiveBlock>
         </div>
         <div className="flex items-baseline justify-between gap-2 mt-0.5">
-          <LiveBlock className="text-xs font-medium text-gray-500 uppercase tracking-wider" variant="dark">
+          <LiveBlock className="text-xs font-medium text-gray-400 uppercase tracking-wider" variant="neutral">
             Sell
           </LiveBlock>
-          <LiveBlock className="text-base font-medium text-white tabular-nums" variant="dark">
+          <LiveBlock className="text-base font-medium text-gray-800 tabular-nums" variant="neutral">
             {rate.sell.toFixed(2)}
           </LiveBlock>
         </div>
       </div>
-      <div className={`flex flex-col items-end gap-1 ${isUp ? 'text-emerald-500' : 'text-red-500'}`}>
+      <div className={`flex flex-col items-end gap-1 ${isUp ? 'text-emerald-600' : 'text-red-600'}`}>
         {isUp ? (
           <TrendingUp className="w-3.5 h-3.5" strokeWidth={2} />
         ) : (
           <TrendingDown className="w-3.5 h-3.5" strokeWidth={2} />
         )}
-        <LiveBlock className="text-xs font-medium tabular-nums" variant="dark">
+        <LiveBlock className="text-xs font-medium tabular-nums" variant="neutral">
           {isUp ? '+' : ''}
           {rate.change.toFixed(2)}%
         </LiveBlock>
@@ -191,11 +191,11 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
 
   const loopRates = [...rates, ...rates];
   return (
-    <section ref={sectionRef} className="w-full bg-[#080808] border-y border-white/5 py-10 overflow-hidden">
+    <section ref={sectionRef} className="w-full bg-[#F9FAFB] border-y border-gray-200 py-10 overflow-hidden">
       <motion.div
         className="max-w-7xl mx-auto px-6 md:px-12 mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         style={{ y: headingY, opacity: headingOpacity }}>
-        <div className="flex flex-col">
+        <div className="flex flex-col text-left">
           <motion.span
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -203,24 +203,24 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
             transition={{ duration: 0.6 }}
             className="inline-block w-10 h-px bg-[#7A1220] mb-4 origin-left"
           />
-          <h2 className="type-headline text-2xl md:text-3xl lg:text-4xl text-white">
+          <h2 className="type-headline text-2xl md:text-3xl lg:text-4xl text-gray-900">
             <LiveWords text="Today's rates against KES" variant="neutral" />
           </h2>
-          <LiveBlock className="type-lead text-sm md:text-base mt-1 text-gray-400 font-light" variant="neutral" inline={false}>
+          <LiveBlock className="type-lead text-sm md:text-base mt-1 text-gray-500 font-light font-figtree" variant="neutral" inline={false}>
             Live rates updated throughout the trading day · Indicative only
           </LiveBlock>
         </div>
 
         <div className="flex items-center gap-3 text-xs">
-          <span className="flex items-center gap-2 text-emerald-500 font-medium">
+          <span className="flex items-center gap-2 text-emerald-600 font-medium">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             LIVE
           </span>
-          <span className="text-gray-600">·</span>
-          <span className="text-gray-500">Updated {lastUpdated}</span>
+          <span className="text-gray-300">·</span>
+          <span className="text-gray-400">Updated {lastUpdated}</span>
         </div>
       </motion.div>
 
@@ -231,8 +231,8 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="relative overflow-hidden">
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#080808] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#080808] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#F9FAFB] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#F9FAFB] to-transparent z-10 pointer-events-none" />
 
         <div className="flex marquee">
           {loopRates.map((rate, index) =>
