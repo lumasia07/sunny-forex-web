@@ -38,7 +38,6 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<DropdownName>(null);
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
-  const [logoColor, setLogoColor] = useState<'red' | 'white'>('red');
   const location = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -48,14 +47,6 @@ export function Navbar() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    if (isScrolledPastHero) return;
-    const interval = setInterval(() => {
-      setLogoColor((previous) => (previous === 'red' ? 'white' : 'red'));
-    }, 5500);
-    return () => clearInterval(interval);
-  }, [isScrolledPastHero]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -80,11 +71,7 @@ export function Navbar() {
     return () => document.removeEventListener('pointerdown', closeDropdown);
   }, []);
 
-  const handleLogoTap = () => {
-    if (!isScrolledPastHero) {
-      setLogoColor((previous) => (previous === 'red' ? 'white' : 'red'));
-    }
-  };
+
 
   const handleSendMoneyClick = (event: React.MouseEvent) => {
     setMenuOpen(false);
@@ -133,34 +120,18 @@ export function Navbar() {
           onKeyDown={(event) => {
             if (event.key === 'Escape') setActiveDropdown(null);
           }}
-          className="pointer-events-auto mx-auto flex h-14 max-w-[90rem] items-center rounded-full border border-gray-200 bg-white/90 px-3 shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-all duration-300 sm:h-16 sm:px-4 md:h-[4.5rem] md:px-5"
+          className="pointer-events-auto mx-auto flex h-14 max-w-[90rem] items-center rounded-full border border-gray-200 bg-[#FAF9F5]/90 px-3 shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-all duration-300 sm:h-16 sm:px-4 md:h-[4.5rem] md:px-5"
         >
           <Link
             to="/"
-            onClick={handleLogoTap}
-            className="group relative flex h-8 w-28 shrink-0 items-center overflow-hidden sm:w-32 md:w-36"
+            className="group relative flex h-8 w-28 shrink-0 items-center sm:w-32 md:w-36"
             aria-label="SunnyRemit home"
           >
-            {isScrolledPastHero ? (
-              <img
-                src="/logo-red.png"
-                alt="SunnyRemit"
-                className="h-6 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] sm:h-7"
-              />
-            ) : (
-              <motion.div
-                animate={{ y: logoColor === 'white' ? '-50%' : '0%' }}
-                transition={{ type: 'spring', stiffness: 80, damping: 16 }}
-                className="absolute left-0 top-0 flex h-[200%] w-full flex-col"
-              >
-                <div className="flex h-1/2 w-full items-center">
-                  <img src="/logo-red.png" alt="SunnyRemit Red" className="h-6 w-auto object-contain sm:h-7" />
-                </div>
-                <div className="flex h-1/2 w-full items-center">
-                  <img src="/logo-black.png" alt="SunnyRemit Black" className="h-6 w-auto object-contain sm:h-7" />
-                </div>
-              </motion.div>
-            )}
+            <img
+              src="/sunny_logo_large.svg"
+              alt="SunnyRemit"
+              className="h-6 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] sm:h-7"
+            />
           </Link>
 
           <div className="mx-auto hidden items-center lg:flex">
