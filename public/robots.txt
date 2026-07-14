@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block search engines from indexing your CMS backend
+User-agent: *
+Disallow: /cms/
+Disallow: https://cms.sunnyremit.com/
+
+Sitemap: https://sunnyremit.com/sitemap.xml
