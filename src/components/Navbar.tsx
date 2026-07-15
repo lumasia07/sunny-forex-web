@@ -264,7 +264,7 @@ export function Navbar() {
           <div className="ml-auto hidden items-center gap-6 lg:flex">
             <Link
               to="/developers"
-              className="h-11 shrink-0 flex items-center justify-center px-6 rounded-full bg-gray-50 border border-gray-200 text-[13px] font-bold text-gray-700 hover:bg-gray-100 hover:border-gray-300 active:scale-95 transition-all shadow-sm"
+              className="h-11 shrink-0 flex items-center justify-center px-6 rounded-full bg-[#7A1220]/5 border border-[#7A1220]/15 text-[13px] font-bold text-[#7A1220] hover:bg-[#7A1220]/10 hover:border-[#7A1220]/30 active:scale-95 transition-all shadow-sm font-figtree"
             >
               Developer
             </Link>

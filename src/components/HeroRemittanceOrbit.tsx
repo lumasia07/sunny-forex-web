@@ -97,7 +97,7 @@ export function HeroRemittanceOrbit() {
               className="flex flex-col items-center gap-1">
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white shadow-lg shadow-black/8 border border-gray-100 flex items-center justify-center ring-2 ring-white overflow-hidden">
                 <img 
-                  src={`https://flagcdn.com/w40/${flagCode}.png`}
+                  src={`https://flagcdn.com/${flagCode}.svg`}
                   className="w-full h-full object-cover"
                   alt={node.label}
                 />

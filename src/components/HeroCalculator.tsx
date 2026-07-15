@@ -68,7 +68,7 @@ export function HeroCalculator() {
               />
               <div className="flex items-center gap-1.5">
                 <img 
-                  src={`https://flagcdn.com/w40/${flagCode}.png`}
+                  src={`https://flagcdn.com/${flagCode}.svg`}
                   className="h-4 w-6 rounded object-cover shadow border border-gray-200"
                   alt=""
                 />

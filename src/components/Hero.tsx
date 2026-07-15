@@ -15,17 +15,17 @@ export function Hero() {
 
   return (
     <section className="relative flex w-full flex-col justify-between overflow-hidden bg-[#FAF9F5] pt-24 pb-16 lg:pt-28 lg:pb-20 border-b border-gray-100">
-      
+
       {/* Soft Maroon Ambient Glow Shape behind the phone */}
       <div className="absolute top-[20%] right-[-5%] lg:right-[5%] w-[350px] lg:w-[500px] h-[350px] lg:h-[500px] rounded-full bg-[#7A1220]/10 blur-[80px] lg:blur-[120px] pointer-events-none z-0" />
       <div className="absolute top-[40%] right-[10%] w-[250px] h-[250px] rounded-full bg-[#D4A24C]/10 blur-[80px] pointer-events-none z-0" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
+
           {/* Left Column: Heading, Description, CTA */}
           <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
-            
+
             {/* Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -62,7 +62,7 @@ export function Hero() {
                 onClick={handleSendMoneyClick}
                 className="inline-flex items-center gap-3.5 rounded-full bg-[#7A1220] px-7 py-3.5 font-figtree text-sm font-bold tracking-wider text-white shadow-lg hover:bg-[#5C0D18] hover:shadow-[#7A1220]/20 hover:-translate-y-0.5 transition-all duration-300 group uppercase"
               >
-                GET STARTED
+                Get Started
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#7A1220] group-hover:translate-x-0.5 transition-transform duration-300">
                   <ArrowRight size={13} strokeWidth={2.5} />
                 </span>
@@ -84,27 +84,27 @@ export function Hero() {
             >
               {/* Circle 1: Left */}
               <div className="absolute left-[2%] top-[15%] w-[145px] sm:w-[185px] aspect-square rounded-full overflow-hidden border-4 border-white shadow-2xl z-10">
-                <img 
-                  src="/hand-1-sunny.png" 
-                  alt="" 
+                <img
+                  src="/hand-1-sunny.png"
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* Circle 2: Middle (Top, overlapping left and right) */}
               <div className="absolute left-[29%] top-[-8%] w-[180px] sm:w-[230px] aspect-square rounded-full overflow-hidden border-4 border-white shadow-[0_25px_50px_rgba(0,0,0,0.3)] z-20">
-                <img 
-                  src="/hand-2-sunny.png" 
-                  alt="" 
+                <img
+                  src="/hand-2-sunny.png"
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* Circle 3: Right (overlapping middle slightly) */}
               <div className="absolute right-[2%] top-[30%] w-[145px] sm:w-[185px] aspect-square rounded-full overflow-hidden border-4 border-white shadow-2xl z-10">
-                <img 
-                  src="/hand-3-sunny.png" 
-                  alt="" 
+                <img
+                  src="/hand-3-sunny.png"
+                  alt=""
                   className="w-full h-full object-cover"
                 />
               </div>

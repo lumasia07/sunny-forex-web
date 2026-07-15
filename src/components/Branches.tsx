@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LiveBlock, LiveWords } from './LiveText';
-import { SplitColumnsReveal, splitGridMotion } from './SplitColumnsReveal';
+import { splitGridMotion } from './SplitColumnsReveal';
 import { fetchFromApi } from '../lib/api';
 
 const defaultBranches = [
@@ -79,103 +79,84 @@ export function Branches() {
   const gridY = useTransform(scrollYProgress, [0.1, 0.5], [30, 0]);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 lg:py-24 bg-[#F8F9FA] overflow-hidden border-t border-gray-150">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-[#FAF9F5] overflow-hidden border-t border-gray-150">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <SplitColumnsReveal
-          className="mb-16 items-end"
-          gap="gap-6 md:gap-8"
-          left={
-            <div className="text-left">
-              <motion.span
-                initial={{
-                  scaleX: 0
-                }}
-                whileInView={{
-                  scaleX: 1
-                }}
-                viewport={{
-                  once: true
-                }}
-                transition={{
-                  duration: 0.6,
-                  delay: 0.2
-                }}
-                className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-left" />
-              
-              <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 text-gray-900">
-                <LiveWords text="7 branches. All across Nairobi." variant="neutral" />
-              </h2>
-              <LiveBlock className="type-lead max-w-md text-gray-500 font-light font-figtree" variant="neutral" inline={false}>
-                Strategically located in Nairobi's key areas. Open 365 days a year
-                including weekends and public holidays.
-              </LiveBlock>
-            </div>
-          }
-          right={
-            <motion.div
-              whileHover={{ x: 4 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
-              <Link
-                to="/branches"
-                className="inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full border border-gray-300 text-sm font-bold text-gray-700 hover:border-[#7A1220]/40 hover:bg-[#7A1220]/5 transition-colors group w-full sm:w-auto justify-center sm:justify-start">
-                <LiveBlock className="text-sm font-bold text-gray-700" variant="neutral">
-                  View all branches
-                </LiveBlock>
-                <span className="w-8 h-8 rounded-full bg-[#7A1220]/10 text-[#7A1220] flex items-center justify-center group-hover:bg-[#7A1220]/20 transition-colors">
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </span>
-              </Link>
-            </motion.div>
-          }
-        />
+        
+        {/* Centered Section Header */}
+        <div className="mb-16 max-w-3xl mx-auto text-center flex flex-col items-center">
+          <span className="w-12 h-px bg-[#7A1220] mb-5" />
+          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-gray-900">
+            <LiveWords text="Our Branches" variant="neutral" />
+          </h2>
+          <LiveBlock className="type-lead text-gray-500 max-w-xl font-light font-figtree" variant="neutral" inline={false}>
+            Strategically located in Nairobi's key areas.
+          </LiveBlock>
+        </div>
 
+        {/* Improved Cards Grid */}
         <motion.div
           style={{ y: gridY }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          {branches.map((branch, index) =>
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {branches.map((branch, index) => (
             <motion.div
               key={branch.name}
               {...splitGridMotion(index)}
-              whileHover={{ y: -6 }}
-              className="bg-gradient-to-br from-[#7A1220] to-[#5C0D18] border border-white/10 hover:border-white/20 hover:shadow-2xl rounded-3xl p-6 flex flex-col justify-between transition-all duration-500 relative overflow-hidden group h-[190px] cursor-default text-left"
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="bg-gradient-to-b from-[#8A1625] via-[#5C0D18] to-[#120406] border border-white/10 hover:border-white/20 hover:shadow-[0_30px_60px_rgba(122,18,32,0.15)] rounded-[2rem] p-8 flex flex-col justify-between transition-all duration-500 relative overflow-hidden group h-[210px] cursor-default text-left"
             >
-              {/* Soft background ambient dot */}
+              {/* Tech Grid Pattern Inside Card */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:1.5rem_1.5rem] pointer-events-none z-0 opacity-20" />
+              
+              {/* Ambient Hover Glow */}
               <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+              <div className="z-10 relative">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
                     <MapPin className="w-4 h-4" strokeWidth={2} />
                   </div>
-                  <span className="text-[9px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="text-[9px] font-bold text-white/90 bg-white/10 border border-white/10 px-3 py-1 rounded-full uppercase tracking-wider">
                     {branch.hours}
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug">
+                <h3 className="text-lg font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug font-figtree">
                   {branch.name}
                 </h3>
-                <p className="text-xs text-white/80 font-light mt-1 font-figtree">
+                <p className="text-xs text-white/70 font-light mt-1.5 font-figtree">
                   {branch.area}
                 </p>
               </div>
 
-              <div className="flex items-center justify-end mt-4">
+              <div className="flex items-center justify-end mt-4 z-10 relative">
                 <a
                   href={branch.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300 font-figtree"
+                  className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300 font-figtree group/link"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <span>Get Directions</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>Get directions</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                 </a>
               </div>
             </motion.div>
-          )}
+          ))}
         </motion.div>
+
+        {/* Centered CTA Button below cards */}
+        <div className="flex justify-center mt-12">
+          <Link
+            to="/branches"
+            className="inline-flex items-center gap-3.5 rounded-full bg-[#7A1220] px-7 py-3.5 font-figtree text-sm font-bold text-white shadow-lg hover:bg-[#5C0D18] hover:shadow-[#7A1220]/20 hover:-translate-y-0.5 transition-all duration-300 group"
+          >
+            View all branches
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#7A1220] group-hover:translate-x-0.5 transition-transform duration-300">
+              <ArrowRight size={13} strokeWidth={2.5} />
+            </span>
+          </Link>
+        </div>
       </div>
     </section>
   );

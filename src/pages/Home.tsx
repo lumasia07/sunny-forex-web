@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Hero } from '../components/Hero';
+import { StatsBar } from '../components/StatsBar';
 import { DeviceShowcaseSection } from '../components/DeviceShowcaseSection';
 import { RatesStrip } from '../components/RatesStrip';
 import { Services } from '../components/Services';
-import { OurStory } from '../components/OurStory';
 import { Branches } from '../components/Branches';
 import { PartnersBanner } from '../components/PartnersBanner';
 import { FaqSection } from '../components/FaqSection';
@@ -30,11 +30,11 @@ export function Home() {
   return (
     <>
       <Hero />
+      <StatsBar />
       <DeviceShowcaseSection />
       <RatesStrip />
       <Services />
       <PartnersBanner />
-      <OurStory />
       <Branches />
       <FaqSection />
       <CtaBand />

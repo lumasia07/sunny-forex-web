@@ -103,7 +103,7 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
             <div className="relative w-[115px] bg-[#7A1220] text-white flex items-center justify-between px-3 shrink-0">
               <span className="flex items-center gap-1.5 font-bold text-xs">
                 <img 
-                  src={`https://flagcdn.com/w40/${flagCode}.png`}
+                  src={`https://flagcdn.com/${flagCode}.svg`}
                   className="h-3 w-4.5 rounded object-cover shadow border border-white/20"
                   alt=""
                 />
@@ -156,7 +156,7 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
             <div className="relative w-[115px] bg-[#7A1220] text-white flex items-center justify-between px-3 shrink-0">
               <span className="flex items-center gap-1.5 font-bold text-xs">
                 <img 
-                  src="https://flagcdn.com/w40/ke.png"
+                  src="https://flagcdn.com/ke.svg"
                   className="h-3 w-4.5 rounded object-cover shadow border border-white/20"
                   alt="KE"
                 />

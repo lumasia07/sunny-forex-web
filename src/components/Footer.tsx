@@ -10,9 +10,9 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link to="/" className="inline-flex items-center mb-6 group">
               <img
-                src="/logo-red.png"
+                src="/sunny_logo_large.svg"
                 alt="SunnyRemit"
-                className="h-7 w-auto object-contain"
+                className="h-9 w-auto object-contain"
               />
             </Link>
             <p className="text-sm text-gray-500 font-light leading-relaxed mb-6 font-figtree">
@@ -117,17 +117,35 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Regulatory & Compliance Disclaimers */}
+        <div className="pt-8 border-t border-gray-200 mb-8 space-y-3">
+          <p className="text-[10px] sm:text-[11px] leading-relaxed text-gray-900 font-normal opacity-85 font-figtree">
+            SunnyRemit is a registered trademark of Sunny Forex & Money Remittance Limited, a company incorporated in the Republic of Kenya. SunnyRemit is fully licensed and regulated by the Central Bank of Kenya (CBK) under the Central Bank of Kenya Act (Cap 491) and the Money Remittance Regulations, 2013, to conduct foreign exchange and international money transfer services.
+          </p>
+          <p className="text-[10px] sm:text-[11px] leading-relaxed text-gray-900 font-normal opacity-85 font-figtree">
+            Disclaimer: International money transfers carry financial risks, including potential fraud. Users are strongly cautioned never to send funds to individuals they do not know or trust. SunnyRemit does not guarantee transactions initiated or finalized outside our authorized branches, websites, or partner platforms. All services are subject to customer due diligence (KYC), anti-money laundering (AML), and counter-terrorist financing (CTF) compliance screenings under the Proceeds of Crime and Anti-Money Laundering Act (POCAMLA).
+          </p>
+          <p className="text-[10px] sm:text-[11px] leading-relaxed text-gray-900 font-normal opacity-85 font-figtree">
+            Safaricom, M-PESA, and their associated logos are registered trademarks of Safaricom PLC. All other trademarks, brand names, and logos displayed on this website are the property of their respective owners.
+          </p>
+        </div>
+
+        <div className="pt-8 border-t border-gray-150 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500 font-light font-figtree">
             © {new Date().getFullYear()} SunnyRemit Forex & Money Remittance Ltd. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#7A1220]" />
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider font-figtree">
+          <a 
+            href="https://www.centralbank.go.ke/bank-supervision/cbk-directory-of-licenced-money-remittance-providers/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#7A1220] group-hover:scale-110 transition-transform" />
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider font-figtree border-b border-dashed border-gray-300 group-hover:border-gray-500 transition-colors">
               CBK Licensed & Regulated
             </p>
-          </div>
+          </a>
         </div>
       </div>
     </footer>);

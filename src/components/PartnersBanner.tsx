@@ -42,7 +42,7 @@ export function PartnersBanner() {
           className="inline-block w-10 h-px bg-[#7A1220] mb-6 origin-center"
         />
         <h3 className="font-sans font-bold text-white text-2xl md:text-3xl tracking-tight uppercase">
-          <LiveWords text="Our Licensed Payout Partners" variant="neutral" />
+          <LiveWords text="Our Partners" variant="neutral" />
         </h3>
         <LiveBlock className="text-gray-400 font-light text-sm mt-2 max-w-xl mx-auto" variant="dark" inline={false}>
           Delivering secure, instant cash pickups and mobile wallet payouts across Nairobi in direct partnership with leading financial networks.

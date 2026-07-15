@@ -50,33 +50,51 @@ export function DeviceShowcaseSection() {
               <a
                 href="/#rates-calculator"
                 onClick={handleSendMoneyClick}
-                className="inline-flex items-center gap-4 bg-white hover:bg-gray-100 text-[#7A1220] font-figtree font-bold pl-8 pr-3 py-3 rounded-full shadow-2xl transition-all duration-300 group select-none text-sm cursor-pointer hover:scale-[1.02]"
+                className="inline-flex items-center gap-3.5 pl-8 pr-2 py-2 rounded-full bg-white hover:bg-gray-100 text-[#7A1220] font-figtree text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 group select-none"
               >
                 <span>Send Money Internationally</span>
-                <span className="w-9 h-9 rounded-full bg-[#7A1220] text-white flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:translate-x-0.5">
-                  <ArrowRight className="w-4.5 h-4.5" />
+                <span className="w-8 h-8 rounded-full bg-[#7A1220] text-white flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5">
+                  <ArrowRight className="w-4 h-4" />
                 </span>
               </a>
             </div>
           </div>
 
           {/* Right Column: Devices Mockup Showcase */}
-          <div className="flex items-center justify-center overflow-visible">
+          <div className="flex items-center justify-center overflow-visible relative">
+            {/* Holographic interactive rings */}
+            <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none select-none overflow-visible">
+              <div className="absolute w-[300px] sm:w-[380px] h-[90px] sm:h-[110px] rounded-full border border-dashed border-white/10 rotate-[-10deg] scale-y-[0.35] blur-[0.5px] top-[48%]" />
+              <div className="absolute w-[340px] sm:w-[440px] h-[110px] sm:h-[130px] rounded-full border border-dotted border-[#D4A24C]/25 rotate-[-10deg] scale-y-[0.35] blur-[0.5px] top-[44%] animate-[spin_100s_linear_infinite]" />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-[540px] aspect-[1.5/1] select-none relative flex items-center justify-center pointer-events-none overflow-visible"
+              className="w-full max-w-[540px] aspect-[1.5/1] select-none relative flex items-center justify-center pointer-events-none overflow-visible z-10"
             >
               {/* Soft blur shadow underneath device */}
               <div className="absolute bottom-[2%] w-[80%] h-[10%] bg-black/60 filter blur-[20px] rounded-full mix-blend-multiply opacity-80 pointer-events-none" />
               
-              <img 
-                src="/devices-1-tr.png" 
-                alt="SunnyRemit Device Layout Showcase"
-                className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] z-10"
-              />
+              <motion.div
+                animate={{
+                  y: [0, -8, 0]
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                className="w-full h-full flex items-center justify-center"
+              >
+                <img 
+                  src="/devices-1-tr.png" 
+                  alt="SunnyRemit Device Layout Showcase"
+                  className="w-full h-full object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.5)] z-10"
+                />
+              </motion.div>
             </motion.div>
           </div>
 

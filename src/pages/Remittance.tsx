@@ -187,7 +187,7 @@ function CorridorCard({
         <div className="absolute inset-0 bg-[#7A1220] opacity-0 transition-opacity duration-500 group-hover:opacity-[0.88]" />
 
         <img
-          src={`https://flagcdn.com/w40/${flagCode}.png`}
+          src={`https://flagcdn.com/${flagCode}.svg`}
           className="relative z-10 h-5 w-7 rounded object-cover shadow border border-gray-100 group-hover:scale-110 transition-transform duration-500"
           alt={corridor.country}
         />
