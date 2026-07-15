@@ -16,6 +16,75 @@
     <meta property="og:title" content="SunnyRemit | Borderless Liquidity" />
     <meta property="og:description" content="Cross-border remittance and forex bureau services." />
     <meta property="og:image" content="https://sunnyremit.com/og-image.jpg" />
+
+    <!-- JSON-LD Structured Data Schema Markup for Google Search Sitelinks -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://sunnyremit.com/#organization",
+          "name": "SunnyRemit",
+          "alternateName": ["Sunny Forex and Remittance Ltd", "Sunny Forex Bureau"],
+          "url": "https://sunnyremit.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://sunnyremit.com/logo-mark.png"
+          },
+          "sameAs": [
+            "https://www.sunnyforex.co.ke"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://sunnyremit.com/#website",
+          "url": "https://sunnyremit.com/",
+          "name": "SunnyRemit",
+          "description": "Borderless liquidity, built on absolute trust. Licensed money remittance and forex services in Kenya.",
+          "publisher": {
+            "@id": "https://sunnyremit.com/#organization"
+          }
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "@id": "https://sunnyremit.com/#navigation",
+          "hasPart": [
+            {
+              "@type": "WebPage",
+              "name": "Forex Exchange Rates",
+              "url": "https://sunnyremit.com/forex",
+              "description": "View live currency exchange rates against Kenyan Shilling (KES) and calculate conversion rates."
+            },
+            {
+              "@type": "WebPage",
+              "name": "Money Remittance",
+              "url": "https://sunnyremit.com/remittance",
+              "description": "Secure international money transfers and M-Pesa payouts from anywhere in the world."
+            },
+            {
+              "@type": "WebPage",
+              "name": "Our Branches in Nairobi",
+              "url": "https://sunnyremit.com/branches",
+              "description": "Find locations, contacts, and opening hours for SunnyRemit branches at Valley Arcade and Village Market."
+            },
+            {
+              "@type": "WebPage",
+              "name": "Corporate Accounts",
+              "url": "https://sunnyremit.com/corporate",
+              "description": "Customized business foreign exchange solutions and bulk payout infrastructure for global clients."
+            },
+            {
+              "@type": "WebPage",
+              "name": "Developer Infrastructure",
+              "url": "https://sunnyremit.com/developers",
+              "description": "Integrate secure payout APIs and remittance rails directly into your platforms."
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
