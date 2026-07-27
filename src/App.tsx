@@ -11,7 +11,8 @@ import { Corporate } from './pages/Corporate';
 import { Blog } from './pages/Blog';
 import { LockRate } from './pages/LockRate';
 import { Developers } from './pages/Developers';
-import { WhatsAppButton } from './components/WhatsAppButton';
+import { LegalPage } from './pages/LegalPage';
+import { IntercomProvider } from './components/IntercomProvider';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -39,23 +40,29 @@ function ScrollToTop() {
 
 function AppContent() {
   return (
-    <div className="min-h-screen flex flex-col w-full">
-      <Navbar />
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/forex" element={<Forex />} />
-          <Route path="/remittance" element={<Remittance />} />
-          <Route path="/branches" element={<BranchesPage />} />
-          <Route path="/corporate" element={<Corporate />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/developers" element={<Developers />} />
-          <Route path="/lock-rate" element={<Navigate to="/branches" replace />} />
-        </Routes>
-      </main>
-      <Footer />
-      <WhatsAppButton />
-    </div>
+    <IntercomProvider>
+      <div className="min-h-screen flex flex-col w-full">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/forex" element={<Forex />} />
+            <Route path="/remittance" element={<Remittance />} />
+            <Route path="/branches" element={<BranchesPage />} />
+            <Route path="/corporate" element={<Corporate />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/developers" element={<Developers />} />
+            <Route path="/legal" element={<LegalPage />} />
+            <Route path="/legal/:docId" element={<LegalPage />} />
+            <Route path="/terms" element={<LegalPage />} />
+            <Route path="/privacy" element={<LegalPage />} />
+            <Route path="/aml-policy" element={<LegalPage />} />
+            <Route path="/lock-rate" element={<Navigate to="/branches" replace />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </IntercomProvider>
   );
 }
 

@@ -8,6 +8,7 @@ import {
   Headphones,
   Landmark,
   MapPin,
+  Scale,
   Send,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -253,6 +254,15 @@ export function Navbar() {
                       <span>
                         <strong className="block font-figtree text-sm text-gray-800">Find a Branch</strong>
                         <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">Get in-person assistance.</span>
+                      </span>
+                    </Link>
+                    <Link to="/legal" className={dropdownItemClass} role="menuitem">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600/10 text-blue-700">
+                        <Scale className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <strong className="block font-figtree text-sm text-gray-800">Legal & Policies</strong>
+                        <span className="mt-0.5 block font-figtree text-[11px] text-gray-400">Terms, Privacy & AML compliance.</span>
                       </span>
                     </Link>
                   </div>

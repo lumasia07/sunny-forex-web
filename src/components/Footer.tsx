@@ -93,25 +93,24 @@ export function Footer() {
             </h4>
             <ul className="space-y-4">
               <li>
-                <a
-                  href="mailto:info@sunnyremit.com?subject=Terms%20of%20Service%20Request"
-                  className={linkClass}>
+                <Link to="/terms" className={linkClass}>
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="mailto:info@sunnyremit.com?subject=Privacy%20Policy%20Request"
-                  className={linkClass}>
+                <Link to="/privacy" className={linkClass}>
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="mailto:info@sunnyremit.com?subject=AML%20Policy%20Request"
-                  className={linkClass}>
+                <Link to="/aml-policy" className={linkClass}>
                   AML Policy
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link to="/legal" className={linkClass}>
+                  Legal & Governance Hub
+                </Link>
               </li>
             </ul>
           </div>
