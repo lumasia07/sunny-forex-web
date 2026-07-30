@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { StatsBar } from '../components/StatsBar';
+import { RateCalculatorSection } from '../components/RateCalculatorSection';
 import { DeviceShowcaseSection } from '../components/DeviceShowcaseSection';
 import { RatesStrip } from '../components/RatesStrip';
 import { Services } from '../components/Services';
@@ -31,6 +32,7 @@ export function Home() {
     <>
       <Hero />
       <StatsBar />
+      <RateCalculatorSection selectedCurrency={null} />
       <DeviceShowcaseSection />
       <RatesStrip />
       <Services />

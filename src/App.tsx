@@ -39,10 +39,13 @@ function ScrollToTop() {
 }
 
 function AppContent() {
+  const location = useLocation();
+  const isDevDocs = location.pathname === '/developers';
+
   return (
     <IntercomProvider>
       <div className="min-h-screen flex flex-col w-full">
-        <Navbar />
+        {!isDevDocs && <Navbar />}
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -60,7 +63,7 @@ function AppContent() {
             <Route path="/lock-rate" element={<Navigate to="/branches" replace />} />
           </Routes>
         </main>
-        <Footer />
+        {!isDevDocs && <Footer />}
       </div>
     </IntercomProvider>
   );

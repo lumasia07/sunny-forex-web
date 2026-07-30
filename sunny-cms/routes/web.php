@@ -35,6 +35,7 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
     Route::get('rates', [RateController::class, 'index'])->name('rates.index');
     Route::post('rates', [RateController::class, 'update'])->name('rates.update');
     Route::post('rates/store', [RateController::class, 'store'])->name('rates.store');
+    Route::post('rates/seed-cbk', [RateController::class, 'seedCbk'])->name('rates.seed-cbk');
     
     // Branches
     Route::resource('branches', BranchController::class)->except(['show']);

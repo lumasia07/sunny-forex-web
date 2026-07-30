@@ -1,37 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Send, TrendingUp } from 'lucide-react';
+import { fetchFromApi } from '../lib/api';
 
-const currencies = [
+const defaultCurrencies = [
   { code: 'USD', flag: '🇺🇸', rate: 130.5 },
   { code: 'EUR', flag: '🇪🇺', rate: 141.2 },
   { code: 'GBP', flag: '🇬🇧', rate: 165.8 },
   { code: 'AED', flag: '🇦🇪', rate: 35.4 },
+  { code: 'SAR', flag: '🇸🇦', rate: 34.4 },
+  { code: 'CAD', flag: '🇨🇦', rate: 94.1 },
+  { code: 'AUD', flag: '🇦🇺', rate: 84.8 },
+  { code: 'ZAR', flag: '🇿🇦', rate: 7.0 },
+  { code: 'INR', flag: '🇮🇳', rate: 1.55 },
 ];
 
 export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: string | null }) {
+  const [currencies, setCurrencies] = useState(defaultCurrencies);
   const [sendAmount, setSendAmount] = useState('1000');
   const [receiveAmount, setReceiveAmount] = useState('');
   const [sendCurrency, setSendCurrency] = useState('USD');
   const [receiveMethod, setReceiveMethod] = useState('mpesa');
 
-  const selected = currencies.find((c) => c.code === sendCurrency) || currencies[0];
+  // Fetch live rates from backend API on mount
+  useEffect(() => {
+    fetchFromApi<any[]>('rates')
+      .then((data) => {
+        if (data && data.length > 0) {
+          const formatted = data.map((r) => ({
+            code: r.currency_code,
+            flag: r.flag_emoji || '🏳️',
+            rate: parseFloat(r.sell_rate) || 1.0,
+          }));
+          setCurrencies(formatted);
+        }
+      })
+      .catch((err) => console.warn('Rates API offline, using default rates:', err));
+  }, []);
+
+  const selected = currencies.find((c) => c.code === sendCurrency) || currencies[0] || defaultCurrencies[0];
 
   // Initial calculation and synchronization
   useEffect(() => {
     const rate = selected.rate;
     const sendNum = parseFloat(sendAmount) || 0;
     setReceiveAmount((sendNum * rate).toFixed(0));
-  }, [sendCurrency]);
+  }, [sendCurrency, selected.rate]);
 
   useEffect(() => {
     if (selectedCurrency) {
-      const isSupported = currencies.some(c => c.code === selectedCurrency);
+      const isSupported = currencies.some((c) => c.code === selectedCurrency);
       if (isSupported) {
         setSendCurrency(selectedCurrency);
       }
     }
-  }, [selectedCurrency]);
+  }, [selectedCurrency, currencies]);
 
   const handleSendChange = (val: string) => {
     setSendAmount(val);
@@ -55,9 +77,18 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
 
   const handleSendCurrencyChange = (cur: string) => {
     setSendCurrency(cur);
-    const newSelected = currencies.find((c) => c.code === cur) || currencies[0];
+    const newSelected = currencies.find((c) => c.code === cur) || currencies[0] || defaultCurrencies[0];
     const sendNum = parseFloat(sendAmount) || 0;
     setReceiveAmount((sendNum * newSelected.rate).toFixed(0));
+  };
+
+  const handleSendMoneyClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof (window as any).Intercom === 'function') {
+      (window as any).Intercom('showNewMessage', `Hi SunnyRemit! I want to send ${sendAmount} ${sendCurrency} (${receiveAmount} KES) via ${receiveMethod.toUpperCase()}. Please assist me with starting this transfer.`);
+    } else {
+      window.location.href = '/#contact';
+    }
   };
 
   const flagCode = sendCurrency.substring(0, 2).toLowerCase();
@@ -75,7 +106,7 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
             </span>
-            <span class="font-display text-xs font-bold text-[#0E0E0E] uppercase tracking-wider">Send Money</span>
+            <span className="font-display text-xs font-bold text-[#0E0E0E] uppercase tracking-wider">Send Money</span>
           </div>
           <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full flex items-center gap-1">
             <TrendingUp className="w-2.5 h-2.5" />
@@ -190,11 +221,11 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
           <div className="space-y-2 text-xs py-2 px-1 border-t border-gray-100 mt-2">
             <div className="flex justify-between items-center text-gray-500">
               <span>Transfer Fee</span>
-              <span className="font-semibold text-[#0E0E0E]">0.00 {sendCurrency}</span>
+              <span className="font-semibold text-emerald-600">Zero Fee</span>
             </div>
             <div className="flex justify-between items-center text-gray-500">
-              <span>Transfer speed</span>
-              <span className="font-semibold text-emerald-600">Same day</span>
+              <span>Delivery time</span>
+              <span className="font-semibold text-emerald-600">Instant</span>
             </div>
             <div className="flex justify-between items-center text-gray-500 border-t border-gray-50 pt-2">
               <span className="font-semibold text-[#0E0E0E]">Total to pay</span>
@@ -204,13 +235,15 @@ export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: strin
             </div>
           </div>
 
-          {/* Send Button */}
-          <Link
-            to="/branches"
-            className="w-full flex justify-center items-center gap-2 py-3.5 rounded-xl bg-[#7A1220] hover:bg-[#5C0D18] transition-all font-figtree font-semibold text-sm tracking-wide shadow-md shadow-[#7A1220]/15 mt-2 text-white">
+          {/* Send Button linked to Intercom */}
+          <button
+            type="button"
+            onClick={handleSendMoneyClick}
+            className="w-full flex justify-center items-center gap-2 py-3.5 rounded-xl bg-[#7A1220] hover:bg-[#5C0D18] active:scale-[0.99] transition-all font-figtree font-semibold text-sm tracking-wide shadow-md shadow-[#7A1220]/15 mt-2 text-white cursor-pointer"
+          >
             <Send className="w-4 h-4 text-white/80" />
             Send Money
-          </Link>
+          </button>
 
         </div>
       </div>

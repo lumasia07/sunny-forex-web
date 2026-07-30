@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SunnyRemit Live Exchange Rates</title>
+    <title>SunnyRemit Live Exchange Rates Board</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +43,22 @@
         .glow-green {
             text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
+
+        /* Continuous Scrolling Marquee */
+        .welcome-marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .welcome-marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 35s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-8">
@@ -52,7 +68,7 @@
         <div class="flex items-center gap-6">
             <img src="/logo-white.png" alt="SunnyRemit" class="h-10 w-auto object-contain" />
             <div class="h-8 w-px bg-white/20"></div>
-            <p class="text-xs font-semibold uppercase tracking-widest text-gray-500">Official Exchange Rate Board</p>
+            <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Official Exchange Rate Board</p>
         </div>
         
         <!-- Live status -->
@@ -70,8 +86,8 @@
 
     <!-- Pinned Market Majors -->
     <div class="mb-8">
-        <div class="text-[10px] font-bold text-brand-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+        <div class="text-[10px] font-bold text-[#D4A24C] uppercase tracking-widest mb-3 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#D4A24C] animate-pulse"></span>
             <span>Market Majors (Pinned)</span>
         </div>
         <div class="grid grid-cols-4 gap-6" id="majors-row">
@@ -108,12 +124,20 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 pt-4 flex items-center justify-between text-xs text-gray-500">
-        <div>Licensed & Regulated by the Central Bank of Kenya</div>
-        <div class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            <span>Refreshing automatically in <span id="counter" class="font-mono text-white font-bold">60</span>s</span>
+    <!-- Scrolling Welcoming Marquee Banner at Bottom -->
+    <footer class="border-t border-white/10 pt-3.5 space-y-2">
+        <div class="welcome-marquee-container bg-[#7A1220]/20 border border-[#7A1220]/40 rounded-2xl py-2 px-4 shadow-lg">
+            <div class="welcome-marquee-content text-sm font-semibold text-amber-300 tracking-wide">
+                👋 Welcome to SunnyRemit — We will serve you shortly! Please have your Identification Document (National ID, Passport, or Alien Card) ready. Enjoy live competitive exchange rates with zero hidden fees! &nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp; 👋 Welcome to SunnyRemit — We will serve you shortly! Please have your Identification Document ready!
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-gray-500 px-2">
+            <div>Licensed & Regulated by the Central Bank of Kenya</div>
+            <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>Refreshing in <span id="counter" class="font-mono text-white font-bold">60</span>s</span>
+            </div>
         </div>
     </footer>
 
@@ -183,21 +207,21 @@
             
             majorRates.forEach(rate => {
                 const card = document.createElement('div');
-                card.className = 'glass-card rounded-2xl p-5 flex items-center justify-between border border-white/5 shadow-lg';
+                card.className = 'glass-card rounded-2xl p-4 flex items-center justify-between border border-white/10 shadow-lg';
                 
                 const flagCode = rate.currency_code.substring(0, 2).toLowerCase();
                 
                 card.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-8 w-11 rounded-lg object-cover border border-white/10" alt="${rate.currency_code}" />
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-7 w-10 rounded-md object-cover border border-white/10" alt="${rate.currency_code}" />
                         <div>
-                            <span class="text-lg font-bold text-white block">${rate.currency_code}</span>
-                            <span class="text-[10px] text-gray-500">${rate.currency_name}</span>
+                            <span class="text-base font-bold text-white block">${rate.currency_code}</span>
+                            <span class="text-[10px] text-gray-400">${rate.currency_name}</span>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-lg font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
-                        <div class="text-lg font-bold digital-font text-rose-500 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
+                        <div class="text-base font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
+                        <div class="text-base font-bold digital-font text-rose-400 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
                     </div>
                 `;
                 majorsRow.appendChild(card);
@@ -220,20 +244,20 @@
             pageItems.forEach((rate, index) => {
                 const targetCol = index < mid ? col1 : col2;
                 const row = document.createElement('div');
-                row.className = 'glass-card flex-grow rounded-2xl px-6 py-4 grid grid-cols-[1.5fr_1fr_1fr] items-center transition-all duration-500 hover:border-emerald-500/30';
+                row.className = 'glass-card flex-grow rounded-2xl px-5 py-3.5 grid grid-cols-[1.5fr_1fr_1fr] items-center transition-all duration-500 hover:border-emerald-500/30';
                 
                 const flagCode = rate.currency_code.substring(0, 2).toLowerCase();
                 
                 row.innerHTML = `
-                    <div class="flex items-center gap-5">
-                        <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-8 w-11 rounded-lg object-cover shadow-lg border border-white/10" alt="${rate.currency_code}" />
+                    <div class="flex items-center gap-4">
+                        <img src="https://flagcdn.com/h40/${flagCode}.png" class="h-7 w-10 rounded-md object-cover shadow-md border border-white/10" alt="${rate.currency_code}" />
                         <div>
-                            <span class="text-xl font-bold text-white block">${rate.currency_code}</span>
-                            <span class="text-xs text-gray-500">${rate.currency_name}</span>
+                            <span class="text-lg font-bold text-white block">${rate.currency_code}</span>
+                            <span class="text-xs text-gray-400">${rate.currency_name}</span>
                         </div>
                     </div>
-                    <div class="text-right text-2xl font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
-                    <div class="text-right text-2xl font-bold digital-font text-rose-500 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
+                    <div class="text-right text-xl font-bold digital-font text-emerald-400 glow-green">${parseFloat(rate.buy_rate).toFixed(2)}</div>
+                    <div class="text-right text-xl font-bold digital-font text-rose-400 glow-red">${parseFloat(rate.sell_rate).toFixed(2)}</div>
                 `;
                 targetCol.appendChild(row);
             });
