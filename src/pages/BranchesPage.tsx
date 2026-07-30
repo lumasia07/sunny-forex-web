@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { CtaBand } from '../components/CtaBand';
 import { MapPin, Phone, Clock, Compass, ArrowRight, ExternalLink, Map as MapIcon, Layers } from 'lucide-react';
+import { fetchFromApi } from '../lib/api';
 
-const branches = [
+const defaultBranches = [
   {
     id: 0,
     name: 'Kilimani Branch',
@@ -85,16 +86,41 @@ const branches = [
 ];
 
 export function BranchesPage() {
+  const [branches, setBranches] = useState<any[]>(defaultBranches);
   const [selectedBranchId, setSelectedBranchId] = useState(6);
   const [mapMode, setMapMode] = useState<'branch' | 'overview'>('branch');
 
-  const selectedBranch = branches.find((b) => b.id === selectedBranchId) || branches[0];
+  useEffect(() => {
+    fetchFromApi<any[]>('branches')
+      .then((data) => {
+        if (data && data.length > 0) {
+          const formatted = data.map((b, idx) => ({
+            id: b.id || idx,
+            name: b.name,
+            area: b.area,
+            address: b.address || `${b.name}, ${b.area}, Nairobi`,
+            phone: b.phone || '+254 722 000 000',
+            hours: b.hours || 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+            flagship: b.name.includes('HQ') || idx === data.length - 1,
+            mapUrl: b.map_url || `https://www.google.com/maps/search/?api=1&query=SunnyRemit+${encodeURIComponent(b.name)}+Nairobi`,
+            queryAddress: `${b.name}, ${b.area}, Nairobi, Kenya`,
+          }));
+          setBranches(formatted);
+          if (formatted.length > 0) {
+            setSelectedBranchId(formatted[0].id);
+          }
+        }
+      })
+      .catch((err) => console.warn('Branches API offline, using default branches:', err));
+  }, []);
+
+  const selectedBranch = branches.find((b) => b.id === selectedBranchId) || branches[0] || defaultBranches[0];
 
   return (
     <>
       <PageHero
         eyebrow="Branch Network"
-        title="7 branches. All across Nairobi."
+        title={`${branches.length} branches. All across Nairobi.`}
         description="Strategically located in Nairobi's premier retail and commercial hubs. Open 365 days a year to serve you with zero hassle."
         imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
         imageAlt="Nairobi physical branches"
@@ -119,189 +145,159 @@ export function BranchesPage() {
                   <div className="text-left">
                     <div className="flex items-center gap-2 text-[#7A1220] mb-1">
                       <Compass className="w-4 h-4 animate-spin-slow" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] font-mono">
-                        {mapMode === 'branch' ? 'Branch Location' : 'Nairobi Overview'}
-                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A1220]">Interactive Map Locator</span>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 tracking-tight font-figtree">
-                      {mapMode === 'branch' ? selectedBranch.name : 'All 7 Nairobi Branches'}
+                    <h3 className="text-xl font-bold text-gray-900 leading-tight font-figtree">
+                      {mapMode === 'branch' ? selectedBranch.name : 'All 7 Nairobi Hubs'}
                     </h3>
                   </div>
 
-                  {/* Toggle between Branch Focus and Nairobi Overview */}
-                  <div className="flex bg-slate-100 p-1 rounded-xl border border-gray-250 text-xs shrink-0">
+                  {/* Mode Toggle Pills */}
+                  <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl border border-gray-200 shrink-0">
                     <button
                       onClick={() => setMapMode('branch')}
-                      className={`px-3 py-1.5 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
-                        mapMode === 'branch' ? 'bg-[#7A1220] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                      className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${
+                        mapMode === 'branch'
+                          ? 'bg-[#7A1220] text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <MapIcon className="w-3.5 h-3.5" />
-                      <span>Branch</span>
+                      <MapPin className="w-3 h-3" />
+                      <span>Selected</span>
                     </button>
                     <button
                       onClick={() => setMapMode('overview')}
-                      className={`px-3 py-1.5 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
-                        mapMode === 'overview' ? 'bg-[#7A1220] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                      className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${
+                        mapMode === 'overview'
+                          ? 'bg-[#7A1220] text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <Layers className="w-3.5 h-3.5" />
+                      <Layers className="w-3 h-3" />
                       <span>Overview</span>
                     </button>
                   </div>
                 </div>
 
-                {/* Bright, Clear, High-Definition Interactive Map Embed Canvas */}
-                <div className="relative w-full h-[300px] sm:h-[360px] rounded-2xl bg-gray-100 border border-gray-200 my-4 overflow-hidden shadow-inner">
-                  
-                  {mapMode === 'branch' ? (
-                    /* Clear HD Street Map Focused directly on Selected Branch */
-                    <iframe
-                      title={`Street map of ${selectedBranch.name}`}
-                      src={`https://maps.google.com/maps?q=${encodeURIComponent(selectedBranch.queryAddress)}&t=m&z=16&ie=UTF8&iwloc=&output=embed`}
-                      className="w-full h-full border-0 contrast-[1.03] saturate-[1.05]"
-                      loading="lazy"
-                    />
-                  ) : (
-                    /* Clear HD Overview Map Showing All Nairobi Locations */
-                    <iframe
-                      title="Nairobi Metropolitan Branch Overview Map"
-                      src={`https://maps.google.com/maps?q=SunnyRemit+Forex+Nairobi+Kenya&t=m&z=12&ie=UTF8&iwloc=&output=embed`}
-                      className="w-full h-full border-0 contrast-[1.03] saturate-[1.05]"
-                      loading="lazy"
-                    />
-                  )}
-
+                {/* Bright Live Google Maps Embed Container */}
+                <div className="relative z-10 flex-grow my-4 rounded-2xl overflow-hidden border border-gray-200 shadow-inner bg-gray-100 min-h-[320px]">
+                  <iframe
+                    key={`${selectedBranch.id}-${mapMode}`}
+                    title={`Google Map - ${selectedBranch.name}`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, minHeight: '320px' }}
+                    loading="lazy"
+                    allowFullScreen
+                    src={
+                      mapMode === 'branch'
+                        ? `https://maps.google.com/maps?q=${encodeURIComponent(selectedBranch.queryAddress)}&t=&z=16&ie=UTF8&iwloc=&output=embed`
+                        : `https://maps.google.com/maps?q=SunnyRemit+Nairobi+Kenya&t=&z=12&ie=UTF8&iwloc=&output=embed`
+                    }
+                  />
                 </div>
 
-                {/* Selected Branch Quick Bar */}
-                <div className="relative z-10 pt-3 border-t border-gray-150 text-left">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={selectedBranch.id}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      transition={{ duration: 0.2 }}
-                      className="flex items-center justify-between gap-4"
-                    >
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#7A1220] bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200 font-mono">
-                            {selectedBranch.area}
-                          </span>
-                          <span className="text-xs text-gray-500 font-light">• Open Today</span>
-                        </div>
-                        <h4 className="text-sm font-bold text-gray-900 mt-1 truncate font-figtree">{selectedBranch.name}</h4>
-                        <p className="text-xs text-gray-600 font-light truncate mt-0.5">{selectedBranch.address}</p>
-                      </div>
-                      
-                      <a
-                        href={selectedBranch.mapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 bg-[#7A1220] hover:bg-[#8F1626] text-white rounded-full pl-3.5 pr-1 py-1.5 text-[10px] uppercase font-bold tracking-wider transition-colors shrink-0 shadow-sm"
-                      >
-                        <span>Directions</span>
-                        <span className="w-6 h-6 rounded-full bg-white text-[#7A1220] flex items-center justify-center">
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </span>
-                      </a>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
+                {/* Bottom Details Footer Card inside Map Container */}
+                <div className="relative z-10 pt-4 border-t border-gray-150 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium">{selectedBranch.address}</p>
+                    <p className="text-xs font-bold text-gray-800 mt-0.5">{selectedBranch.hours}</p>
+                  </div>
 
+                  <a
+                    href={selectedBranch.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#7A1220] text-white text-xs font-bold hover:bg-[#5C0D18] transition-colors shrink-0 shadow-md"
+                  >
+                    <span>Open in Maps</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
             </div>
 
-            {/* Right Column: Detailed branch cards listing (lg:col-span-7) */}
-            <div className="lg:col-span-7 flex flex-col gap-5">
-              {branches.map((branch) => {
-                const isSelected = branch.id === selectedBranchId;
-                return (
-                  <motion.div
-                    key={branch.name}
-                    onClick={() => {
-                      setSelectedBranchId(branch.id);
-                    }}
-                    whileHover={{ y: -3 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    className={`relative flex flex-col p-6 sm:p-8 rounded-[2rem] border transition-all cursor-pointer select-none ${
-                      isSelected
-                        ? 'border-[#7A1220] bg-white shadow-xl ring-2 ring-[#7A1220]/20'
-                        : 'border-gray-200 bg-white shadow-sm hover:border-[#7A1220]/30 hover:shadow-md'
-                    }`}
-                  >
-                    {branch.flagship && (
-                      <span className="absolute top-6 right-6 text-[9px] font-bold tracking-[0.25em] uppercase text-[#7A1220] bg-[#7A1220]/10 px-3 py-1 rounded-full border border-[#7A1220]/20 font-mono">
-                        Flagship
-                      </span>
-                    )}
+            {/* Right Column: List of All Branches (lg:col-span-7) */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center justify-between px-2 mb-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                  Select a Branch location below:
+                </span>
+                <span className="text-xs font-semibold text-[#7A1220] bg-[#7A1220]/10 px-3 py-1 rounded-full">
+                  {branches.length} Active Hubs
+                </span>
+              </div>
 
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className={`w-11 h-11 rounded-full flex items-center justify-center border-2 transition-colors ${
-                        isSelected ? 'bg-[#7A1220] border-[#7A1220] text-white shadow-md' : 'bg-gray-50 border-gray-150 text-gray-400'
-                      }`}>
-                        <MapPin className="w-4.5 h-4.5" strokeWidth={2} />
-                      </div>
-                      <div className="flex flex-col text-left">
-                        <h3 className="text-lg font-bold text-[#0E0E0E] leading-tight font-figtree">
-                          {branch.name}
-                        </h3>
-                        <span className="text-[10px] text-[#7A1220] font-bold tracking-widest uppercase mt-0.5 font-mono">
-                          {branch.area}
+              <div className="space-y-4">
+                {branches.map((b) => {
+                  const isSelected = b.id === selectedBranchId;
+                  return (
+                    <motion.div
+                      key={b.id}
+                      onClick={() => {
+                        setSelectedBranchId(b.id);
+                        setMapMode('branch');
+                      }}
+                      whileHover={{ scale: 1.01 }}
+                      className={`p-6 sm:p-7 rounded-[2rem] border transition-all cursor-pointer text-left relative overflow-hidden ${
+                        isSelected
+                          ? 'bg-white border-[#7A1220] shadow-xl ring-2 ring-[#7A1220]/20'
+                          : 'bg-white/80 border-gray-200 hover:border-gray-300 hover:bg-white shadow-sm'
+                      }`}
+                    >
+                      {/* Flagship HQ Ribbon Badge */}
+                      {b.flagship && (
+                        <span className="absolute top-4 right-4 bg-[#D4A24C]/20 border border-[#D4A24C]/40 text-[#9A641D] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                          Headquarters (HQ)
                         </span>
+                      )}
+
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-3.5">
+                          <div
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                              isSelected
+                                ? 'bg-[#7A1220] text-white shadow-md'
+                                : 'bg-gray-100 text-gray-600'
+                            }`}
+                          >
+                            <MapPin className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-bold text-gray-900 font-figtree">
+                              {b.name}
+                            </h4>
+                            <span className="text-xs text-gray-500 font-medium block mt-0.5">
+                              {b.area}
+                            </span>
+                          </div>
+                        </div>
+
+                        {isSelected && (
+                          <span className="flex items-center gap-1 text-xs font-bold text-[#7A1220] bg-[#7A1220]/10 px-3 py-1 rounded-full shrink-0">
+                            Active Map
+                          </span>
+                        )}
                       </div>
-                    </div>
 
-                    <div className="space-y-2 text-xs sm:text-sm font-light text-gray-600 mt-4 mb-6 flex-grow text-left">
-                      <p className="leading-relaxed text-gray-800 font-medium">{branch.address}</p>
-                      <p className="flex items-center gap-2">
-                        <Phone className="w-3.5 h-3.5 text-[#7A1220] shrink-0" strokeWidth={2} />
-                        <span className="font-semibold text-gray-900">{branch.phone}</span>
-                      </p>
-                      <p className="flex items-center gap-2">
-                        <Clock className="w-3.5 h-3.5 text-gray-400 shrink-0" strokeWidth={2} />
-                        <span className="font-light text-gray-500">{branch.hours}</span>
-                      </p>
-                    </div>
-
-                    {/* Action buttons */}
-                    <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-gray-100 mt-auto">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedBranchId(branch.id);
-                          setMapMode('branch');
-                          window.scrollTo({ top: 300, behavior: 'smooth' });
-                        }}
-                        className="inline-flex justify-between items-center gap-2 px-4 py-2 rounded-full bg-[#7A1220] text-white hover:bg-[#8F1626] font-bold text-[10px] uppercase tracking-wider transition-all shadow-sm"
-                      >
-                        <MapIcon className="w-3.5 h-3.5" />
-                        <span>View Map</span>
-                      </button>
-
-                      <a
-                        href={branch.mapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex justify-between items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-slate-800 hover:bg-slate-200 font-bold text-[10px] uppercase tracking-wider transition-all"
-                      >
-                        <span>Google Directions</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-
-                      <a
-                        href={`tel:${branch.phone.replace(/\s/g, '')}`}
-                        className="inline-flex justify-between items-center gap-2 px-4 py-2 rounded-full bg-gray-50 text-gray-800 hover:bg-gray-150 font-bold text-[10px] uppercase tracking-wider transition-all ml-auto"
-                      >
-                        <Phone className="w-3.5 h-3.5 text-gray-600" />
-                        <span>Call Branch</span>
-                      </a>
-                    </div>
-                  </motion.div>
-                );
-              })}
+                      <div className="mt-5 pt-4 border-t border-gray-100 grid sm:grid-cols-2 gap-3 text-xs text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-[#7A1220] shrink-0" />
+                          <span className="truncate">{b.address}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Phone className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>{b.phone}</span>
+                        </div>
+                        <div className="sm:col-span-2 flex items-center gap-2 text-gray-500">
+                          <Clock className="w-4 h-4 text-amber-600 shrink-0" />
+                          <span>{b.hours}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
 
           </div>
