@@ -1,7 +1,26 @@
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+function getApiBaseUrl(): string {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:8000/api/v1';
+    }
+    if (host.includes('sunnyremit.com')) {
+      return 'https://cms.sunnyremit.com/api/v1';
+    }
+    // Fallback for custom server IPs or domain deployments
+    return `${window.location.protocol}//${host}:8000/api/v1`;
+  }
+
+  return 'http://localhost:8000/api/v1';
+}
 
 export async function fetchFromApi<T>(endpoint: string): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}/${endpoint}`);
+  const baseUrl = getApiBaseUrl();
+  const response = await fetch(`${baseUrl}/${endpoint}`);
   if (!response.ok) {
     throw new Error(`API fetch error: ${response.statusText}`);
   }
