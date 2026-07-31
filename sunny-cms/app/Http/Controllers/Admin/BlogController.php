@@ -46,13 +46,15 @@ class BlogController extends Controller
         return redirect()->route('admin.blog.index')->with('success', 'Blog post created successfully.');
     }
 
-    public function edit(BlogPost $post): View
+    public function edit(BlogPost $blog): View
     {
+        $post = $blog;
         return view('admin.blog.edit', compact('post'));
     }
 
-    public function update(Request $request, BlogPost $post): RedirectResponse
+    public function update(Request $request, BlogPost $blog): RedirectResponse
     {
+        $post = $blog;
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'excerpt' => 'nullable|string',
@@ -76,8 +78,9 @@ class BlogController extends Controller
         return redirect()->route('admin.blog.index')->with('success', 'Blog post updated successfully.');
     }
 
-    public function destroy(BlogPost $post): RedirectResponse
+    public function destroy(BlogPost $blog): RedirectResponse
     {
+        $post = $blog;
         $oldValues = $post->toArray();
         $post->delete();
 

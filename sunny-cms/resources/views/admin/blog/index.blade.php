@@ -29,10 +29,11 @@
                                 </span>
                             </td>
                             <td class="py-4 px-2 text-right">
-                                <a href="{{ route('admin.blog.edit', $post) }}" class="text-xs text-brand-400 hover:text-brand-300 mr-3">Edit</a>
-                                <form action="{{ route('admin.blog.destroy', $post) }}" method="POST" class="inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Are you sure?')" class="text-xs text-rose-500 hover:text-rose-400">Delete</button>
+                                <a href="{{ route('admin.blog.edit', $post->id) }}" class="text-xs text-brand-400 hover:text-brand-300 mr-3">Edit</a>
+                                <form action="{{ route('admin.blog.destroy', $post->id) }}" method="POST" class="inline">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this article?')" class="text-xs text-rose-500 hover:text-rose-400">Delete</button>
                                 </form>
                             </td>
                         </tr>
