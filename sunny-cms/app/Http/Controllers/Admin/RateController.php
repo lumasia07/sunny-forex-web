@@ -33,11 +33,12 @@ class RateController extends Controller
             'currency_name' => 'required|string|max:255',
             'buy_rate' => 'required|numeric|min:0',
             'sell_rate' => 'required|numeric|min:0',
-            'change_pct' => 'required|numeric',
+            'change_pct' => 'nullable|numeric',
         ]);
 
         $validated['currency_code'] = strtoupper($validated['currency_code']);
-        $validated['flag_emoji'] = ''; // Resolved dynamically in display views via flagcdn
+        $validated['flag_emoji'] = '';
+        $validated['change_pct'] = $validated['change_pct'] ?? 0.00;
         $validated['is_active'] = true;
         $validated['updated_by'] = auth()->id();
 
@@ -61,8 +62,8 @@ class RateController extends Controller
             'rates' => 'required|array',
             'rates.*.buy_rate' => 'required|numeric|min:0',
             'rates.*.sell_rate' => 'required|numeric|min:0',
-            'rates.*.change_pct' => 'required|numeric',
-            'change_reason' => 'required|string|max:255',
+            'rates.*.change_pct' => 'nullable|numeric',
+            'change_reason' => 'nullable|string|max:255',
         ]);
 
         $changes = [];
@@ -76,7 +77,7 @@ class RateController extends Controller
                 $rate->update([
                     'buy_rate' => $rateData['buy_rate'],
                     'sell_rate' => $rateData['sell_rate'],
-                    'change_pct' => $rateData['change_pct'],
+                    'change_pct' => $rateData['change_pct'] ?? $rate->change_pct ?? 0,
                     'updated_by' => auth()->id(),
                 ]);
 
@@ -91,16 +92,40 @@ class RateController extends Controller
         }
 
         if (!empty($changes)) {
+            $reason = $request->filled('change_reason') 
+                ? $request->input('change_reason') 
+                : 'Routine operational rate adjustment';
+
             AuditLog::log(
                 'updated_rates',
                 ForexRate::class,
                 null,
                 null,
                 $changes,
-                'Updated rates with reason: ' . $request->input('change_reason')
+                'Updated rates: ' . $reason
             );
         }
 
         return redirect()->route('admin.rates.index')->with('success', 'Forex rates updated successfully.');
+    }
+
+    public function destroy(ForexRate $rate): RedirectResponse
+    {
+        $code = $rate->currency_code;
+        $name = $rate->currency_name;
+        $oldValues = $rate->toArray();
+
+        $rate->delete();
+
+        AuditLog::log(
+            'deleted_currency',
+            ForexRate::class,
+            $rate->id,
+            $oldValues,
+            null,
+            "Deleted currency pair {$code} ({$name})"
+        );
+
+        return redirect()->route('admin.rates.index')->with('success', "Currency pair {$code} deleted successfully.");
     }
 }

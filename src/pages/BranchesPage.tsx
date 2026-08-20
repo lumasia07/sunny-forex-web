@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { CtaBand } from '../components/CtaBand';
-import { MapPin, Phone, Clock, Compass, ArrowRight, ExternalLink, Map as MapIcon, Layers } from 'lucide-react';
+import { MapPin, Phone, Clock, Compass, ExternalLink, Layers, Building2, ShieldCheck, MessageCircle } from 'lucide-react';
 import { fetchFromApi } from '../lib/api';
 
 const defaultBranches = [
+  {
+    id: 6,
+    name: 'Lavington Branch (HQ)',
+    area: 'Lavington',
+    address: 'Lavington Avenue Complex G/F, James Gichuru Road, Nairobi',
+    phone: '+254 722 590 049',
+    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+    flagship: true,
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Lavington+Avenue+Complex+James+Gichuru+Road+Nairobi',
+    queryAddress: 'Lavington Avenue Complex, James Gichuru Road, Nairobi, Kenya',
+  },
   {
     id: 0,
     name: 'Kilimani Branch',
@@ -72,22 +83,11 @@ const defaultBranches = [
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Runda+Mall+Kiambu+Road+Nairobi',
     queryAddress: 'Runda Mall, Kiambu Road, Nairobi, Kenya',
   },
-  {
-    id: 6,
-    name: 'Lavington Branch (HQ)',
-    area: 'Lavington',
-    address: 'Lavington Avenue Complex G/F, James Gichuru Road, Nairobi',
-    phone: '+254 722 590 049',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    flagship: true,
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Lavington+Avenue+Complex+James+Gichuru+Road+Nairobi',
-    queryAddress: 'Lavington Avenue Complex, James Gichuru Road, Nairobi, Kenya',
-  },
 ];
 
 export function BranchesPage() {
   const [branches, setBranches] = useState<any[]>(defaultBranches);
-  const [selectedBranchId, setSelectedBranchId] = useState(6);
+  const [selectedBranchId, setSelectedBranchId] = useState<number>(6);
   const [mapMode, setMapMode] = useState<'branch' | 'overview'>('branch');
 
   useEffect(() => {
@@ -99,12 +99,16 @@ export function BranchesPage() {
             name: b.name,
             area: b.area,
             address: b.address || `${b.name}, ${b.area}, Nairobi`,
-            phone: b.phone || '+254 722 000 000',
+            phone: b.phone || '+254 722 590 049',
             hours: b.hours || 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-            flagship: b.name.includes('HQ') || idx === data.length - 1,
+            flagship: b.name.includes('HQ') || b.name.toLowerCase().includes('lavington'),
             mapUrl: b.map_url || `https://www.google.com/maps/search/?api=1&query=SunnyRemit+${encodeURIComponent(b.name)}+Nairobi`,
-            queryAddress: `${b.name}, ${b.area}, Nairobi, Kenya`,
+            queryAddress: b.address ? `${b.address}, Kenya` : `${b.name}, ${b.area}, Nairobi, Kenya`,
           }));
+
+          // Sort so HQ is ALWAYS index 0 (at the very top)
+          formatted.sort((a, b) => (b.flagship ? 1 : 0) - (a.flagship ? 1 : 0));
+
           setBranches(formatted);
           if (formatted.length > 0) {
             setSelectedBranchId(formatted[0].id);
@@ -115,6 +119,8 @@ export function BranchesPage() {
   }, []);
 
   const selectedBranch = branches.find((b) => b.id === selectedBranchId) || branches[0] || defaultBranches[0];
+  const hqBranch = branches.find((b) => b.flagship) || branches[0];
+  const regularBranches = branches.filter((b) => b.id !== hqBranch.id);
 
   return (
     <>
@@ -123,26 +129,23 @@ export function BranchesPage() {
         title={`${branches.length} branches. All across Nairobi.`}
         description="Strategically located in Nairobi's premier retail and commercial hubs. Open 365 days a year to serve you with zero hassle."
         imageSrc="/pexels-sergey-pesterev-69811391-8427984.jpg"
-        imageAlt="Nairobi physical branches"
-        breadcrumb={[
-          { label: 'Home', href: '/' },
-          { label: 'Branches' },
-        ]}
       />
 
-      {/* Main Section */}
-      <section className="py-16 md:py-20 lg:py-24 bg-[#FAFAF7] overflow-hidden">
+      <section className="py-16 md:py-24 bg-gray-50/50">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column: Clean Bright Interactive Map Card (lg:col-span-5, sticky for scrolling) */}
+            {/* Left Column: Sticky Interactive Live Google Map Locator (lg:col-span-5) */}
             <div className="lg:col-span-5 lg:sticky lg:top-28">
-              <div className="rounded-[2rem] bg-white border border-gray-200 p-6 sm:p-7 flex flex-col justify-between min-h-[520px] sm:min-h-[580px] shadow-xl relative overflow-hidden select-none">
+              <div className="bg-white rounded-[2.5rem] p-6 md:p-8 border border-gray-200/80 shadow-xl overflow-hidden flex flex-col justify-between relative">
                 
-                {/* Title block & Mode Switcher */}
-                <div className="relative z-10 flex items-center justify-between gap-4 pb-4 border-b border-gray-150">
-                  <div className="text-left">
+                {/* Decorative glow backdrop */}
+                <div className="absolute top-0 right-0 w-48 h-48 bg-[#7A1220]/5 rounded-full blur-3xl pointer-events-none" />
+
+                {/* Header inside Map Card */}
+                <div className="flex items-center justify-between pb-4 border-b border-gray-150 relative z-10">
+                  <div>
                     <div className="flex items-center gap-2 text-[#7A1220] mb-1">
                       <Compass className="w-4 h-4 animate-spin-slow" />
                       <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A1220]">Interactive Map Locator</span>
@@ -217,19 +220,148 @@ export function BranchesPage() {
               </div>
             </div>
 
-            {/* Right Column: List of All Branches (lg:col-span-7) */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="flex items-center justify-between px-2 mb-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
-                  Select a Branch location below:
+            {/* Right Column: Prominent HQ on Top + Branch Grid (lg:col-span-7) */}
+            <div className="lg:col-span-7 space-y-6">
+
+              {/* Section Header */}
+              <div className="flex items-center justify-between px-2">
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-[#7A1220] flex items-center gap-2">
+                  <Building2 className="w-4 h-4" />
+                  <span>Headquarters & Branch Network</span>
                 </span>
-                <span className="text-xs font-semibold text-[#7A1220] bg-[#7A1220]/10 px-3 py-1 rounded-full">
-                  {branches.length} Active Hubs
+                <span className="text-xs font-bold text-gray-700 bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm">
+                  {branches.length} Locations in Nairobi
                 </span>
               </div>
 
+              {/* 1. PROMINENT BIGGER HQ CARD ON TOP */}
+              {hqBranch && (
+                <motion.div
+                  key={hqBranch.id}
+                  onClick={() => {
+                    setSelectedBranchId(hqBranch.id);
+                    setMapMode('branch');
+                  }}
+                  whileHover={{ y: -2 }}
+                  className={`p-7 sm:p-9 rounded-[2.5rem] border-2 transition-all cursor-pointer text-left relative overflow-hidden shadow-xl ${
+                    selectedBranchId === hqBranch.id
+                      ? 'bg-gradient-to-br from-white via-white to-amber-500/10 border-[#7A1220] ring-4 ring-[#7A1220]/15'
+                      : 'bg-white border-[#7A1220]/40 hover:border-[#7A1220] hover:shadow-2xl'
+                  }`}
+                >
+                  {/* Subtle luxury corner background badge */}
+                  <div className="absolute -top-12 -right-12 w-36 h-36 bg-gradient-to-br from-[#7A1220]/10 to-amber-400/10 rounded-full blur-xl pointer-events-none" />
+
+                  {/* Flagship HQ Banner Tag */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#7A1220] text-white text-[11px] font-black uppercase tracking-wider shadow-sm">
+                      <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
+                      <span>Executive Flagship & Headquarters</span>
+                    </div>
+
+                    {selectedBranchId === hqBranch.id && (
+                      <span className="flex items-center gap-1 text-xs font-bold text-[#7A1220] bg-[#7A1220]/10 px-3 py-1 rounded-full">
+                        Active on Map
+                      </span>
+                    )}
+                  </div>
+
+                  {/* HQ Title & Area */}
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7A1220] to-[#5C0D18] text-white flex items-center justify-center shrink-0 shadow-lg shadow-[#7A1220]/25">
+                        <Building2 className="w-7 h-7" />
+                      </div>
+                      <div>
+                        <h4 className="text-2xl sm:text-3xl font-extrabold text-gray-950 font-figtree tracking-tight">
+                          {hqBranch.name}
+                        </h4>
+                        <p className="text-sm font-semibold text-[#7A1220] mt-0.5 flex items-center gap-1.5">
+                          <span>Central Corporate & Retail Hub</span>
+                          <span>•</span>
+                          <span>{hqBranch.area}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* HQ Address & Details */}
+                  <p className="text-sm text-gray-600 font-medium leading-relaxed mb-6">
+                    {hqBranch.address}
+                  </p>
+
+                  {/* HQ Info Grid with High Contrast */}
+                  <div className="grid sm:grid-cols-2 gap-3.5 p-4 rounded-2xl bg-gray-50 border border-gray-200/80 mb-6 text-xs">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-700 flex items-center justify-center shrink-0">
+                        <Phone className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Direct Line</span>
+                        <span className="font-bold text-gray-900 text-sm">{hqBranch.phone}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-700 flex items-center justify-center shrink-0">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Opening Hours</span>
+                        <span className="font-bold text-gray-800">{hqBranch.hours}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* HQ Quick Action Buttons */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <a
+                      href={`tel:${hqBranch.phone}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#7A1220] hover:bg-[#5C0D18] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                      <span>Call HQ Desk</span>
+                    </a>
+
+                    <a
+                      href={`https://wa.me/${hqBranch.phone?.replace(/[^0-9]/g, '')}?text=Hello%20SunnyRemit%20HQ%2C%20I%20would%20like%20to%20inquire%20about%20rates.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>WhatsApp HQ</span>
+                    </a>
+
+                    <a
+                      href={hqBranch.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 text-xs font-bold transition-all"
+                    >
+                      <span>Directions</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+                    </a>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* 2. SUB-HEADING FOR OTHER NETWORK BRANCHES */}
+              <div className="pt-4 flex items-center justify-between px-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Other Nairobi Retail Branches:
+                </span>
+                <span className="text-xs font-medium text-gray-400">
+                  {regularBranches.length} Branch Hubs
+                </span>
+              </div>
+
+              {/* 3. REGULAR BRANCH CARDS LIST */}
               <div className="space-y-4">
-                {branches.map((b) => {
+                {regularBranches.map((b) => {
                   const isSelected = b.id === selectedBranchId;
                   return (
                     <motion.div
@@ -245,13 +377,6 @@ export function BranchesPage() {
                           : 'bg-white/80 border-gray-200 hover:border-gray-300 hover:bg-white shadow-sm'
                       }`}
                     >
-                      {/* Flagship HQ Ribbon Badge */}
-                      {b.flagship && (
-                        <span className="absolute top-4 right-4 bg-[#D4A24C]/20 border border-[#D4A24C]/40 text-[#9A641D] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                          Headquarters (HQ)
-                        </span>
-                      )}
-
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-center gap-3.5">
                           <div
@@ -298,6 +423,7 @@ export function BranchesPage() {
                   );
                 })}
               </div>
+
             </div>
 
           </div>

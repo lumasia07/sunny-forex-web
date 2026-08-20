@@ -96,15 +96,28 @@
                             <th class="pb-3 px-2">Current Sell</th>
                             <th class="pb-3 px-2">New Buy Rate</th>
                             <th class="pb-3 px-2">New Sell Rate</th>
-                            <th class="pb-3 px-2">Change %</th>
+                            <th class="pb-3 px-2 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
-                        @foreach($rates as $rate)
-                            <tr class="hover:bg-white/[0.01] transition-colors">
+                        @forelse($rates as $rate)
+                            @php
+                                $flagMap = [
+                                    'USD' => 'us', 'GBP' => 'gb', 'EUR' => 'eu', 'AED' => 'ae', 'SAR' => 'sa',
+                                    'CAD' => 'ca', 'AUD' => 'au', 'CHF' => 'ch', 'CNY' => 'cn', 'INR' => 'in',
+                                    'JPY' => 'jp', 'ZAR' => 'za', 'UGX' => 'ug', 'TZS' => 'tz', 'RWF' => 'rw',
+                                    'QAR' => 'qa', 'KWD' => 'kw', 'BHD' => 'bh', 'OMR' => 'om', 'SEK' => 'se',
+                                    'NOK' => 'no', 'DKK' => 'dk', 'SGD' => 'sg', 'HKD' => 'hk', 'MYR' => 'my',
+                                    'THB' => 'th', 'ETB' => 'et', 'SOS' => 'so', 'ZMW' => 'zm', 'NGN' => 'ng',
+                                    'GHS' => 'gh', 'EGP' => 'eg', 'TRY' => 'tr', 'NZD' => 'nz', 'KES' => 'ke'
+                                ];
+                                $code = strtoupper(trim($rate->currency_code));
+                                $flagCode = $flagMap[$code] ?? strtolower(substr($code, 0, 2));
+                            @endphp
+                            <tr class="hover:bg-white/[0.01] transition-colors group">
                                 <td class="py-4 px-2 flex items-center gap-3">
-                                    <!-- flagcdn.com Flag loader -->
-                                    <img src="https://flagcdn.com/h40/{{ strtolower(substr($rate->currency_code, 0, 2)) }}.png" class="h-6 w-9 rounded object-cover shadow border border-white/10" alt="{{ $rate->currency_code }}" />
+                                    <!-- Flag loader -->
+                                    <img src="https://flagcdn.com/h40/{{ $flagCode }}.png" onerror="this.onerror=null;this.src='https://flagcdn.com/h40/un.png';" class="h-6 w-9 rounded object-cover shadow border border-white/10" alt="{{ $rate->currency_code }}" />
                                     <div>
                                         <span class="font-bold text-white block">{{ $rate->currency_code }}</span>
                                         <span class="text-xs text-gray-400">{{ $rate->currency_name }}</span>
@@ -118,7 +131,7 @@
                                         name="rates[{{ $rate->id }}][buy_rate]" 
                                         step="0.0001" 
                                         value="{{ $rate->buy_rate }}" 
-                                        class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono w-32 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
+                                        class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono w-36 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
                                     >
                                 </td>
                                 <td class="py-4 px-2">
@@ -127,20 +140,30 @@
                                         name="rates[{{ $rate->id }}][sell_rate]" 
                                         step="0.0001" 
                                         value="{{ $rate->sell_rate }}" 
-                                        class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono w-32 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
+                                        class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono w-36 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
                                     >
                                 </td>
-                                <td class="py-4 px-2">
-                                    <input 
-                                        type="number" 
-                                        name="rates[{{ $rate->id }}][change_pct]" 
-                                        step="0.01" 
-                                        value="{{ $rate->change_pct }}" 
-                                        class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono w-24 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
+                                <td class="py-4 px-2 text-right">
+                                    <button 
+                                        type="submit" 
+                                        form="delete-rate-{{ $rate->id }}" 
+                                        class="p-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 transition-all inline-flex items-center justify-center group-hover:border group-hover:border-white/10" 
+                                        title="Delete {{ $rate->currency_code }}"
+                                        onclick="return confirm('Are you sure you want to delete {{ $rate->currency_code }} ({{ $rate->currency_name }})? This will remove it from all live calculators and display boards.')"
                                     >
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="py-8 text-center text-gray-500">
+                                    No currency pairs found. Click "+ Add Currency" above to create one.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -150,21 +173,20 @@
                 {{ $rates->links() }}
             </div>
 
-            <!-- Mandatory Audit Trail Log Field -->
+            <!-- Optional Audit Trail Log Field -->
             <div class="border-t border-white/10 pt-6">
                 <div class="max-w-xl">
                     <label for="change_reason" class="block text-sm font-semibold text-white mb-2">
-                        Reason for Adjustment <span class="text-rose-500">*</span>
+                        Reason for Adjustment <span class="text-xs text-gray-400 font-normal">(Optional)</span>
                     </label>
                     <textarea 
                         name="change_reason" 
                         id="change_reason" 
                         rows="2" 
-                        required 
                         placeholder="e.g. Adjusted to align with central market rates after afternoon session volatility."
                         class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white placeholder-gray-500 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
                     ></textarea>
-                    <p class="text-xs text-gray-500 mt-1.5">This reason will be permanently archived in the CEO's executive audit dashboard.</p>
+                    <p class="text-xs text-gray-500 mt-1.5">Optional reason for adjustment recorded in the CEO's executive audit log.</p>
                 </div>
             </div>
 
@@ -178,5 +200,13 @@
                 <a href="{{ route('admin.dashboard') }}" class="text-sm font-semibold text-gray-400 hover:text-white transition-all">Cancel</a>
             </div>
         </form>
+
+        <!-- Hidden delete forms outside the rates update form to prevent nested form issues -->
+        @foreach($rates as $rate)
+            <form id="delete-rate-{{ $rate->id }}" action="{{ route('admin.rates.destroy', $rate) }}" method="POST" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endforeach
     </div>
 </x-app-layout>
