@@ -6,102 +6,22 @@ import { LiveBlock, LiveWords } from './LiveText';
 import { fetchFromApi } from '../lib/api';
 
 const defaultRates = [
-{
-  code: 'USD',
-  flag: '🇺🇸',
-  name: 'US Dollar',
-  buy: 130.5,
-  sell: 132.0,
-  change: 0.42
-},
-{
-  code: 'EUR',
-  flag: '🇪🇺',
-  name: 'Euro',
-  buy: 141.2,
-  sell: 143.5,
-  change: -0.18
-},
-{
-  code: 'GBP',
-  flag: '🇬🇧',
-  name: 'British Pound',
-  buy: 165.8,
-  sell: 168.2,
-  change: 0.31
-},
-{
-  code: 'AED',
-  flag: '🇦🇪',
-  name: 'UAE Dirham',
-  buy: 35.4,
-  sell: 36.1,
-  change: 0.05
-},
-{
-  code: 'ZAR',
-  flag: '🇿🇦',
-  name: 'South African Rand',
-  buy: 6.8,
-  sell: 7.1,
-  change: -0.22
-},
-{
-  code: 'INR',
-  flag: '🇮🇳',
-  name: 'Indian Rupee',
-  buy: 1.54,
-  sell: 1.62,
-  change: 0.08
-},
-{
-  code: 'JPY',
-  flag: '🇯🇵',
-  name: 'Japanese Yen',
-  buy: 0.83,
-  sell: 0.89,
-  change: -0.04
-},
-{
-  code: 'CAD',
-  flag: '🇨🇦',
-  name: 'Canadian Dollar',
-  buy: 94.2,
-  sell: 96.1,
-  change: 0.15
-},
-{
-  code: 'AUD',
-  flag: '🇦🇺',
-  name: 'Australian Dollar',
-  buy: 84.5,
-  sell: 86.2,
-  change: 0.27
-},
-{
-  code: 'CHF',
-  flag: '🇨🇭',
-  name: 'Swiss Franc',
-  buy: 146.3,
-  sell: 148.5,
-  change: 0.19
-},
-{
-  code: 'UGX',
-  flag: '🇺🇬',
-  name: 'Ugandan Shilling',
-  buy: 0.034,
-  sell: 0.036,
-  change: -0.01
-},
-{
-  code: 'TZS',
-  flag: '🇹🇿',
-  name: 'Tanzanian Shilling',
-  buy: 0.051,
-  sell: 0.053,
-  change: 0.02
-}];
+  { code: 'USD', flag: '🇺🇸', name: 'US Dollar', buy: 128.80, sell: 130.40, change: 0.35 },
+  { code: 'GBP', flag: '🇬🇧', name: 'British Pound', buy: 164.90, sell: 167.10, change: 0.22 },
+  { code: 'EUR', flag: '🇪🇺', name: 'Euro', buy: 140.50, sell: 142.30, change: -0.15 },
+  { code: 'AED', flag: '🇦🇪', name: 'UAE Dirham', buy: 35.10, sell: 36.10, change: 0.08 },
+  { code: 'SAR', flag: '🇸🇦', name: 'Saudi Riyal', buy: 34.35, sell: 35.25, change: 0.05 },
+  { code: 'CAD', flag: '🇨🇦', name: 'Canadian Dollar', buy: 93.90, sell: 95.80, change: 0.18 },
+  { code: 'AUD', flag: '🇦🇺', name: 'Australian Dollar', buy: 84.50, sell: 86.40, change: 0.29 },
+  { code: 'CHF', flag: '🇨🇭', name: 'Swiss Franc', buy: 145.50, sell: 147.80, change: -0.04 },
+  { code: 'CNY', flag: '🇨🇳', name: 'Chinese Yuan', buy: 17.75, sell: 18.35, change: 0.04 },
+  { code: 'INR', flag: '🇮🇳', name: 'Indian Rupee', buy: 1.51, sell: 1.63, change: 0.12 },
+  { code: 'JPY', flag: '🇯🇵', name: 'Japanese Yen (100 JPY)', buy: 83.00, sell: 85.50, change: -0.10 },
+  { code: 'ZAR', flag: '🇿🇦', name: 'South African Rand', buy: 6.88, sell: 7.35, change: -0.18 },
+  { code: 'UGX', flag: '🇺🇬', name: 'Ugandan Shilling', buy: 0.034, sell: 0.037, change: 0.00 },
+  { code: 'TZS', flag: '🇹🇿', name: 'Tanzanian Shilling', buy: 0.048, sell: 0.052, change: 0.02 },
+  { code: 'RWF', flag: '🇷🇼', name: 'Rwandan Franc', buy: 0.093, sell: 0.099, change: -0.01 },
+];
 
 function RateCard({ rate, onClick }: { rate: (typeof defaultRates)[number]; onClick?: () => void }) {
   const isUp = rate.change >= 0;
@@ -273,7 +193,7 @@ export function RatesStrip({ onRateClick }: { onRateClick?: (code: string) => vo
       <style>{`
         .marquee {
           width: max-content;
-          animation: marquee 480s linear infinite;
+          animation: marquee 45s linear infinite;
         }
         .marquee:hover {
           animation-play-state: paused;

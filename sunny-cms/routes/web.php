@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\RateController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\SeoController;
+use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Audit\AuditDashboardController;
 use App\Http\Controllers\Audit\AuditRatesController;
 use App\Http\Controllers\Audit\AuditActivityController;
@@ -46,10 +46,9 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
     // FAQs
     Route::resource('faqs', FaqController::class)->except(['show']);
     
-    // SEO Settings
-    Route::get('seo', [SeoController::class, 'index'])->name('seo.index');
-    Route::get('seo/{seo}/edit', [SeoController::class, 'edit'])->name('seo.edit');
-    Route::put('seo/{seo}', [SeoController::class, 'update'])->name('seo.update');
+    // Compliance, KYC & Legal Documents
+    Route::resource('documents', DocumentController::class)->except(['show']);
+    Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
 });
 
 // CEO Audit Dashboard (ceo & auditor roles)

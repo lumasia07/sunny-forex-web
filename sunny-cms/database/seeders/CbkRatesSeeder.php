@@ -9,6 +9,7 @@ class CbkRatesSeeder extends Seeder
 {
     /**
      * Run the database seeds for Central Bank of Kenya (CBK) benchmark rates.
+     * Curated to the top 15 most transacted currencies in Kenya & globally.
      */
     public function run(): void
     {
@@ -86,12 +87,12 @@ class CbkRatesSeeder extends Seeder
                 'is_active'     => true,
             ],
             [
-                'currency_code' => 'ZAR',
-                'currency_name' => 'South African Rand',
-                'flag_emoji'    => '🇿🇦',
-                'buy_rate'      => 6.8800,
-                'sell_rate'     => 7.3500,
-                'change_pct'    => -0.18,
+                'currency_code' => 'CNY',
+                'currency_name' => 'Chinese Yuan',
+                'flag_emoji'    => '🇨🇳',
+                'buy_rate'      => 17.7500,
+                'sell_rate'     => 18.3500,
+                'change_pct'    => 0.04,
                 'is_active'     => true,
             ],
             [
@@ -113,12 +114,12 @@ class CbkRatesSeeder extends Seeder
                 'is_active'     => true,
             ],
             [
-                'currency_code' => 'CNY',
-                'currency_name' => 'Chinese Yuan',
-                'flag_emoji'    => '🇨🇳',
-                'buy_rate'      => 17.7500,
-                'sell_rate'     => 18.3500,
-                'change_pct'    => 0.04,
+                'currency_code' => 'ZAR',
+                'currency_name' => 'South African Rand',
+                'flag_emoji'    => '🇿🇦',
+                'buy_rate'      => 6.8800,
+                'sell_rate'     => 7.3500,
+                'change_pct'    => -0.18,
                 'is_active'     => true,
             ],
             [
@@ -148,70 +149,11 @@ class CbkRatesSeeder extends Seeder
                 'change_pct'    => -0.01,
                 'is_active'     => true,
             ],
-            [
-                'currency_code' => 'ETB',
-                'currency_name' => 'Ethiopian Birr',
-                'flag_emoji'    => '🇪🇹',
-                'buy_rate'      => 1.0600,
-                'sell_rate'     => 1.1500,
-                'change_pct'    => 0.00,
-                'is_active'     => true,
-            ],
-            [
-                'currency_code' => 'MWK',
-                'currency_name' => 'Malawian Kwacha',
-                'flag_emoji'    => '🇲🇼',
-                'buy_rate'      => 0.0730,
-                'sell_rate'     => 0.0790,
-                'change_pct'    => 0.00,
-                'is_active'     => true,
-            ],
-            [
-                'currency_code' => 'GHS',
-                'currency_name' => 'Ghanaian Cedi',
-                'flag_emoji'    => '🇬🇭',
-                'buy_rate'      => 8.2500,
-                'sell_rate'     => 8.7500,
-                'change_pct'    => -0.08,
-                'is_active'     => true,
-            ],
-            [
-                'currency_code' => 'NGN',
-                'currency_name' => 'Nigerian Naira',
-                'flag_emoji'    => '🇳🇬',
-                'buy_rate'      => 0.0810,
-                'sell_rate'     => 0.0870,
-                'change_pct'    => 0.01,
-                'is_active'     => true,
-            ],
-            [
-                'currency_code' => 'SEK',
-                'currency_name' => 'Swedish Krona',
-                'flag_emoji'    => '🇸🇪',
-                'buy_rate'      => 12.0800,
-                'sell_rate'     => 12.4500,
-                'change_pct'    => 0.09,
-                'is_active'     => true,
-            ],
-            [
-                'currency_code' => 'DKK',
-                'currency_name' => 'Danish Krone',
-                'flag_emoji'    => '🇩🇰',
-                'buy_rate'      => 18.7600,
-                'sell_rate'     => 19.3000,
-                'change_pct'    => -0.03,
-                'is_active'     => true,
-            ],
-            [
-                'currency_code' => 'NOK',
-                'currency_name' => 'Norwegian Krone',
-                'flag_emoji'    => '🇳🇴',
-                'buy_rate'      => 11.7800,
-                'sell_rate'     => 12.1500,
-                'change_pct'    => 0.06,
-                'is_active'     => true,
-            ],
         ];
+
+        // Delete any currencies not in the curated 15 list
+        $allowedCodes = array_column($cbkSeededRates, 'currency_code');
+        ForexRate::whereNotIn('currency_code', $allowedCodes)->delete();
 
         foreach ($cbkSeededRates as $rateData) {
             ForexRate::updateOrCreate(

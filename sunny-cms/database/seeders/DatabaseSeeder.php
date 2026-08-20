@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BlogPost;
+use App\Models\Document;
 use App\Models\Branch;
 use App\Models\Faq;
 use App\Models\ForexRate;
@@ -16,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create default admin user
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'admin@sunnyremit.co.ke'],
             [
                 'name' => 'Admin',
@@ -26,7 +27,7 @@ class DatabaseSeeder extends Seeder
         );
 
         // Create CEO user
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'ceo@sunnyremit.co.ke'],
             [
                 'name' => 'CEO',
@@ -35,120 +36,87 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Load all 150+ currencies from JSON
-        $jsonPath = database_path('seeders/wiki_currencies.json');
-        $wikiCurrencies = json_decode(file_get_contents($jsonPath), true) ?? [];
+        // Seed the curated top 15 currencies
+        $this->call(CbkRatesSeeder::class);
 
-        // Known exchange rates against KES (Buying / Selling)
-        $knownRates = [
-            'USD' => ['buy_rate' => 128.8000, 'sell_rate' => 130.4000, 'change_pct' => 0.35],
-            'GBP' => ['buy_rate' => 164.9000, 'sell_rate' => 167.1000, 'change_pct' => 0.22],
-            'EUR' => ['buy_rate' => 140.5000, 'sell_rate' => 142.3000, 'change_pct' => -0.15],
-            'AED' => ['buy_rate' => 35.1000,  'sell_rate' => 36.1000,  'change_pct' => 0.08],
-            'SAR' => ['buy_rate' => 34.3500,  'sell_rate' => 35.2500,  'change_pct' => 0.05],
-            'CAD' => ['buy_rate' => 93.9000,  'sell_rate' => 95.8000,  'change_pct' => 0.18],
-            'AUD' => ['buy_rate' => 84.5000,  'sell_rate' => 86.4000,  'change_pct' => 0.29],
-            'CHF' => ['buy_rate' => 145.5000, 'sell_rate' => 147.8000, 'change_pct' => -0.04],
-            'ZAR' => ['buy_rate' => 6.8800,   'sell_rate' => 7.3500,   'change_pct' => -0.18],
-            'INR' => ['buy_rate' => 1.5100,   'sell_rate' => 1.6300,   'change_pct' => 0.12],
-            'JPY' => ['buy_rate' => 0.8300,   'sell_rate' => 0.8600,   'change_pct' => -0.10],
-            'CNY' => ['buy_rate' => 17.7500,  'sell_rate' => 18.3500,  'change_pct' => 0.04],
-            'UGX' => ['buy_rate' => 0.0340,  'sell_rate' => 0.0370,  'change_pct' => 0.00],
-            'TZS' => ['buy_rate' => 0.0480,  'sell_rate' => 0.0520,  'change_pct' => 0.02],
-            'RWF' => ['buy_rate' => 0.0930,  'sell_rate' => 0.0990,  'change_pct' => -0.01],
-            'ETB' => ['buy_rate' => 1.0600,   'sell_rate' => 1.1500,   'change_pct' => 0.00],
-            'MWK' => ['buy_rate' => 0.0730,  'sell_rate' => 0.0790,  'change_pct' => 0.00],
-            'GHS' => ['buy_rate' => 8.2500,   'sell_rate' => 8.7500,   'change_pct' => -0.08],
-            'NGN' => ['buy_rate' => 0.0810,  'sell_rate' => 0.0870,  'change_pct' => 0.01],
-            'SEK' => ['buy_rate' => 12.0800,  'sell_rate' => 12.4500,  'change_pct' => 0.09],
-            'DKK' => ['buy_rate' => 18.7600,  'sell_rate' => 19.3000,  'change_pct' => -0.03],
-            'NOK' => ['buy_rate' => 11.7800,  'sell_rate' => 12.1500,  'change_pct' => 0.06],
-            'KWD' => ['buy_rate' => 418.5000, 'sell_rate' => 425.0000, 'change_pct' => 0.15],
-            'BHD' => ['buy_rate' => 340.2000, 'sell_rate' => 346.5000, 'change_pct' => 0.05],
-            'OMR' => ['buy_rate' => 333.1000, 'sell_rate' => 339.0000, 'change_pct' => 0.04],
-            'QAR' => ['buy_rate' => 35.1500,  'sell_rate' => 35.8500,  'change_pct' => 0.06],
-            'SGD' => ['buy_rate' => 96.2000,  'sell_rate' => 98.1000,  'change_pct' => 0.12],
-            'NZD' => ['buy_rate' => 77.8000,  'sell_rate' => 79.5000,  'change_pct' => 0.08],
-            'HKD' => ['buy_rate' => 16.4500,  'sell_rate' => 16.8500,  'change_pct' => 0.02],
-            'MYR' => ['buy_rate' => 28.9000,  'sell_rate' => 29.8000,  'change_pct' => 0.10],
-            'THB' => ['buy_rate' => 3.6500,   'sell_rate' => 3.8200,   'change_pct' => 0.05],
-            'IDR' => ['buy_rate' => 0.0081,  'sell_rate' => 0.0086,  'change_pct' => 0.00],
-            'PHP' => ['buy_rate' => 2.2200,   'sell_rate' => 2.3400,   'change_pct' => 0.03],
-            'KRW' => ['buy_rate' => 0.0930,  'sell_rate' => 0.0990,  'change_pct' => -0.02],
-            'TRY' => ['buy_rate' => 3.7500,   'sell_rate' => 3.9500,   'change_pct' => -0.45],
-            'EGP' => ['buy_rate' => 2.6200,   'sell_rate' => 2.7600,   'change_pct' => 0.01],
-            'BWP' => ['buy_rate' => 9.4500,   'sell_rate' => 9.8500,   'change_pct' => 0.04],
-            'MUR' => ['buy_rate' => 2.7800,   'sell_rate' => 2.9200,   'change_pct' => 0.02],
-            'SCR' => ['buy_rate' => 9.2000,   'sell_rate' => 9.7500,   'change_pct' => 0.00],
-            'ZMW' => ['buy_rate' => 4.8500,   'sell_rate' => 5.1500,   'change_pct' => -0.10],
-            'XAF' => ['buy_rate' => 0.2100,   'sell_rate' => 0.2300,   'change_pct' => 0.00],
-            'XOF' => ['buy_rate' => 0.2100,   'sell_rate' => 0.2300,   'change_pct' => 0.00],
-            'MAD' => ['buy_rate' => 12.8000,  'sell_rate' => 13.4000,  'change_pct' => 0.03],
-            'DZD' => ['buy_rate' => 0.9500,   'sell_rate' => 1.0200,   'change_pct' => 0.01],
-            'TND' => ['buy_rate' => 41.2000,  'sell_rate' => 42.8000,  'change_pct' => 0.05],
-            'LYD' => ['buy_rate' => 26.5000,  'sell_rate' => 27.8000,  'change_pct' => 0.00],
-            'SOS' => ['buy_rate' => 0.2200,   'sell_rate' => 0.2400,   'change_pct' => 0.00],
-            'SDG' => ['buy_rate' => 0.2100,   'sell_rate' => 0.2300,   'change_pct' => 0.00],
-            'SSP' => ['buy_rate' => 0.0900,   'sell_rate' => 0.1000,   'change_pct' => 0.00],
-            'DJF' => ['buy_rate' => 0.7200,   'sell_rate' => 0.7600,   'change_pct' => 0.00],
-            'GMD' => ['buy_rate' => 1.8500,   'sell_rate' => 1.9800,   'change_pct' => 0.00],
-            'GNF' => ['buy_rate' => 0.0150,  'sell_rate' => 0.0170,  'change_pct' => 0.00],
-            'SLL' => ['buy_rate' => 0.0058,  'sell_rate' => 0.0064,  'change_pct' => 0.00],
-            'CVE' => ['buy_rate' => 1.2700,   'sell_rate' => 1.3500,   'change_pct' => 0.00],
-            'MGA' => ['buy_rate' => 0.0280,  'sell_rate' => 0.0310,  'change_pct' => 0.00],
-            'SZL' => ['buy_rate' => 6.8800,   'sell_rate' => 7.3500,   'change_pct' => -0.18],
-            'LSL' => ['buy_rate' => 6.8800,   'sell_rate' => 7.3500,   'change_pct' => -0.18],
-            'NAD' => ['buy_rate' => 6.8800,   'sell_rate' => 7.3500,   'change_pct' => -0.18],
-        ];
-
-        // Seed all 150+ currencies into database
-        foreach ($wikiCurrencies as $currency) {
-            $code = strtoupper($currency['code']);
-            $name = $currency['name'];
-
-            if (isset($knownRates[$code])) {
-                $rateData = array_merge([
-                    'currency_name' => $name,
-                    'flag_emoji' => '',
-                    'is_active' => true,
-                ], $knownRates[$code]);
-            } else {
-                // Realistic starting fallback rate calculation
-                $hash = abs(crc32($code));
-                $baseBuy = round(0.5 + ($hash % 120) * 0.45, 4);
-                $baseSell = round($baseBuy * 1.035, 4);
-
-                $rateData = [
-                    'currency_name' => $name,
-                    'flag_emoji' => '',
-                    'buy_rate' => $baseBuy,
-                    'sell_rate' => $baseSell,
-                    'change_pct' => round((($hash % 100) - 50) / 100, 2),
-                    'is_active' => true,
-                ];
-            }
-
-            ForexRate::updateOrCreate(
-                ['currency_code' => $code],
-                $rateData
-            );
-        }
-
-        // Seed branches
+        // Seed branches with full address and distinct phone numbers
         $branches = [
-            ['name' => 'Kilimani Branch', 'area' => 'Kilimani', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Kilimani+Nairobi', 'sort_order' => 1],
-            ['name' => 'Valley Arcade Branch', 'area' => 'Lavington', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Valley+Arcade+Nairobi', 'sort_order' => 2],
-            ['name' => 'GTC Mall Branch', 'area' => 'Westlands', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+GTC+Mall+Nairobi', 'sort_order' => 3],
-            ['name' => 'Village Market New Wing Branch', 'area' => 'Gigiri', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Village+Market+Nairobi', 'sort_order' => 4],
-            ['name' => 'Village Market Old Wing Branch', 'area' => 'Gigiri', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Village+Market+Nairobi', 'sort_order' => 5],
-            ['name' => 'Runda Branch', 'area' => 'Runda', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Runda+Nairobi', 'sort_order' => 6],
-            ['name' => 'Lavington Branch (HQ)', 'area' => 'Lavington', 'hours' => '9 AM - 7 PM', 'map_url' => 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Lavington+Nairobi', 'sort_order' => 7],
+            [
+                'name' => 'Kilimani Branch',
+                'area' => 'Kilimani',
+                'address' => 'Woodridge Centre, Wood Avenue, Kilimani, Nairobi',
+                'phone' => '+254 722 350 400',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Woodridge+Centre+Wood+Avenue+Kilimani+Nairobi',
+                'sort_order' => 1,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Valley Arcade Branch',
+                'area' => 'Lavington',
+                'address' => 'Valley Arcade Shopping Mall, Gitanga Road, Lavington, Nairobi',
+                'phone' => '+254 722 360 800',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Valley+Arcade+Shopping+Mall+Gitanga+Road+Lavington+Nairobi',
+                'sort_order' => 2,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'GTC Mall Branch',
+                'area' => 'Westlands',
+                'address' => 'GTC Mall, Chiromo Lane, Westlands, Nairobi',
+                'phone' => '+254 722 305 188',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=GTC+Mall+Chiromo+Lane+Westlands+Nairobi',
+                'sort_order' => 3,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Village Market New Wing Branch',
+                'area' => 'Gigiri / Limuru Road',
+                'address' => 'Village Market Mall – New Wing G/F, Limuru Road, Nairobi',
+                'phone' => '+254 718 040 847',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Village+Market+Mall+New+Wing+Limuru+Road+Nairobi',
+                'sort_order' => 4,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Village Market Old Wing Branch',
+                'area' => 'Gigiri / Limuru Road',
+                'address' => 'Village Market Mall – Old Wing G/F, Limuru Road, Nairobi',
+                'phone' => '+254 722 454 757',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Village+Market+Mall+Old+Wing+Limuru+Road+Nairobi',
+                'sort_order' => 5,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Runda Branch',
+                'area' => 'Runda / Kiambu Road',
+                'address' => 'Runda Mall G/F, Kiambu Road, Nairobi',
+                'phone' => '+254 722 109 594',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Runda+Mall+Kiambu+Road+Nairobi',
+                'sort_order' => 6,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Lavington Branch (HQ)',
+                'area' => 'Lavington',
+                'address' => 'Lavington Avenue Complex G/F, James Gichuru Road, Nairobi',
+                'phone' => '+254 722 590 049',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Lavington+Avenue+Complex+James+Gichuru+Road+Nairobi',
+                'sort_order' => 7,
+                'is_active' => true,
+            ],
         ];
 
         foreach ($branches as $branch) {
-            Branch::firstOrCreate(
+            Branch::updateOrCreate(
                 ['name' => $branch['name']],
-                array_merge($branch, ['is_active' => true])
+                $branch
             );
         }
 
@@ -209,6 +177,66 @@ class DatabaseSeeder extends Seeder
             );
         }
 
+        
+        // Seed Compliance, KYC & Legal Documents
+        $docs = [
+            [
+                'title' => 'Anti-Money Laundering (AML) & CTF Policy',
+                'slug' => 'aml-policy',
+                'category' => 'AML & Compliance',
+                'description' => 'Comprehensive compliance guidelines aligned with Proceeds of Crime & Anti-Money Laundering Act (POCAMLA) and CBK framework.',
+                'file_path' => 'storage/documents/SunnyRemit-AML-policy.pdf',
+                'file_name' => 'SunnyRemit-AML-policy.pdf',
+                'file_size' => '84.4 KB',
+                'file_type' => 'pdf',
+                'is_active' => true,
+                'sort_order' => 1,
+            ],
+            [
+                'title' => 'Customer Due Diligence (KYC) Requirements',
+                'slug' => 'kyc-requirements',
+                'category' => 'KYC & Customer',
+                'description' => 'Customer identification, beneficial ownership verification, source of funds declarations, and retail/corporate KYC procedures.',
+                'file_path' => 'storage/documents/SunnyRemit-AML-policy.pdf',
+                'file_name' => 'SunnyRemit-KYC-Guidelines.pdf',
+                'file_size' => '84.4 KB',
+                'file_type' => 'pdf',
+                'is_active' => true,
+                'sort_order' => 2,
+            ],
+            [
+                'title' => 'Terms of Service (TOS)',
+                'slug' => 'terms-of-service',
+                'category' => 'Legal & Terms',
+                'description' => 'Official retail remittance terms, branch transaction settlement rules, rate locks, and legal disclosures.',
+                'file_path' => 'storage/documents/SunnyRemit-TOS.pdf',
+                'file_name' => 'SunnyRemit-TOS.pdf',
+                'file_size' => '96.0 KB',
+                'file_type' => 'pdf',
+                'is_active' => true,
+                'sort_order' => 3,
+            ],
+            [
+                'title' => 'Privacy & Data Protection Policy',
+                'slug' => 'privacy-policy',
+                'category' => 'Legal & Terms',
+                'description' => 'Data privacy disclosures compliant with the Kenya Data Protection Act 2019 covering customer personal records.',
+                'file_path' => 'storage/documents/SunnyRemit-PrivacyPolicy.pdf',
+                'file_name' => 'SunnyRemit-PrivacyPolicy.pdf',
+                'file_size' => '92.0 KB',
+                'file_type' => 'pdf',
+                'is_active' => true,
+                'sort_order' => 4,
+            ],
+        ];
+
+        foreach ($docs as $doc) {
+            Document::updateOrCreate(
+                ['slug' => $doc['slug']],
+                $doc
+            );
+        }
+
         // Seed SEO meta
         $seoPages = [
             [
@@ -221,13 +249,13 @@ class DatabaseSeeder extends Seeder
                     'name' => 'SunnyRemit',
                     'description' => 'Licensed foreign exchange bureau in Nairobi, Kenya',
                     'areaServed' => 'Kenya',
-                    'currenciesAccepted' => 'USD, EUR, GBP, AED, ZAR, INR, JPY, CAD, AUD, CHF, UGX, TZS, RWF, ETB, GHS, NGN',
+                    'currenciesAccepted' => 'USD, GBP, EUR, AED, SAR, CAD, AUD, CHF, CNY, INR, JPY, ZAR, UGX, TZS, RWF',
                 ],
             ],
             [
                 'page_slug' => 'forex',
                 'title' => 'Forex Exchange Rates — SunnyRemit | Live KES Currency Rates',
-                'description' => 'View live forex exchange rates against the Kenyan Shilling. Buy and sell USD, EUR, GBP, and 150+ currencies at SunnyRemit\'s competitive rates.',
+                'description' => 'View live forex exchange rates against the Kenyan Shilling. Buy and sell major and regional currencies (USD, GBP, EUR, AED, and more) at SunnyRemit\'s competitive rates.',
                 'json_ld_schema' => [
                     '@context' => 'https://schema.org',
                     '@type' => 'ExchangeRateSpecification',

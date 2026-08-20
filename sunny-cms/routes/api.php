@@ -9,7 +9,8 @@ Route::prefix('v1')->group(function () {
     Route::get('blog', [ApiController::class, 'blog']);
     Route::get('blog/{slug}', [ApiController::class, 'blogPost']);
     Route::get('faqs', [ApiController::class, 'faqs']);
-    Route::get('seo/{page}', [ApiController::class, 'seo']);
+    Route::get('documents', [ApiController::class, 'documents']);
+    Route::get('documents/{slug}', [ApiController::class, 'documentBySlug']);
     Route::get('partners', [ApiController::class, 'partners']);
     Route::get('services', [ApiController::class, 'services']);
 });

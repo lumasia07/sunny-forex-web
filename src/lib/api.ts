@@ -70,3 +70,25 @@ export interface Faq {
   category: string;
   sort_order: number;
 }
+
+export interface ComplianceDocument {
+  id: number;
+  title: string;
+  slug: string;
+  category: string;
+  description: string | null;
+  file_name: string;
+  file_size: string | null;
+  file_type: string;
+  download_url: string;
+  updated_at: string;
+}
+
+export async function fetchDocuments(): Promise<ComplianceDocument[]> {
+  try {
+    return await fetchFromApi<ComplianceDocument[]>('documents');
+  } catch (err) {
+    console.warn('Failed to fetch CMS compliance documents, fallback to local assets:', err);
+    return [];
+  }
+}

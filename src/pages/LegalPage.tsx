@@ -11,10 +11,12 @@ import {
   ExternalLink,
   HelpCircle,
   Clock,
-  Award
+  Award,
+  FileCheck
 } from 'lucide-react';
 import { PdfViewer } from '../components/PdfViewer';
 import { ContactLink } from '../components/ContactLink';
+import { fetchDocuments, ComplianceDocument } from '../lib/api';
 
 type LegalDocType = 'tos' | 'privacy' | 'aml';
 
@@ -33,7 +35,7 @@ interface PolicyInfo {
   keyClauses: { title: string; desc: string }[];
 }
 
-const POLICIES: Record<LegalDocType, PolicyInfo> = {
+const DEFAULT_POLICIES: Record<LegalDocType, PolicyInfo> = {
   tos: {
     id: 'tos',
     title: 'Terms of Service',
@@ -42,7 +44,7 @@ const POLICIES: Record<LegalDocType, PolicyInfo> = {
     pdfUrl: '/SunnyRemit-TOS.pdf',
     filename: 'SunnyRemit-TOS.pdf',
     fileSize: '98 KB',
-    lastUpdated: 'July 2026',
+    lastUpdated: 'August 2026',
     badge: 'Terms & Conditions',
     highlights: [
       'Binding user agreements & account responsibilities',
@@ -81,7 +83,7 @@ const POLICIES: Record<LegalDocType, PolicyInfo> = {
     pdfUrl: '/SunnyRemit-PrivacyPolicy.pdf',
     filename: 'SunnyRemit-PrivacyPolicy.pdf',
     fileSize: '94 KB',
-    lastUpdated: 'July 2026',
+    lastUpdated: 'August 2026',
     badge: 'Data Protection',
     highlights: [
       'Full compliance with the Kenya Data Protection Act, 2019',
@@ -120,7 +122,7 @@ const POLICIES: Record<LegalDocType, PolicyInfo> = {
     pdfUrl: '/SunnyRemit-AML-policy.pdf',
     filename: 'SunnyRemit-AML-policy.pdf',
     fileSize: '86 KB',
-    lastUpdated: 'July 2026',
+    lastUpdated: 'August 2026',
     badge: 'CBK Compliance',
     highlights: [
       'Proceeds of Crime & Anti-Money Laundering Act (POCAMLA) aligned',
@@ -159,6 +161,25 @@ export function LegalPage() {
   const { docId } = useParams<{ docId?: string }>();
 
   const [activeTab, setActiveTab] = useState<LegalDocType>('tos');
+  const [cmsDocuments, setCmsDocuments] = useState<ComplianceDocument[]>([]);
+
+  // Fetch dynamic compliance & KYC documents from CMS API
+  useEffect(() => {
+    let isMounted = true;
+    fetchDocuments()
+      .then((docs) => {
+        if (isMounted && docs && docs.length > 0) {
+          setCmsDocuments(docs);
+        }
+      })
+      .catch((err) => {
+        console.warn('Using local policy defaults:', err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     // Determine active tab from route or query params
@@ -174,13 +195,44 @@ export function LegalPage() {
     }
   }, [location.pathname, docId]);
 
-  const currentPolicy = POLICIES[activeTab];
+  // Merge CMS dynamic document metadata into active policy if present
+  const basePolicy = DEFAULT_POLICIES[activeTab];
+  const matchingCmsDoc = cmsDocuments.find((doc) => {
+    const slug = doc.slug.toLowerCase();
+    if (activeTab === 'tos' && (slug.includes('terms') || slug.includes('tos'))) return true;
+    if (activeTab === 'privacy' && slug.includes('privacy')) return true;
+    if (activeTab === 'aml' && (slug.includes('aml') || slug.includes('compliance'))) return true;
+    return false;
+  });
+
+  const currentPolicy: PolicyInfo = {
+    ...basePolicy,
+    pdfUrl: matchingCmsDoc?.download_url || basePolicy.pdfUrl,
+    filename: matchingCmsDoc?.file_name || basePolicy.filename,
+    fileSize: matchingCmsDoc?.file_size || basePolicy.fileSize,
+  };
 
   const handleTabChange = (tab: LegalDocType) => {
     setActiveTab(tab);
     if (tab === 'tos') navigate('/terms');
     else if (tab === 'privacy') navigate('/privacy');
     else if (tab === 'aml') navigate('/aml-policy');
+  };
+
+  // Helper to get category color badges
+  const getCategoryBadgeClass = (category: string) => {
+    switch (category) {
+      case 'AML & Compliance':
+        return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+      case 'KYC & Customer':
+        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+      case 'Legal & Terms':
+        return 'bg-sky-500/15 text-sky-300 border-sky-500/30';
+      case 'Corporate & Forms':
+        return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+      default:
+        return 'bg-slate-700/50 text-slate-300 border-slate-600';
+    }
   };
 
   return (
@@ -198,7 +250,7 @@ export function LegalPage() {
                 Legal & Governance Hub
               </h1>
               <p className="mt-3 text-slate-300 text-base sm:text-lg font-light leading-relaxed font-figtree">
-                Review, read, and download SunnyRemit's official terms of service, privacy data protections, and anti-money laundering policies.
+                Review, read, and download SunnyRemit's official terms of service, privacy data protections, KYC guidelines, and anti-money laundering policies.
               </p>
             </div>
 
@@ -217,8 +269,8 @@ export function LegalPage() {
 
           {/* Navigation Tabs */}
           <div className="mt-10 flex flex-wrap gap-2 sm:gap-3 border-t border-slate-800 pt-6">
-            {(Object.keys(POLICIES) as LegalDocType[]).map((key) => {
-              const item = POLICIES[key];
+            {(Object.keys(DEFAULT_POLICIES) as LegalDocType[]).map((key) => {
+              const item = DEFAULT_POLICIES[key];
               const isActive = activeTab === key;
               return (
                 <button
@@ -329,54 +381,68 @@ export function LegalPage() {
           />
         </div>
 
-        {/* All Documents Download Grid */}
+        {/* All Documents Download Grid (Dynamically Populated from CMS) */}
         <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-2xl p-8 text-white text-left shadow-xl border border-slate-800">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-slate-800 pb-6">
             <div>
               <h3 className="text-xl sm:text-2xl font-bold text-white font-figtree">
-                Complete Compliance Document Package
+                Complete Compliance & KYC Document Package
               </h3>
               <p className="text-sm text-slate-400 mt-1 font-light">
-                Download all official SunnyRemit regulatory documents in standard PDF format.
+                Download all official SunnyRemit regulatory disclosures, KYC forms, and compliance documents.
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-lg">
               <ShieldCheck className="w-4 h-4" />
-              <span>Verified Offical Documents</span>
+              <span>Verified Official Documents</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {(Object.keys(POLICIES) as LegalDocType[]).map((key) => {
-              const doc = POLICIES[key];
-              return (
-                <div key={key} className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between hover:border-slate-600 transition-colors">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {cmsDocuments.length > 0 ? (
+              cmsDocuments.map((doc) => (
+                <div 
+                  key={doc.id} 
+                  className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between hover:border-slate-600 transition-colors shadow-sm"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div className="w-10 h-10 rounded-lg bg-[#7A1220]/30 text-rose-400 flex items-center justify-center">
                         <FileText className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-mono text-slate-400">{doc.fileSize}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-700 text-slate-300">
+                          {doc.file_type || 'PDF'}
+                        </span>
+                        <span className="text-xs font-mono text-slate-400">{doc.file_size || '—'}</span>
+                      </div>
                     </div>
-                    <h4 className="text-base font-bold text-white font-figtree mb-1">
-                      {doc.title}
-                    </h4>
+
+                    <div className="mb-2">
+                      <span className={`inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border mb-1.5 ${getCategoryBadgeClass(doc.category)}`}>
+                        {doc.category}
+                      </span>
+                      <h4 className="text-base font-bold text-white font-figtree line-clamp-1">
+                        {doc.title}
+                      </h4>
+                    </div>
+
                     <p className="text-xs text-slate-400 font-light line-clamp-2">
-                      {doc.subtitle}
+                      {doc.description || `Official ${doc.category} regulatory document for SunnyRemit customers.`}
                     </p>
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-slate-700/60 flex items-center gap-3">
                     <a
-                      href={doc.pdfUrl}
-                      download={doc.filename}
+                      href={doc.download_url}
+                      download={doc.file_name}
                       className="flex-1 py-2 px-3 bg-[#7A1220] hover:bg-[#8F1626] text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-colors"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download</span>
                     </a>
                     <a
-                      href={doc.pdfUrl}
+                      href={doc.download_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs transition-colors"
@@ -386,8 +452,50 @@ export function LegalPage() {
                     </a>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              (Object.keys(DEFAULT_POLICIES) as LegalDocType[]).map((key) => {
+                const doc = DEFAULT_POLICIES[key];
+                return (
+                  <div key={key} className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between hover:border-slate-600 transition-colors">
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="w-10 h-10 rounded-lg bg-[#7A1220]/30 text-rose-400 flex items-center justify-center">
+                          <FileText className="w-5 h-5" />
+                        </div>
+                        <span className="text-xs font-mono text-slate-400">{doc.fileSize}</span>
+                      </div>
+                      <h4 className="text-base font-bold text-white font-figtree mb-1">
+                        {doc.title}
+                      </h4>
+                      <p className="text-xs text-slate-400 font-light line-clamp-2">
+                        {doc.subtitle}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-slate-700/60 flex items-center gap-3">
+                      <a
+                        href={doc.pdfUrl}
+                        download={doc.filename}
+                        className="flex-1 py-2 px-3 bg-[#7A1220] hover:bg-[#8F1626] text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-colors"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download</span>
+                      </a>
+                      <a
+                        href={doc.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs transition-colors"
+                        title="Open in new tab"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 

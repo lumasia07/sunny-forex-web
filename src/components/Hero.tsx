@@ -137,7 +137,7 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.15 }}
               className="mb-10 max-w-[34rem] text-base leading-relaxed text-[#0E0E0E]/75 font-light"
             >
-              Cross-border remittance and forex bureau services, shaped for people and businesses that want speed, clarity, and dependable support.
+              Cross-border Remittance and Forex Bureau services, shaped for people and businesses that want speed, clarity, and dependable support.
             </motion.p>
 
             {/* Actions */}

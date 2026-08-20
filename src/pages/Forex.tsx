@@ -18,13 +18,21 @@ import {
 import { Link } from 'react-router-dom';
 
 const defaultForexRates = [
-  { code: 'USD', name: 'US Dollar', flag: '🇺🇸', buy: 128.50, sell: 130.50 },
-  { code: 'EUR', name: 'Euro', flag: '🇪🇺', buy: 139.20, sell: 141.20 },
-  { code: 'GBP', name: 'British Pound', flag: '🇬🇧', buy: 164.10, sell: 166.10 },
-  { code: 'AED', name: 'UAE Dirham', flag: '🇦🇪', buy: 34.25, sell: 36.25 },
-  { code: 'ZAR', name: 'South African Rand', flag: '🇿🇦', buy: 6.80, sell: 7.40 },
-  { code: 'INR', name: 'Indian Rupee', flag: '🇮🇳', buy: 1.45, sell: 1.65 },
-  { code: 'CAD', name: 'Canadian Dollar', flag: '🇨🇦', buy: 93.80, sell: 95.80 }
+  { code: 'USD', name: 'US Dollar', flag: '🇺🇸', buy: 128.80, sell: 130.40 },
+  { code: 'GBP', name: 'British Pound Sterling', flag: '🇬🇧', buy: 164.90, sell: 167.10 },
+  { code: 'EUR', name: 'Euro', flag: '🇪🇺', buy: 140.50, sell: 142.30 },
+  { code: 'AED', name: 'UAE Dirham', flag: '🇦🇪', buy: 35.10, sell: 36.10 },
+  { code: 'SAR', name: 'Saudi Riyal', flag: '🇸🇦', buy: 34.35, sell: 35.25 },
+  { code: 'CAD', name: 'Canadian Dollar', flag: '🇨🇦', buy: 93.90, sell: 95.80 },
+  { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺', buy: 84.50, sell: 86.40 },
+  { code: 'CHF', name: 'Swiss Franc', flag: '🇨🇭', buy: 145.50, sell: 147.80 },
+  { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳', buy: 17.75, sell: 18.35 },
+  { code: 'INR', name: 'Indian Rupee', flag: '🇮🇳', buy: 1.51, sell: 1.63 },
+  { code: 'JPY', name: 'Japanese Yen (100 JPY)', flag: '🇯🇵', buy: 83.00, sell: 85.50 },
+  { code: 'ZAR', name: 'South African Rand', flag: '🇿🇦', buy: 6.88, sell: 7.35 },
+  { code: 'UGX', name: 'Ugandan Shilling', flag: '🇺🇬', buy: 0.034, sell: 0.037 },
+  { code: 'TZS', name: 'Tanzanian Shilling', flag: '🇹🇿', buy: 0.048, sell: 0.052 },
+  { code: 'RWF', name: 'Rwandan Franc', flag: '🇷🇼', buy: 0.093, sell: 0.099 }
 ];
 
 const features = [
@@ -48,7 +56,7 @@ const features = [
 const faqs = [
   {
     q: 'What currencies do you exchange?',
-    a: 'We deal in over 30 currencies including USD, EUR, GBP, AED, ZAR, INR, JPY, CAD, AUD, CHF, and regional currencies like UGX and TZS.'
+    a: 'We deal in 15 top major and regional currencies including USD, GBP, EUR, AED, SAR, CAD, AUD, CHF, CNY, INR, JPY, ZAR, UGX, TZS, and RWF.'
   },
   {
     q: 'Do I need an appointment?',

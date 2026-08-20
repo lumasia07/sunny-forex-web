@@ -5,6 +5,7 @@ import { LiveBlock, LiveWords } from './LiveText';
 const partnersList = [
   { name: 'KCB Bank', src: '/kcb-logo.png?v=2', alt: 'KCB Bank Logo' },
   { name: 'M-Pesa', src: '/SafM-PESA-Logo.jpg?v=2', alt: 'M-Pesa Logo' },
+  { name: 'PayQuik', src: '/pay-quick-logo.png', alt: 'PayQuik Digital Money Transfer Logo' },
   { name: 'Pesalink', src: '/pesalink-logo-dark.png?v=2', alt: 'Pesalink Logo' },
   { name: 'MoneyGram', src: '/logo-moneygram-black.svg?v=2', alt: 'MoneyGram Logo' },
   { name: 'Western Union', src: '/logo.wu.big.svg?v=2', alt: 'Western Union Logo' },

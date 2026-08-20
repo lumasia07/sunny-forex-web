@@ -135,7 +135,7 @@ export function Footer() {
             reserved.
           </p>
           <a 
-            href="https://www.centralbank.go.ke/bank-supervision/cbk-directory-of-licenced-money-remittance-providers/"
+            href="https://www.centralbank.go.ke/wp-content/uploads/2026/02/Directory-of-Licenced-Money-Remittance-Providers-Feb-2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 hover:opacity-80 transition-opacity group"

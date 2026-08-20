@@ -67,10 +67,10 @@
                     </div>
                     <span class="text-gray-500 group-hover:text-brand-400 transition-all">&rarr;</span>
                 </a>
-                <a href="{{ route('admin.seo.index') }}" class="glass p-4 rounded-xl flex items-center justify-between hover:bg-brand-800/10 hover:border-brand-800/30 transition-all group">
+                <a href="{{ route('admin.documents.index') }}" class="glass p-4 rounded-xl flex items-center justify-between hover:bg-brand-800/10 hover:border-brand-800/30 transition-all group">
                     <div>
-                        <h4 class="text-sm font-semibold text-white">Technical SEO</h4>
-                        <p class="text-xs text-gray-400 mt-1">Configure JSON-LD schema & meta tags</p>
+                        <h4 class="text-sm font-semibold text-white">Compliance & KYC Documents</h4>
+                        <p class="text-xs text-gray-400 mt-1">Upload and manage KYC forms, AML and regulatory policies</p>
                     </div>
                     <span class="text-gray-500 group-hover:text-brand-400 transition-all">&rarr;</span>
                 </a>

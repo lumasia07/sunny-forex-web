@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
 use App\Models\Branch;
+use App\Models\Document;
 use App\Models\Faq;
 use App\Models\ForexRate;
 use App\Models\PartnerLogo;
-use App\Models\SeoMeta;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 
@@ -44,18 +44,40 @@ class ApiController extends Controller
         return response()->json($faqs);
     }
 
-    public function seo(string $page): JsonResponse
+    public function documents(): JsonResponse
     {
-        $seo = SeoMeta::where('page_slug', $page)->first();
-        if (!$seo) {
-            return response()->json([
-                'page_slug' => $page,
-                'title' => 'SunnyRemit',
-                'description' => 'SunnyRemit Currency Exchange',
-                'json_ld_schema' => null
-            ]);
-        }
-        return response()->json($seo);
+        $documents = Document::active()->ordered()->get()->map(function ($doc) {
+            return [
+                'id' => $doc->id,
+                'title' => $doc->title,
+                'slug' => $doc->slug,
+                'category' => $doc->category,
+                'description' => $doc->description,
+                'file_name' => $doc->file_name,
+                'file_size' => $doc->file_size,
+                'file_type' => $doc->file_type,
+                'download_url' => $doc->download_url,
+                'updated_at' => $doc->updated_at,
+            ];
+        });
+        return response()->json($documents);
+    }
+
+    public function documentBySlug(string $slug): JsonResponse
+    {
+        $doc = Document::active()->where('slug', $slug)->firstOrFail();
+        return response()->json([
+            'id' => $doc->id,
+            'title' => $doc->title,
+            'slug' => $doc->slug,
+            'category' => $doc->category,
+            'description' => $doc->description,
+            'file_name' => $doc->file_name,
+            'file_size' => $doc->file_size,
+            'file_type' => $doc->file_type,
+            'download_url' => $doc->download_url,
+            'updated_at' => $doc->updated_at,
+        ]);
     }
 
     public function partners(): JsonResponse

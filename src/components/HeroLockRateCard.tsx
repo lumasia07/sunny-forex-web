@@ -3,15 +3,21 @@ import { Send, TrendingUp } from 'lucide-react';
 import { fetchFromApi } from '../lib/api';
 
 const defaultCurrencies = [
-  { code: 'USD', flag: '🇺🇸', rate: 130.5 },
-  { code: 'EUR', flag: '🇪🇺', rate: 141.2 },
-  { code: 'GBP', flag: '🇬🇧', rate: 165.8 },
-  { code: 'AED', flag: '🇦🇪', rate: 35.4 },
-  { code: 'SAR', flag: '🇸🇦', rate: 34.4 },
-  { code: 'CAD', flag: '🇨🇦', rate: 94.1 },
-  { code: 'AUD', flag: '🇦🇺', rate: 84.8 },
-  { code: 'ZAR', flag: '🇿🇦', rate: 7.0 },
-  { code: 'INR', flag: '🇮🇳', rate: 1.55 },
+  { code: 'USD', flag: '🇺🇸', rate: 130.4 },
+  { code: 'GBP', flag: '🇬🇧', rate: 167.1 },
+  { code: 'EUR', flag: '🇪🇺', rate: 142.3 },
+  { code: 'AED', flag: '🇦🇪', rate: 36.1 },
+  { code: 'SAR', flag: '🇸🇦', rate: 35.25 },
+  { code: 'CAD', flag: '🇨🇦', rate: 95.8 },
+  { code: 'AUD', flag: '🇦🇺', rate: 86.4 },
+  { code: 'CHF', flag: '🇨🇭', rate: 147.8 },
+  { code: 'CNY', flag: '🇨🇳', rate: 18.35 },
+  { code: 'INR', flag: '🇮🇳', rate: 1.63 },
+  { code: 'JPY', flag: '🇯🇵', rate: 85.5 },
+  { code: 'ZAR', flag: '🇿🇦', rate: 7.35 },
+  { code: 'UGX', flag: '🇺🇬', rate: 0.037 },
+  { code: 'TZS', flag: '🇹🇿', rate: 0.052 },
+  { code: 'RWF', flag: '🇷🇼', rate: 0.099 },
 ];
 
 export function HeroLockRateCard({ selectedCurrency }: { selectedCurrency: string | null }) {
