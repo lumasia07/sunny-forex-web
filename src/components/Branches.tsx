@@ -1,89 +1,46 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { MapPin, ArrowRight, Building2, ShieldCheck, Phone, Clock, ExternalLink } from 'lucide-react';
+import { MapPin, ArrowRight, Building2, ShieldCheck, Phone, Clock, ExternalLink, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LiveBlock, LiveWords } from './LiveText';
 import { splitGridMotion } from './SplitColumnsReveal';
+import { BRANCHES_DATA, BranchInfo } from '../data/branchesData';
+import { BranchPhotoLightbox } from './BranchPhotoLightbox';
 import { fetchFromApi } from '../lib/api';
 
-const defaultBranches = [
-  {
-    name: 'Lavington Branch (HQ)',
-    area: 'Lavington',
-    address: 'Lavington Avenue Complex G/F, James Gichuru Road',
-    phone: '+254 722 590 049',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Lavington+Nairobi',
-    flagship: true,
-  },
-  {
-    name: 'Kilimani Branch',
-    area: 'Kilimani',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Kilimani+Nairobi',
-    flagship: false,
-  },
-  {
-    name: 'Valley Arcade Branch',
-    area: 'Lavington',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Valley+Arcade+Nairobi',
-    flagship: false,
-  },
-  {
-    name: 'GTC Mall Branch',
-    area: 'Westlands',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+GTC+Mall+Nairobi',
-    flagship: false,
-  },
-  {
-    name: 'Village Market New Wing Branch',
-    area: 'Gigiri / Limuru Road',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Village+Market+Nairobi',
-    flagship: false,
-  },
-  {
-    name: 'Village Market Old Wing Branch',
-    area: 'Gigiri / Limuru Road',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Village+Market+Nairobi',
-    flagship: false,
-  },
-  {
-    name: 'Runda Branch',
-    area: 'Runda / Kiambu Road',
-    hours: 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=SunnyRemit+Runda+Nairobi',
-    flagship: false,
-  },
-];
-
 export function Branches() {
-  const [branches, setBranches] = useState<any[]>(defaultBranches);
+  const [branches, setBranches] = useState<BranchInfo[]>(BRANCHES_DATA);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [activeBranch, setActiveBranch] = useState<BranchInfo | null>(null);
+  const [photoIndex, setPhotoIndex] = useState(0);
+
   const sectionRef = useRef<HTMLElement>(null);
   
   useEffect(() => {
     fetchFromApi<any[]>('branches')
       .then(data => {
         if (data && data.length > 0) {
-          const formatted = data.map(b => ({
-            name: b.name,
-            area: b.area,
-            address: b.address,
-            phone: b.phone,
-            hours: b.hours,
-            mapUrl: b.map_url,
-            flagship: b.name.includes('HQ') || b.name.toLowerCase().includes('lavington')
-          }));
-
-          // Sort so HQ is always first
-          formatted.sort((a, b) => (b.flagship ? 1 : 0) - (a.flagship ? 1 : 0));
-          setBranches(formatted);
+          const merged = BRANCHES_DATA.map((local) => {
+            const remote = data.find(
+              (r) =>
+                r.id === local.id ||
+                r.name?.toLowerCase().includes(local.slug) ||
+                (local.flagship && (r.name?.toLowerCase().includes('hq') || r.name?.toLowerCase().includes('lavington')))
+            );
+            if (remote) {
+              return {
+                ...local,
+                phone: remote.phone || local.phone,
+                hours: remote.hours || local.hours,
+                address: remote.address || local.address,
+              };
+            }
+            return local;
+          });
+          setBranches(merged);
         }
       })
-      .catch(err => console.warn('Branches API offline, using fallback:', err));
+      .catch(err => console.warn('Branches API offline, using local data:', err));
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -94,27 +51,32 @@ export function Branches() {
   const gridY = useTransform(scrollYProgress, [0.1, 0.5], [30, 0]);
 
   const hqBranch = branches.find(b => b.flagship) || branches[0];
-  const regularBranches = branches.filter(b => b.name !== hqBranch?.name);
+  const regularBranches = branches.filter(b => b.id !== hqBranch?.id);
+
+  const openLightbox = (branch: BranchInfo, index = 0) => {
+    setActiveBranch(branch);
+    setPhotoIndex(index);
+    setLightboxOpen(true);
+  };
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-[#FAF9F5] overflow-hidden border-t border-gray-150">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
         
         {/* Centered Section Header */}
         <div className="mb-14 max-w-3xl mx-auto text-center flex flex-col items-center">
           <span className="w-12 h-px bg-[#7A1220] mb-5" />
-          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-4 font-bold tracking-tight text-gray-900">
+          <h2 className="type-headline text-3xl md:text-4xl lg:text-5xl mb-3 font-bold tracking-tight text-gray-900 font-figtree">
             <LiveWords text="Our Branches" variant="neutral" />
           </h2>
-          <LiveBlock className="type-lead text-gray-500 max-w-xl font-light font-figtree" variant="neutral" inline={false}>
-            Strategically located across Nairobi's premier commercial and retail hubs.
+          <LiveBlock className="type-lead text-gray-500 max-w-xl font-light font-figtree text-sm md:text-base" variant="neutral" inline={false}>
+            Strategically located in Nairobi's premier retail and commercial hubs.
           </LiveBlock>
         </div>
 
-        {/* 1. PROMINENT BIGGER HQ CARD (FULL WIDTH ON TOP) */}
+        {/* 1. PROMINENT HQ CARD AT THE TOP (EXECUTIVE LAYOUT WITH REAL PHOTO BACKDROP) */}
         {hqBranch && (
           <motion.div
-            style={{ y: gridY }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -123,7 +85,16 @@ export function Branches() {
           >
             <div className="bg-gradient-to-br from-[#8A1625] via-[#5C0D18] to-[#140407] border-2 border-white/20 hover:border-amber-400/50 shadow-[0_30px_70px_rgba(122,18,32,0.25)] rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group text-left transition-all duration-500">
               
-              {/* Subtle Ambient Glows */}
+              {/* HQ Cover Photo Backdrop */}
+              <div className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2 opacity-20 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none overflow-hidden">
+                <img
+                  src={hqBranch.coverImage}
+                  alt={hqBranch.name}
+                  className="w-full h-full object-cover object-center scale-105 group-hover:scale-100 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#5C0D18] via-[#5C0D18]/70 to-transparent" />
+              </div>
+
               <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-amber-400/15 to-transparent rounded-full blur-3xl pointer-events-none" />
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:2rem_2rem] pointer-events-none z-0" />
 
@@ -145,24 +116,34 @@ export function Branches() {
                         {hqBranch.name}
                       </h3>
                       <p className="text-xs md:text-sm font-semibold text-amber-300/90 mt-0.5">
-                        Central Corporate Hub · {hqBranch.area}
+                        Central Corporate Hub • {hqBranch.area}
                       </p>
                     </div>
                   </div>
 
                   <p className="text-sm md:text-base text-white/80 font-light mt-4 leading-relaxed font-figtree">
-                    {hqBranch.address || 'Lavington Avenue Complex G/F, James Gichuru Road, Nairobi'}
+                    {hqBranch.address}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-4 mt-6 text-xs text-white/90">
-                    <div className="flex items-center gap-2 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15">
+                  <div className="flex flex-wrap items-center gap-3 mt-6 text-xs text-white/90">
+                    <a
+                      href={`tel:${hqBranch.phone}`}
+                      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-full border border-white/15 transition-colors"
+                    >
                       <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="font-bold">{hqBranch.phone || '+254 722 590 049'}</span>
-                    </div>
+                      <span className="font-bold">{hqBranch.phone}</span>
+                    </a>
                     <div className="flex items-center gap-2 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15">
                       <Clock className="w-3.5 h-3.5 text-amber-300" />
                       <span>{hqBranch.hours}</span>
                     </div>
+                    <button
+                      onClick={() => openLightbox(hqBranch, 0)}
+                      className="flex items-center gap-1.5 bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 px-3.5 py-1.5 rounded-full border border-amber-400/30 font-bold transition-all shadow-sm cursor-pointer"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>Explore all {hqBranch.images.length} Photos</span>
+                    </button>
                   </div>
                 </div>
 
@@ -193,7 +174,7 @@ export function Branches() {
           </motion.div>
         )}
 
-        {/* 2. BALANCED 6-CARD GRID FOR OTHER BRANCHES */}
+        {/* 2. BALANCED 6-CARD GRID FOR OTHER BRANCHES (WITH PHONE NUMBER BADGE, UNIFORM IMAGES) */}
         <motion.div
           style={{ y: gridY }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -203,43 +184,78 @@ export function Branches() {
               key={branch.name}
               {...splitGridMotion(index)}
               whileHover={{ y: -6, scale: 1.02 }}
-              className="bg-gradient-to-b from-[#8A1625] via-[#5C0D18] to-[#120406] border border-white/10 hover:border-white/20 hover:shadow-[0_30px_60px_rgba(122,18,32,0.15)] rounded-[2rem] p-7 flex flex-col justify-between transition-all duration-500 relative overflow-hidden group min-h-[200px] cursor-default text-left"
+              className="bg-gradient-to-b from-[#8A1625] via-[#5C0D18] to-[#120406] border border-white/10 hover:border-white/25 hover:shadow-[0_30px_60px_rgba(122,18,32,0.25)] rounded-[2rem] overflow-hidden flex flex-col justify-between transition-all duration-500 relative group cursor-default text-left"
             >
-              {/* Tech Grid Pattern Inside Card */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:1.5rem_1.5rem] pointer-events-none z-0 opacity-20" />
-              
-              {/* Ambient Hover Glow */}
-              <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              {/* Photo Banner with Big & Uniform Sizing */}
+              <div
+                onClick={() => openLightbox(branch, 0)}
+                className="relative h-52 w-full bg-black/40 overflow-hidden cursor-pointer"
+              >
+                <img
+                  src={branch.coverImage}
+                  alt={branch.name}
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-106 opacity-90 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#5C0D18] via-black/20 to-transparent pointer-events-none" />
 
-              <div className="z-10 relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                    <MapPin className="w-4 h-4" strokeWidth={2} />
-                  </div>
-                  <span className="text-[9px] font-bold text-white/90 bg-white/10 border border-white/10 px-3 py-1 rounded-full uppercase tracking-wider">
-                    {branch.hours}
+                {/* Top Left Area Tag */}
+                <div className="absolute top-3 left-3 flex items-center gap-1.5">
+                  <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-[#D4A24C]" />
+                    <span>{branch.area}</span>
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug font-figtree">
-                  {branch.name}
-                </h3>
-                <p className="text-xs text-white/70 font-light mt-1.5 font-figtree">
-                  {branch.area}
-                </p>
+                {/* Top Right Phone Number Badge */}
+                <div className="absolute top-3 right-3">
+                  <a
+                    href={`tel:${branch.phone}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/75 hover:bg-[#7A1220] backdrop-blur-md border border-emerald-400/30 text-white text-[11px] font-bold transition-all shadow-md"
+                  >
+                    <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
+                    <span>{branch.phone}</span>
+                  </a>
+                </div>
+
+                {/* Photo Count Button */}
+                <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold group-hover:bg-[#7A1220] transition-colors">
+                  <Camera className="w-3 h-3 text-amber-300" />
+                  <span>{branch.images.length} Photos</span>
+                </div>
               </div>
 
-              <div className="flex items-center justify-end mt-4 z-10 relative">
-                <a
-                  href={branch.mapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300 font-figtree group/link"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <span>Get directions</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                </a>
+              {/* Card Body */}
+              <div className="p-6 flex flex-col justify-between flex-1 relative z-10">
+                <div>
+                  <h3 className="text-lg font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug font-figtree">
+                    {branch.name}
+                  </h3>
+                  <p className="text-xs text-white/70 font-light mt-1.5 font-figtree line-clamp-2">
+                    {branch.address}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/10">
+                  <button
+                    onClick={() => openLightbox(branch, 0)}
+                    className="text-xs font-semibold text-white/80 hover:text-amber-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-amber-300" />
+                    <span>View Gallery</span>
+                  </button>
+
+                  <a
+                    href={branch.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300 font-figtree group/link"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span>Get directions</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </a>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -249,15 +265,23 @@ export function Branches() {
         <div className="flex justify-center mt-12">
           <Link
             to="/branches"
-            className="inline-flex items-center gap-3.5 rounded-full bg-[#7A1220] px-7 py-3.5 font-figtree text-sm font-bold text-white shadow-lg hover:bg-[#5C0D18] hover:shadow-[#7A1220]/20 hover:-translate-y-0.5 transition-all duration-300 group"
+            className="inline-flex items-center gap-3.5 rounded-full bg-[#7A1220] px-8 py-4 font-figtree text-sm font-bold text-white shadow-lg hover:bg-[#5C0D18] hover:shadow-[#7A1220]/20 hover:-translate-y-0.5 transition-all duration-300 group"
           >
-            View all branches
+            View all 7 branches on interactive map
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#7A1220] group-hover:translate-x-0.5 transition-transform duration-300">
               <ArrowRight size={13} strokeWidth={2.5} />
             </span>
           </Link>
         </div>
       </div>
+
+      {/* Lightbox */}
+      <BranchPhotoLightbox
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        branch={activeBranch}
+        initialPhotoIndex={photoIndex}
+      />
     </section>
   );
 }
