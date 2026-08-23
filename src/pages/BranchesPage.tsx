@@ -13,7 +13,7 @@ import { fetchFromApi } from '../lib/api';
 
 export function BranchesPage() {
   const [branches, setBranches] = useState<BranchInfo[]>(BRANCHES_DATA);
-  const [selectedBranchId, setSelectedBranchId] = useState<number>(6);
+  const [selectedBranchId, setSelectedBranchId] = useState<number>(7);
   const [mapMode, setMapMode] = useState<'branch' | 'overview'>('branch');
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -34,7 +34,7 @@ export function BranchesPage() {
               (r) =>
                 r.id === local.id ||
                 r.name?.toLowerCase().includes(local.slug) ||
-                (local.flagship && (r.name?.toLowerCase().includes('hq') || r.name?.toLowerCase().includes('lavington')))
+                (local.flagship && (r.name?.toLowerCase().includes('hq') || r.name?.toLowerCase().includes('head') || r.name?.toLowerCase().includes('lavington')))
             );
             if (remote) {
               return {
@@ -78,7 +78,7 @@ export function BranchesPage() {
     <>
       <PageHero
         eyebrow="Physical Network"
-        title="7 Nairobi Locations. Built For Trust."
+        title="8 Nairobi Locations. Built For Trust."
         description="Explore our world-class branches with executive teller suites, real-time foreign exchange, instant remittance processing, and private VIP consultation desks."
         imageSrc="/Sunny HQ/sunny_hq_1.jpg"
       />
@@ -101,7 +101,7 @@ export function BranchesPage() {
                       <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A1220]">Interactive Map Locator</span>
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-gray-950 leading-tight font-figtree">
-                      {mapMode === 'branch' ? selectedBranch.name : 'All 7 Nairobi Locations'}
+                      {mapMode === 'branch' ? selectedBranch.name : 'All 8 Nairobi Locations'}
                     </h3>
                   </div>
 

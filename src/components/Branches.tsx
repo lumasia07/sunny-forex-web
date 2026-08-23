@@ -24,8 +24,13 @@ export function Branches() {
             const remote = data.find(
               (r) =>
                 r.id === local.id ||
-                r.name?.toLowerCase().includes(local.slug) ||
-                (local.flagship && (r.name?.toLowerCase().includes('hq') || r.name?.toLowerCase().includes('lavington')))
+                r.name?.toLowerCase().trim() === local.name.toLowerCase().trim() ||
+                (local.flagship && (
+                  r.id === 7 ||
+                  r.name?.toLowerCase().includes('hq') ||
+                  r.name?.toLowerCase().includes('head') ||
+                  r.name?.toLowerCase().includes('lavington')
+                ))
             );
             if (remote) {
               return {
@@ -33,6 +38,7 @@ export function Branches() {
                 phone: remote.phone || local.phone,
                 hours: remote.hours || local.hours,
                 address: remote.address || local.address,
+                mapUrl: remote.map_url || local.mapUrl,
               };
             }
             return local;
@@ -70,11 +76,11 @@ export function Branches() {
             <LiveWords text="Our Branches" variant="neutral" />
           </h2>
           <LiveBlock className="type-lead text-gray-500 max-w-xl font-light font-figtree text-sm md:text-base" variant="neutral" inline={false}>
-            Strategically located in Nairobi's premier retail and commercial hubs.
+            Strategically located in Nairobi's premier commercial and retail hubs.
           </LiveBlock>
         </div>
 
-        {/* 1. PROMINENT HQ CARD AT THE TOP (EXECUTIVE LAYOUT WITH REAL PHOTO BACKDROP) */}
+        {/* 1. PROMINENT HQ CARD AT THE TOP (CLEAN EXECUTIVE DESIGN, NO COVER PHOTO) */}
         {hqBranch && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -85,16 +91,7 @@ export function Branches() {
           >
             <div className="bg-gradient-to-br from-[#8A1625] via-[#5C0D18] to-[#140407] border-2 border-white/20 hover:border-amber-400/50 shadow-[0_30px_70px_rgba(122,18,32,0.25)] rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden group text-left transition-all duration-500">
               
-              {/* HQ Cover Photo Backdrop */}
-              <div className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2 opacity-20 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none overflow-hidden">
-                <img
-                  src={hqBranch.coverImage}
-                  alt={hqBranch.name}
-                  className="w-full h-full object-cover object-center scale-105 group-hover:scale-100 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#5C0D18] via-[#5C0D18]/70 to-transparent" />
-              </div>
-
+              {/* Subtle Ambient Glows */}
               <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-amber-400/15 to-transparent rounded-full blur-3xl pointer-events-none" />
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:2rem_2rem] pointer-events-none z-0" />
 
@@ -174,7 +171,7 @@ export function Branches() {
           </motion.div>
         )}
 
-        {/* 2. BALANCED 6-CARD GRID FOR OTHER BRANCHES (WITH PHONE NUMBER BADGE, UNIFORM IMAGES) */}
+        {/* 2. PLAIN & ELEGANT 6-CARD GRID (NO COVER PICTURES, WITH PHOTO GALLERY TRIGGER) */}
         <motion.div
           style={{ y: gridY }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -184,78 +181,59 @@ export function Branches() {
               key={branch.name}
               {...splitGridMotion(index)}
               whileHover={{ y: -6, scale: 1.02 }}
-              className="bg-gradient-to-b from-[#8A1625] via-[#5C0D18] to-[#120406] border border-white/10 hover:border-white/25 hover:shadow-[0_30px_60px_rgba(122,18,32,0.25)] rounded-[2rem] overflow-hidden flex flex-col justify-between transition-all duration-500 relative group cursor-default text-left"
+              className="bg-gradient-to-b from-[#8A1625] via-[#5C0D18] to-[#120406] border border-white/10 hover:border-white/20 hover:shadow-[0_30px_60px_rgba(122,18,32,0.15)] rounded-[2rem] p-7 flex flex-col justify-between transition-all duration-500 relative overflow-hidden group min-h-[220px] cursor-default text-left"
             >
-              {/* Photo Banner with Big & Uniform Sizing */}
-              <div
-                onClick={() => openLightbox(branch, 0)}
-                className="relative h-52 w-full bg-black/40 overflow-hidden cursor-pointer"
-              >
-                <img
-                  src={branch.coverImage}
-                  alt={branch.name}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-106 opacity-90 group-hover:opacity-100"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#5C0D18] via-black/20 to-transparent pointer-events-none" />
+              {/* Tech Grid Pattern Inside Card */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:1.5rem_1.5rem] pointer-events-none z-0 opacity-20" />
+              
+              {/* Ambient Hover Glow */}
+              <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                {/* Top Left Area Tag */}
-                <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                  <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-[#D4A24C]" />
-                    <span>{branch.area}</span>
-                  </span>
-                </div>
-
-                {/* Top Right Phone Number Badge */}
-                <div className="absolute top-3 right-3">
+              <div className="z-10 relative">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                    <MapPin className="w-4 h-4 text-amber-300" strokeWidth={2} />
+                  </div>
+                  
+                  {/* Direct Phone Number Badge */}
                   <a
                     href={`tel:${branch.phone}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/75 hover:bg-[#7A1220] backdrop-blur-md border border-emerald-400/30 text-white text-[11px] font-bold transition-all shadow-md"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-[11px] font-bold transition-all"
                   >
-                    <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
+                    <Phone className="w-3 h-3 text-emerald-400" />
                     <span>{branch.phone}</span>
                   </a>
                 </div>
 
-                {/* Photo Count Button */}
-                <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold group-hover:bg-[#7A1220] transition-colors">
-                  <Camera className="w-3 h-3 text-amber-300" />
-                  <span>{branch.images.length} Photos</span>
-                </div>
+                <h3 className="text-lg font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug font-figtree">
+                  {branch.name}
+                </h3>
+                <p className="text-xs text-white/70 font-light mt-1.5 font-figtree">
+                  {branch.address}
+                </p>
               </div>
 
-              {/* Card Body */}
-              <div className="p-6 flex flex-col justify-between flex-1 relative z-10">
-                <div>
-                  <h3 className="text-lg font-bold text-white group-hover:text-[#D4A24C] transition-colors leading-snug font-figtree">
-                    {branch.name}
-                  </h3>
-                  <p className="text-xs text-white/70 font-light mt-1.5 font-figtree line-clamp-2">
-                    {branch.address}
-                  </p>
-                </div>
+              {/* Bottom Actions: View Photos & Directions */}
+              <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/10 z-10 relative">
+                <button
+                  onClick={() => openLightbox(branch, 0)}
+                  className="text-xs font-semibold text-amber-300 hover:text-amber-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Photos ({branch.images.length})</span>
+                </button>
 
-                <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/10">
-                  <button
-                    onClick={() => openLightbox(branch, 0)}
-                    className="text-xs font-semibold text-white/80 hover:text-amber-300 flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <Camera className="w-3.5 h-3.5 text-amber-300" />
-                    <span>View Gallery</span>
-                  </button>
-
-                  <a
-                    href={branch.mapUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-bold text-[#D4A24C] hover:text-[#e5ba65] flex items-center gap-1 transition-all duration-300 font-figtree group/link"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <span>Get directions</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </a>
-                </div>
+                <a
+                  href={branch.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-white/80 hover:text-white flex items-center gap-1 transition-all duration-300 font-figtree group/link"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span>Directions</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                </a>
               </div>
             </motion.div>
           ))}
@@ -267,7 +245,7 @@ export function Branches() {
             to="/branches"
             className="inline-flex items-center gap-3.5 rounded-full bg-[#7A1220] px-8 py-4 font-figtree text-sm font-bold text-white shadow-lg hover:bg-[#5C0D18] hover:shadow-[#7A1220]/20 hover:-translate-y-0.5 transition-all duration-300 group"
           >
-            View all 7 branches on interactive map
+            View all 8 branches on interactive map
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#7A1220] group-hover:translate-x-0.5 transition-transform duration-300">
               <ArrowRight size={13} strokeWidth={2.5} />
             </span>
@@ -275,7 +253,7 @@ export function Branches() {
         </div>
       </div>
 
-      {/* Lightbox */}
+      {/* Lightbox Modal */}
       <BranchPhotoLightbox
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}

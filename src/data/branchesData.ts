@@ -19,7 +19,7 @@ export interface BranchInfo {
 
 export const BRANCHES_DATA: BranchInfo[] = [
   {
-    id: 6,
+    id: 7,
     slug: 'head-quarters',
     name: 'Head Quarters',
     shortName: 'Head Quarters',
@@ -51,7 +51,7 @@ export const BRANCHES_DATA: BranchInfo[] = [
     highlights: ['Executive VIP Lounges', 'Institutional Remittance Desk', 'Dedicated Parking', 'High-Volume FX Counter']
   },
   {
-    id: 0,
+    id: 1,
     slug: 'kilimani',
     name: 'Kilimani Branch',
     shortName: 'Kilimani',
@@ -77,7 +77,7 @@ export const BRANCHES_DATA: BranchInfo[] = [
     highlights: ['Express Teller Desks', 'Accessible Location', 'Multi-Currency Support', 'Instant Cash Pickup']
   },
   {
-    id: 1,
+    id: 2,
     slug: 'valley-arcade',
     name: 'Valley Arcade Branch',
     shortName: 'Valley Arcade',
@@ -103,7 +103,28 @@ export const BRANCHES_DATA: BranchInfo[] = [
     highlights: ['Mall Parking Access', 'Rapid Forex Settlement', 'Corporate Accounts', 'Open 7 Days']
   },
   {
-    id: 2,
+    id: 9,
+    slug: 'lavington-mall',
+    name: 'Lavington Mall Branch',
+    shortName: 'Lavington Mall',
+    area: 'Lavington',
+    address: 'Lavington Mall G/F, James Gichuru / Olenguruone Road, Lavington, Nairobi',
+    phone: '+254 722 590 049',
+    whatsapp: '254722590049',
+    hours: 'Mon-Fri: 9:00 AM - 7:00 PM • Sat-Sun: 9:00 AM - 6:00 PM',
+    flagship: false,
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Lavington+Mall+James+Gichuru+Road+Nairobi',
+    queryAddress: 'Lavington Mall, James Gichuru Road, Nairobi, Kenya',
+    coverImage: '/Sunny HQ/sunny_hq_2.jpg',
+    images: [
+      '/Sunny HQ/sunny_hq_2.jpg',
+      '/Sunny HQ/sunny_hq_3.jpg',
+    ],
+    description: 'Premier branch inside Lavington Mall offering executive forex rates, shopping convenience, secure parking, and instant remittance pickups.',
+    highlights: ['Lavington Mall G/F', 'Ample Mall Parking', 'Instant Remittance', 'Open 7 Days']
+  },
+  {
+    id: 3,
     slug: 'gtc-mall',
     name: 'GTC Mall Branch',
     shortName: 'GTC Westlands',
@@ -127,7 +148,7 @@ export const BRANCHES_DATA: BranchInfo[] = [
     highlights: ['Commercial Hub', 'High-Security Facility', 'Expatriate & Business FX', 'Direct Mall Access']
   },
   {
-    id: 3,
+    id: 4,
     slug: 'village-market-new',
     name: 'Village Market New Wing',
     shortName: 'VM New Wing',
@@ -150,7 +171,7 @@ export const BRANCHES_DATA: BranchInfo[] = [
     highlights: ['Diplomatic Enclave', 'Premium Mall Setting', 'Weekend Banking', 'Zero Rate Slippage']
   },
   {
-    id: 4,
+    id: 5,
     slug: 'village-market-old',
     name: 'Village Market Old Wing',
     shortName: 'VM Old Wing',
@@ -173,7 +194,7 @@ export const BRANCHES_DATA: BranchInfo[] = [
     highlights: ['Classic Mall Branch', 'Trusted Heritage Desk', 'Direct Payout Support', 'Open 7 Days']
   },
   {
-    id: 5,
+    id: 6,
     slug: 'runda',
     name: 'Runda Branch',
     shortName: 'Runda',

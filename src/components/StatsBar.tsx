@@ -74,7 +74,7 @@ const stats = [
   },
   {
     icon: MapPin,
-    targetValue: 7,
+    targetValue: 8,
     suffix: '',
     label: 'Nairobi branches',
     color: '#7A1220',

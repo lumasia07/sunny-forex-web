@@ -1,3 +1,4 @@
+import { BRANCHES_DATA } from '../data/branchesData';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -388,11 +389,9 @@ export function LockRate() {
                           onChange={(e) => setPickupBranch(e.target.value)}
                           className="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-[#7A1220] transition-colors text-sm cursor-pointer"
                         >
-                          <option value="Valley Arcade">Valley Arcade (Lavington)</option>
-                          <option value="Village Market">Village Market (Gigiri)</option>
-                          <option value="Sarit Centre">Sarit Centre (Westlands)</option>
-                          <option value="Two Rivers Mall">Two Rivers Mall (Ruaka)</option>
-                          <option value="Junction Mall">Junction Mall (Ngong Road)</option>
+                          {BRANCHES_DATA.map((b) => (
+                            <option key={b.id} value={b.name}>{b.name} ({b.area})</option>
+                          ))}
                         </select>
                       </div>
                     ) : (

@@ -102,13 +102,23 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'name' => 'Lavington Branch (HQ)',
+                'name' => 'Head Quarters',
                 'area' => 'Lavington',
                 'address' => 'Lavington Avenue Complex G/F, James Gichuru Road, Nairobi',
                 'phone' => '+254 722 590 049',
                 'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
                 'map_url' => 'https://www.google.com/maps/search/?api=1&query=Lavington+Avenue+Complex+James+Gichuru+Road+Nairobi',
                 'sort_order' => 7,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Lavington Mall Branch',
+                'area' => 'Lavington',
+                'address' => 'Lavington Mall G/F, James Gichuru / Olenguruone Road, Lavington, Nairobi',
+                'phone' => '+254 722 590 049',
+                'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
+                'map_url' => 'https://www.google.com/maps/search/?api=1&query=Lavington+Mall+James+Gichuru+Road+Nairobi',
+                'sort_order' => 8,
                 'is_active' => true,
             ],
         ];
@@ -265,8 +275,8 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'page_slug' => 'branches',
-                'title' => 'SunnyRemit Branch Locations — 7 Forex Bureaus in Nairobi',
-                'description' => 'Find a SunnyRemit branch near you. 7 locations across Nairobi — Kilimani, Lavington, Westlands, Gigiri, and Runda. Open 365 days, 9AM-7PM.',
+                'title' => 'SunnyRemit Branch Locations — 8 Forex Bureaus in Nairobi',
+                'description' => 'Find a SunnyRemit branch near you. 8 locations across Nairobi — Kilimani, Lavington, Westlands, Gigiri, and Runda. Open 365 days, 9AM-7PM.',
                 'json_ld_schema' => [
                     '@context' => 'https://schema.org',
                     '@type' => 'LocalBusiness',
