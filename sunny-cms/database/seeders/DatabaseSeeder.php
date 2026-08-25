@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Lavington Mall Branch',
                 'area' => 'Lavington',
                 'address' => 'Lavington Mall G/F, James Gichuru / Olenguruone Road, Lavington, Nairobi',
-                'phone' => '+254 722 590 049',
+                'phone' => '+254 722 155599',
                 'hours' => 'Mon-Fri: 9:00 AM - 7:00 PM · Sat-Sun: 9:00 AM - 6:00 PM',
                 'map_url' => 'https://www.google.com/maps/search/?api=1&query=Lavington+Mall+James+Gichuru+Road+Nairobi',
                 'sort_order' => 8,

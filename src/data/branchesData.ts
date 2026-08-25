@@ -109,8 +109,8 @@ export const BRANCHES_DATA: BranchInfo[] = [
     shortName: 'Lavington Mall',
     area: 'Lavington',
     address: 'Lavington Mall G/F, James Gichuru / Olenguruone Road, Lavington, Nairobi',
-    phone: '+254 722 590 049',
-    whatsapp: '254722590049',
+    phone: '+254 722 155 599',
+    whatsapp: '254722155599',
     hours: 'Mon-Fri: 9:00 AM - 7:00 PM • Sat-Sun: 9:00 AM - 6:00 PM',
     flagship: false,
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Lavington+Mall+James+Gichuru+Road+Nairobi',
@@ -232,3 +232,54 @@ export const ALL_BRANCH_PHOTOS = BRANCHES_DATA.flatMap((b) =>
     alt: b.name + ' - Photo ' + (idx + 1)
   }))
 );
+
+/**
+ * Universal CMS Branch reconciliation helper
+ * Accurately merges live CMS branch records with local rich UI configuration
+ */
+export function mergeBranchesWithCms(localList: BranchInfo[], remoteList: any[]): BranchInfo[] {
+  if (!remoteList || remoteList.length === 0) return localList;
+
+  return localList.map((local) => {
+    const remote = remoteList.find((r) => {
+      if (r.id === local.id) return true;
+      const rName = (r.name || '').toLowerCase().trim();
+      const lName = local.name.toLowerCase().trim();
+      const lShort = (local.shortName || '').toLowerCase().trim();
+      const lSlugSpaced = local.slug.replace(/-/g, ' ').toLowerCase().trim();
+
+      if (rName === lName) return true;
+      if (rName.includes(lSlugSpaced) || lSlugSpaced.includes(rName)) return true;
+      if (rName.includes(lShort) || lShort.includes(rName)) return true;
+
+      // Special flagship / HQ handling
+      if (local.flagship && (r.id === 7 || rName.includes('hq') || rName.includes('head') || rName.includes('lavington avenue'))) {
+        return true;
+      }
+
+      // Explicit Lavington Mall vs Valley Arcade distinction
+      if (local.slug === 'lavington-mall' && rName.includes('lavington mall')) {
+        return true;
+      }
+      if (local.slug === 'valley-arcade' && rName.includes('valley arcade')) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (remote) {
+      const cleanPhone = remote.phone || local.phone;
+      const cleanWhatsapp = remote.phone ? remote.phone.replace(/[^0-9]/g, '') : (remote.whatsapp || local.whatsapp);
+      return {
+        ...local,
+        phone: cleanPhone,
+        whatsapp: cleanWhatsapp,
+        hours: remote.hours || local.hours,
+        address: remote.address || local.address,
+        mapUrl: remote.map_url || local.mapUrl,
+      };
+    }
+    return local;
+  });
+}

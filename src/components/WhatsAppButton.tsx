@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Phone, MapPin, Clock, MessageCircle } from 'lucide-react';
-import { BRANCHES_DATA } from '../data/branchesData';
+import { BRANCHES_DATA, BranchInfo, mergeBranchesWithCms } from '../data/branchesData';
+import { fetchFromApi } from '../lib/api';
 
 function WhatsAppIcon({ className = '', size = 24 }: { className?: string; size?: number }) {
   return (
@@ -21,7 +22,18 @@ function WhatsAppIcon({ className = '', size = 24 }: { className?: string; size?
 
 export function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [branches, setBranches] = useState<BranchInfo[]>(BRANCHES_DATA);
   const location = useLocation();
+
+  useEffect(() => {
+    fetchFromApi<any[]>('branches')
+      .then(data => {
+        if (data && data.length > 0) {
+          setBranches(mergeBranchesWithCms(BRANCHES_DATA, data));
+        }
+      })
+      .catch(err => console.warn('WhatsApp API offline, using local data:', err));
+  }, []);
 
   useEffect(() => {
     setIsOpen(false);
@@ -100,7 +112,7 @@ export function WhatsAppButton() {
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-2 md:px-4 py-3 space-y-2">
-                  {BRANCHES_DATA.map((branch, i) => (
+                  {branches.map((branch, i) => (
                     <motion.a
                       key={branch.slug}
                       href={`https://wa.me/${branch.whatsapp}?text=${encodeURIComponent(`Hello SunnyRemit (${branch.name}), I would like to enquire about forex exchange / remittance.`)}`}

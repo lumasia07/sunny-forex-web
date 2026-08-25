@@ -7,7 +7,7 @@ import {
   Building2, ShieldCheck, MessageCircle, Camera,
   ChevronLeft, ChevronRight, Sparkles, CheckCircle2, Maximize2
 } from 'lucide-react';
-import { BRANCHES_DATA, BranchInfo, ALL_BRANCH_PHOTOS } from '../data/branchesData';
+import { BRANCHES_DATA, BranchInfo, ALL_BRANCH_PHOTOS, mergeBranchesWithCms } from '../data/branchesData';
 import { BranchPhotoLightbox } from '../components/BranchPhotoLightbox';
 import { fetchFromApi } from '../lib/api';
 
@@ -29,24 +29,7 @@ export function BranchesPage() {
     fetchFromApi<any[]>('branches')
       .then((data) => {
         if (data && data.length > 0) {
-          const merged = BRANCHES_DATA.map((local) => {
-            const remote = data.find(
-              (r) =>
-                r.id === local.id ||
-                r.name?.toLowerCase().includes(local.slug) ||
-                (local.flagship && (r.name?.toLowerCase().includes('hq') || r.name?.toLowerCase().includes('head') || r.name?.toLowerCase().includes('lavington')))
-            );
-            if (remote) {
-              return {
-                ...local,
-                phone: remote.phone || local.phone,
-                hours: remote.hours || local.hours,
-                address: remote.address || local.address,
-              };
-            }
-            return local;
-          });
-          setBranches(merged);
+          setBranches(mergeBranchesWithCms(BRANCHES_DATA, data));
         }
       })
       .catch((err) => console.warn('Branches API offline, using local data:', err));
