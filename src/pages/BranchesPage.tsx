@@ -5,7 +5,7 @@ import { CtaBand } from '../components/CtaBand';
 import {
   MapPin, Phone, Clock, Compass, ExternalLink, Layers,
   Building2, ShieldCheck, MessageCircle, Camera,
-  ChevronLeft, ChevronRight, CheckCircle2
+  ChevronLeft, ChevronRight, CheckCircle2, Maximize2
 } from 'lucide-react';
 import { BRANCHES_DATA, BranchInfo, mergeBranchesWithCms } from '../data/branchesData';
 import { BranchPhotoLightbox } from '../components/BranchPhotoLightbox';

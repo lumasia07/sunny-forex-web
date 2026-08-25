@@ -92,6 +92,19 @@ class ApiController extends Controller
         return response()->json($services);
     }
 
+    public function seo(string $slug): JsonResponse
+    {
+        $seo = \App\Models\SeoMeta::where('page_slug', $slug)->first();
+        if (!$seo) {
+            return response()->json([
+                'page_slug' => $slug,
+                'title' => 'SunnyRemit — Premier Forex Bureau & Money Remittance Nairobi Kenya',
+                'description' => 'Licensed and regulated by the Central Bank of Kenya. Real-time forex exchange and instant remittance across 8 physical branches in Nairobi.',
+            ]);
+        }
+        return response()->json($seo);
+    }
+
     public function kioskRates(): \Illuminate\View\View
     {
         $rates = ForexRate::active()->get();

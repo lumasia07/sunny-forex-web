@@ -13,4 +13,5 @@ Route::prefix('v1')->group(function () {
     Route::get('documents/{slug}', [ApiController::class, 'documentBySlug']);
     Route::get('partners', [ApiController::class, 'partners']);
     Route::get('services', [ApiController::class, 'services']);
+    Route::get('seo/{slug}', [ApiController::class, 'seo']);
 });
