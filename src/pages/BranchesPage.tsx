@@ -5,9 +5,9 @@ import { CtaBand } from '../components/CtaBand';
 import {
   MapPin, Phone, Clock, Compass, ExternalLink, Layers,
   Building2, ShieldCheck, MessageCircle, Camera,
-  ChevronLeft, ChevronRight, Sparkles, CheckCircle2, Maximize2
+  ChevronLeft, ChevronRight, CheckCircle2
 } from 'lucide-react';
-import { BRANCHES_DATA, BranchInfo, ALL_BRANCH_PHOTOS, mergeBranchesWithCms } from '../data/branchesData';
+import { BRANCHES_DATA, BranchInfo, mergeBranchesWithCms } from '../data/branchesData';
 import { BranchPhotoLightbox } from '../components/BranchPhotoLightbox';
 import { fetchFromApi } from '../lib/api';
 
@@ -19,9 +19,6 @@ export function BranchesPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxBranch, setLightboxBranch] = useState<BranchInfo | null>(null);
   const [lightboxPhotoIndex, setLightboxPhotoIndex] = useState(0);
-
-  const [selectedFilterSlug, setSelectedFilterSlug] = useState<string>('all');
-  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState<number | null>(null);
 
   const [hqActivePhotoIdx, setHqActivePhotoIdx] = useState(0);
 
@@ -40,20 +37,8 @@ export function BranchesPage() {
   const regularBranches = branches.filter((b) => b.id !== hqBranch.id);
 
   const openBranchGallery = (branch: BranchInfo, initialIdx = 0) => {
-    setGalleryLightboxIndex(null);
     setLightboxBranch(branch);
     setLightboxPhotoIndex(initialIdx);
-    setLightboxOpen(true);
-  };
-
-  const filteredPhotos =
-    selectedFilterSlug === 'all'
-      ? ALL_BRANCH_PHOTOS
-      : ALL_BRANCH_PHOTOS.filter((p) => p.branchSlug === selectedFilterSlug);
-
-  const openTourPhoto = (index: number) => {
-    setLightboxBranch(null);
-    setGalleryLightboxIndex(index);
     setLightboxOpen(true);
   };
 
@@ -514,113 +499,12 @@ export function BranchesPage() {
         </div>
       </section>
 
-      {/* 3. INTERACTIVE VISUAL TOUR GALLERY */}
-      <section className="py-16 md:py-24 bg-white border-t border-gray-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
-          
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#7A1220] inline-flex items-center gap-1.5 mb-3">
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>Virtual Branch Tour</span>
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-950 font-figtree tracking-tight">
-              Experience Our Physical Branches
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600 mt-3 leading-relaxed">
-              Step inside our secure, premium teller counters and private consultation lounges across Nairobi. Real locations, real security, zero compromises.
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
-              <button
-                onClick={() => setSelectedFilterSlug('all')}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                  selectedFilterSlug === 'all'
-                    ? 'bg-[#7A1220] text-white shadow-md'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
-              >
-                All Branches ({ALL_BRANCH_PHOTOS.length})
-              </button>
-              {branches.map((b) => (
-                <button
-                  key={b.slug}
-                  onClick={() => setSelectedFilterSlug(b.slug)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                    selectedFilterSlug === b.slug
-                      ? 'bg-[#7A1220] text-white shadow-md'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                  }`}
-                >
-                  {b.name === 'Head Quarters' ? 'Head Quarters' : b.shortName} ({b.images.length})
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-          >
-            {filteredPhotos.map((photo, index) => (
-              <motion.div
-                layout
-                key={`${photo.src}-${index}`}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: index * 0.02 }}
-                onClick={() => openTourPhoto(index)}
-                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden cursor-pointer bg-[#120407] border border-gray-200 shadow-md hover:shadow-2xl transition-all duration-500"
-              >
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
-
-                <div className="absolute top-3 left-3">
-                  <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white text-[10px] font-bold tracking-wider uppercase">
-                    {photo.branchName}
-                  </span>
-                </div>
-
-                <div className="absolute bottom-3 left-3 right-3 text-white flex items-end justify-between">
-                  <div>
-                    <p className="text-[11px] text-amber-300 font-semibold">{photo.branchArea}</p>
-                    <p className="text-xs font-bold text-white flex items-center gap-1 mt-0.5">
-                      <Camera className="w-3 h-3 text-white/70" />
-                      <span>Photo {photo.index} of {photo.total}</span>
-                    </p>
-                  </div>
-
-                  <span className="w-8 h-8 rounded-full bg-white/20 group-hover:bg-[#7A1220] flex items-center justify-center text-white transition-colors">
-                    <Maximize2 className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-        </div>
-      </section>
-
       {/* Lightbox Modal */}
       <BranchPhotoLightbox
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
         branch={lightboxBranch}
         initialPhotoIndex={lightboxPhotoIndex}
-        allPhotosMode={
-          galleryLightboxIndex !== null
-            ? {
-                photos: filteredPhotos,
-                currentIndex: galleryLightboxIndex,
-                onChangeIndex: (idx) => setGalleryLightboxIndex(idx),
-              }
-            : undefined
-        }
       />
 
       <CtaBand />
